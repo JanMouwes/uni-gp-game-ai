@@ -8,11 +8,11 @@ namespace SteeringCS
 {
     abstract class BaseGameEntity
     {
-        public Vector2D Pos { get; set; }
+        public Vector2 Pos { get; set; }
         public float Scale { get; set; }
         public World MyWorld { get; set; }
 
-        public BaseGameEntity(Vector2D pos, World w)
+        public BaseGameEntity(Vector2 pos, World w)
         {
             Pos = pos;
             MyWorld = w;

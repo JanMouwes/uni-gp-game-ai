@@ -8,9 +8,9 @@ namespace SteeringCS.entity
     {
         public Microsoft.Xna.Framework.Color VColor { get; set; }
 
-        public Vehicle(Vector2D pos, World w) : base(pos, w)
+        public Vehicle(Vector2 pos, World w) : base(pos, w)
         {
-            Velocity = new Vector2D(0, 0);
+            Velocity = new Vector2(0, 0);
             Scale = 5;
 
             VColor = Color.Black;
