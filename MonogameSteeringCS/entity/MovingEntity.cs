@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace SteeringCS.entity
+namespace GameAI.entity
 {
     abstract class MovingEntity : BaseGameEntity
     {

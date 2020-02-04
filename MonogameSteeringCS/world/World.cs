@@ -1,9 +1,9 @@
-﻿using SteeringCS.entity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GameAI.entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SteeringCS
+namespace GameAI
 {
     class World
     {

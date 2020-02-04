@@ -9,8 +9,8 @@
     <ProjectGuid>905b6b3b-33b1-49fb-b691-ae30f88cb4f5</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonoGameCrossPlatformDesktopApplication</RootNamespace>
-    <AssemblyName>MonoGameCrossPlatformDesktopApplication</AssemblyName>
+    <RootNamespace>GameAI</RootNamespace>
+    <AssemblyName>GameAI</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>

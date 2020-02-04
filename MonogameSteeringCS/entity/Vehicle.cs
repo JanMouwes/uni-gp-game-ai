@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
-namespace SteeringCS.entity
+namespace GameAI.entity
 {
     class Vehicle : MovingEntity
     {

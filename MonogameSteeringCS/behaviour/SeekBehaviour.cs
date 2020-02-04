@@ -1,11 +1,11 @@
-﻿﻿using SteeringCS.entity;
+﻿﻿using GameAI.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SteeringCS.behaviour
+namespace GameAI.behaviour
 {
     class SeekBehaviour 
     {

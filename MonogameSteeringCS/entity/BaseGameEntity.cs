@@ -4,7 +4,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Shapes;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace SteeringCS
+namespace GameAI
 {
     abstract class BaseGameEntity
     {
