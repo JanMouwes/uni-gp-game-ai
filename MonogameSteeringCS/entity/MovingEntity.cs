@@ -26,10 +26,14 @@ namespace GameAI.entity
 
         public override void Update(float timeElapsed)
         {
-            Vector2 SteeringForce = SB.Calculate();
-            Vector2 Acceleration = SteeringForce / Mass;
+            if (SB != null)
+            {
+                Vector2 SteeringForce = SB.Calculate();
+                Vector2 Acceleration = SteeringForce / Mass;
 
-            Velocity += Acceleration * timeElapsed;
+                Velocity += Acceleration * timeElapsed;
+            }
+
             Velocity.Truncate(MaxSpeed);
 
             Pos += Velocity * timeElapsed;
