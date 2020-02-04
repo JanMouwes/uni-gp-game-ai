@@ -9,18 +9,18 @@ using MonoGame.Extended;
 
 namespace GameAI.behaviour
 {
-    public class SeekBehaviour : SteeringBehaviour
+    public class ArriveBehaviour : SteeringBehaviour
     {
         public Vector2 Target { get; set; }
 
-        public SeekBehaviour(MovingEntity entity, Vector2 target) : base(entity)
+        public ArriveBehaviour(MovingEntity entity, Vector2 target) : base(entity)
         {
             this.Target = target;
         }
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Seek(Target, Entity);
+            return SteeringBehaviours.Arrive(Target, Entity);
         }
     }
 }

@@ -6,7 +6,7 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace GameAI
 {
-    abstract class BaseGameEntity
+    public abstract class BaseGameEntity
     {
         public Vector2 Pos { get; set; }
         public float Scale { get; set; }

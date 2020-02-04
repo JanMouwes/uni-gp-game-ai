@@ -4,7 +4,7 @@ using MonoGame.Extended;
 
 namespace GameAI.entity
 {
-    class Vehicle : MovingEntity
+    public class Vehicle : MovingEntity
     {
         public Microsoft.Xna.Framework.Color VColor { get; set; }
 

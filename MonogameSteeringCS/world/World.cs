@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameAI
 {
-    class World
+    public class World
     {
         private List<MovingEntity> entities = new List<MovingEntity>();
         public Vehicle Target { get; set; }

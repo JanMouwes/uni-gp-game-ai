@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameAI.behaviour;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.entity
 {
-    abstract class MovingEntity : BaseGameEntity
+    public abstract class MovingEntity : BaseGameEntity
     {
         public Vector2 Velocity { get; set; }
         public float Mass { get; set; }

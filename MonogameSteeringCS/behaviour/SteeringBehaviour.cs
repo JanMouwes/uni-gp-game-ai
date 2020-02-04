@@ -1,9 +1,9 @@
 ﻿using GameAI.entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI
+namespace GameAI.behaviour
 {
-    abstract class SteeringBehaviour
+    public abstract class SteeringBehaviour
     {
         public MovingEntity Entity { get; set; }
         public abstract Vector2 Calculate();
