@@ -1,25 +1,25 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
-namespace SteeringCS.entity
+namespace GameAI.entity
 {
-
     abstract class MovingEntity : BaseGameEntity
     {
-        public Vector2D Velocity { get; set; }
+        public Vector2 Velocity { get; set; }
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
 
         public SteeringBehaviour SB { get; set; }
 
-        public MovingEntity(Vector2D pos, World w) : base(pos, w)
+        public MovingEntity(Vector2 pos, World w) : base(pos, w)
         {
             Mass = 30;
             MaxSpeed = 150;
-            Velocity = new Vector2D();
+            Velocity = new Vector2();
         }
 
         public override void Update(float timeElapsed)
