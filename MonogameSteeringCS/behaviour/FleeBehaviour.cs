@@ -11,16 +11,16 @@ namespace GameAI.behaviour
 {
     public class FleeBehaviour : SteeringBehaviour
     {
-        public Vector2 Target { get; set; }
+        public MovingEntity Target { get; set; }
 
-        public FleeBehaviour(MovingEntity entity, Vector2 target) : base(entity)
+        public FleeBehaviour(MovingEntity entity, MovingEntity target) : base(entity)
         {
             this.Target = target;
         }
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Flee(Target, Entity);
+            return SteeringBehaviours.Flee(Target.Pos, Entity);
         }
     }
 }

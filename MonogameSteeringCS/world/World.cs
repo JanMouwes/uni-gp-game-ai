@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameAI.behaviour;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,24 +22,31 @@ namespace GameAI
 
         private void populate()
         {
-            Vehicle v = new Vehicle(new Vector2(10, 10), this);
-            v.VColor = Color.Blue;
+            Vehicle v = new Vehicle(new Vector2(10, 10), this) {VColor = Color.Blue, MaxSpeed = 32f,};
+
             entities.Add(v);
 
             Target = new Vehicle(new Vector2(100, 60), this)
             {
+                MaxSpeed = 48f,
                 VColor = Color.DarkRed,
-                Pos = new Vector2(100, 40)
+                Mass = 10
             };
+
+            Target.Steering = new FleeBehaviour(Target, v);
+
+            v.Steering = new SeekBehaviour(v, Target);
         }
 
-        public void Update(float timeElapsed)
+        public void Update(GameTime gameTime)
         {
             foreach (MovingEntity me in entities)
             {
                 // me.SB = new SeekBehaviour(me); // restore later
-                me.Update(timeElapsed);
+                me.Update(gameTime);
             }
+            
+            Target?.Update(gameTime);
         }
 
         public void Render(SpriteBatch spriteBatch)

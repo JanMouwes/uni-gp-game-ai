@@ -35,7 +35,7 @@ namespace MonogameSteeringCS
 
         protected override void Update(GameTime gameTime)
         {
-            this.world.Update((float) gameTime.ElapsedGameTime.TotalMilliseconds);
+            this.world.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -43,7 +43,7 @@ namespace MonogameSteeringCS
         protected override void Draw(GameTime gameTime)
         {
             this.graphics.GraphicsDevice.Clear(Color.Gray);
-            
+
             this.spriteBatch.Begin();
 
             this.world.Render(this.spriteBatch);

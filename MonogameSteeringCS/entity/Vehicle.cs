@@ -6,7 +6,7 @@ namespace GameAI.entity
 {
     public class Vehicle : MovingEntity
     {
-        public Microsoft.Xna.Framework.Color VColor { get; set; }
+        public Color VColor { get; set; }
 
         public Vehicle(Vector2 pos, World w) : base(pos, w)
         {
@@ -18,9 +18,9 @@ namespace GameAI.entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            Vector2 position = new Vector2((float) Pos.X, (float) Pos.Y);
+            Vector2 position = new Vector2(this.Pos.X, this.Pos.Y);
             Vector2 radius = new Vector2(this.Scale);
-            Vector2 velocity = new Vector2((float) this.Velocity.X, (float) this.Velocity.Y);
+            Vector2 velocity = new Vector2(this.Velocity.X, this.Velocity.Y);
 
             spriteBatch.DrawEllipse(position, radius, 360, VColor);
 

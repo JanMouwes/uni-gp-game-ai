@@ -6,27 +6,27 @@ namespace GameAI.behaviour
 {
     public static class SteeringBehaviours
     {
-        public static Vector2 Pursue(MovingEntity target, MovingEntity movement) => Seek(target.Pos + target.Velocity, movement);
+        public static Vector2 Pursue(MovingEntity target, MovingEntity owner) => Seek(target.Pos + target.Velocity, owner);
 
-        public static Vector2 Flee(Vector2 target, MovingEntity vehicle)
+        public static Vector2 Flee(Vector2 target, MovingEntity owner)
         {
-            const float panicDistance =  32f;
-            float distance = Vector2.Distance(target, vehicle.Pos);
+            const float panicDistance = 32f;
+            float distance = Vector2.Distance(target, owner.Pos);
 
             if (panicDistance > distance) { return Vector2.Zero; }
 
-            Vector2 desiredVelocity = (vehicle.Pos - target).NormalizedCopy() * vehicle.MaxSpeed;
+            Vector2 desiredVelocity = (owner.Pos - target).NormalizedCopy() * owner.MaxSpeed;
 
-            return desiredVelocity - vehicle.Velocity;
+            return desiredVelocity - owner.Velocity;
         }
 
-        public static Vector2 Seek(Vector2 target, MovingEntity vehicle)
+        public static Vector2 Seek(Vector2 target, MovingEntity owner)
         {
-            if (target == vehicle.Pos) { return Vector2.Zero; }
+            if (target == owner.Pos) { return Vector2.Zero; }
 
-            Vector2 desiredVelocity = (target - vehicle.Pos).NormalizedCopy() * vehicle.MaxSpeed;
+            Vector2 desiredVelocity = (target - owner.Pos).NormalizedCopy() * owner.MaxSpeed;
 
-            return desiredVelocity - vehicle.Velocity;
+            return desiredVelocity - owner.Velocity;
         }
 
         public static Vector2 Arrive(Vector2 target, MovingEntity vehicle)
