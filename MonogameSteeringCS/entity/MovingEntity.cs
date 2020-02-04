@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameAI.behaviour;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 
 namespace GameAI.entity
 {
@@ -25,7 +26,14 @@ namespace GameAI.entity
 
         public override void Update(float timeElapsed)
         {
-            // to do
+            Vector2 SteeringForce = SB.Calculate();
+            Vector2 Acceleration = SteeringForce / Mass;
+
+            Velocity += Acceleration * timeElapsed;
+            Velocity.Truncate(MaxSpeed);
+
+            Pos += Velocity * timeElapsed;
+
             Console.WriteLine(ToString());
         }
 
