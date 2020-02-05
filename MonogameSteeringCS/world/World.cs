@@ -8,7 +8,7 @@ namespace GameAI
 {
     public class World
     {
-        private List<MovingEntity> entities = new List<MovingEntity>();
+        private List<MovingEntity> Entities = new List<MovingEntity>();
         public Vehicle Target { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -17,14 +17,14 @@ namespace GameAI
         {
             Width = w;
             Height = h;
-            populate();
+            Populate();
         }
 
-        private void populate()
+        private void Populate()
         {
             Vehicle v = new Vehicle(new Vector2(10, 10), this) {VColor = Color.Blue, MaxSpeed = 32f,};
 
-            entities.Add(v);
+            Entities.Add(v);
 
             Target = new Vehicle(new Vector2(100, 60), this)
             {
@@ -40,7 +40,7 @@ namespace GameAI
 
         public void Update(GameTime gameTime)
         {
-            foreach (MovingEntity me in entities)
+            foreach (MovingEntity me in Entities)
             {
                 // me.SB = new SeekBehaviour(me); // restore later
                 me.Update(gameTime);
@@ -51,7 +51,7 @@ namespace GameAI
 
         public void Render(SpriteBatch spriteBatch)
         {
-            entities.ForEach(e => e.Render(spriteBatch));
+            Entities.ForEach(e => e.Render(spriteBatch));
             Target?.Render(spriteBatch);
         }
     }
