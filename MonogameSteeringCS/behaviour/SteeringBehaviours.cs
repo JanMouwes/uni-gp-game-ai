@@ -1,3 +1,4 @@
+using System;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
@@ -43,6 +44,20 @@ namespace GameAI.behaviour
             Vector2 desiredVelocity = difference * desiredSpeed / distance;
 
             return desiredVelocity - vehicle.Velocity;
+        }
+
+        
+
+        public static Vector2 Wander(MovingEntity entity, float distance, float offset)
+        {
+            Vector2 localTarget = new Vector2
+            {
+                X = entity.Orientation.Y,
+                Y = -entity.Orientation.X
+            };
+            localTarget *= offset;
+
+            return entity.Orientation * distance + localTarget;
         }
     }
 

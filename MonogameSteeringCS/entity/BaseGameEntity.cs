@@ -20,12 +20,6 @@ namespace GameAI
 
         public abstract void Update(GameTime gameTime);
 
-        public virtual void Render(SpriteBatch spriteBatch)
-        {
-            Vector2 position = new Vector2(this.Pos.X, this.Pos.Y);
-
-            //Brushes.Blue, new Rectangle((int) Pos.X,(int) Pos.Y, 10, 10)
-            spriteBatch.DrawCircle(position, 10f, 360, Color.Blue);
-        }
+        public abstract void Render(SpriteBatch spriteBatch);
     }
 }

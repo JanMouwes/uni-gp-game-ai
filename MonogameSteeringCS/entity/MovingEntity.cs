@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameAI.behaviour;
+using GameAI.Util;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
 namespace GameAI.entity
@@ -12,10 +14,13 @@ namespace GameAI.entity
     public abstract class MovingEntity : BaseGameEntity
     {
         public Vector2 Velocity { get; set; }
+
+        public Vector2 Orientation { get; set; } = new Vector2(1, 0);
+
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
 
-        public SteeringBehaviour Steering { get; set; }
+        public SteeringBehaviour Steering { get; set; } = DefaultBehaviour.Instance;
 
         public MovingEntity(Vector2 pos, World w) : base(pos, w)
         {
@@ -27,7 +32,7 @@ namespace GameAI.entity
         public override void Update(GameTime gameTime)
         {
             float elapsedSeconds = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            
+
             if (this.Steering != null)
             {
                 Vector2 steeringForce = this.Steering.Calculate();
@@ -36,16 +41,25 @@ namespace GameAI.entity
                 Velocity += acceleration * elapsedSeconds * 0.95f;
             }
 
-            Velocity.Truncate(MaxSpeed);
+            Velocity = Velocity.Truncate(MaxSpeed);
 
             Pos += Velocity * elapsedSeconds;
+
+            if (Velocity != Vector2.Zero) { this.Orientation = Velocity.NormalizedCopy(); }
 
             Console.WriteLine(ToString());
         }
 
+        public override void Render(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Blue);
+
+            spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
+        }
+
         public override string ToString()
         {
-            return String.Format("{0}", Velocity);
+            return $"{this.Velocity}";
         }
     }
 }

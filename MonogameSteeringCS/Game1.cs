@@ -42,7 +42,7 @@ namespace MonogameSteeringCS
 
         protected override void Draw(GameTime gameTime)
         {
-            this.graphics.GraphicsDevice.Clear(Color.Gray);
+            this.graphics.GraphicsDevice.Clear(Color.Black);
 
             this.spriteBatch.Begin();
 

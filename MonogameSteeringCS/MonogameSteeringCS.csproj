@@ -43,17 +43,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="behaviour\ArriveBehaviour.cs" />
+    <Compile Include="behaviour\DefaultBehaviour.cs" />
     <Compile Include="behaviour\FleeBehaviour.cs" />
     <Compile Include="behaviour\PursueBehaviour.cs" />
     <Compile Include="behaviour\SeekBehaviour.cs" />
     <Compile Include="behaviour\SteeringBehaviour.cs" />
     <Compile Include="behaviour\SteeringBehaviours.cs" />
+    <Compile Include="behaviour\WanderBehaviour.cs" />
     <Compile Include="entity\BaseGameEntity.cs" />
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Vector2Helper.cs" />
     <Compile Include="world\World.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameAI.behaviour;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
@@ -9,7 +10,6 @@ namespace GameAI
     public class World
     {
         private List<MovingEntity> entities = new List<MovingEntity>();
-        public Vehicle Target { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 
@@ -20,22 +20,26 @@ namespace GameAI
             populate();
         }
 
-        private void populate()
+        private void populate(int vehicleCount = 3)
         {
-            Vehicle v = new Vehicle(new Vector2(10, 10), this) {VColor = Color.Blue, MaxSpeed = 32f,};
+            Random random = new Random();
 
-            entities.Add(v);
-
-            Target = new Vehicle(new Vector2(100, 60), this)
+            for (int i = 0; i < vehicleCount; i++)
             {
-                MaxSpeed = 48f,
-                VColor = Color.DarkRed,
-                Mass = 10
-            };
+                Vector2 position = new Vector2
+                {
+                    X = random.Next(0, Width),
+                    Y = random.Next(0, Height)
+                };
 
-            Target.Steering = new FleeBehaviour(Target, v);
+                Vehicle v = new Vehicle(position, this)
+                {
+                    VColor = Color.Blue, MaxSpeed = 24f, Mass = 1
+                };
+                v.Steering = new WanderBehaviour(v, -10, 10);
 
-            v.Steering = new SeekBehaviour(v, Target);
+                entities.Add(v);
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -45,14 +49,11 @@ namespace GameAI
                 // me.SB = new SeekBehaviour(me); // restore later
                 me.Update(gameTime);
             }
-            
-            Target?.Update(gameTime);
         }
 
         public void Render(SpriteBatch spriteBatch)
         {
             entities.ForEach(e => e.Render(spriteBatch));
-            Target?.Render(spriteBatch);
         }
     }
 }
