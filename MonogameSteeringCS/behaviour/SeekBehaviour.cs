@@ -11,16 +11,16 @@ namespace GameAI.behaviour
 {
     public class SeekBehaviour : SteeringBehaviour
     {
-        public MovingEntity Target { get; set; }
+        public Vector2 Target { get; set; }
 
-        public SeekBehaviour(MovingEntity entity, MovingEntity target) : base(entity)
+        public SeekBehaviour(MovingEntity entity, Vector2 target) : base(entity)
         {
             this.Target = target;
         }
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Seek(Target.Pos, Entity);
+            return SteeringBehaviours.Seek(Target, Entity);
         }
     }
 }
