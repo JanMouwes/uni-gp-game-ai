@@ -44,6 +44,20 @@ namespace GameAI.behaviour
 
             return desiredVelocity - vehicle.Velocity;
         }
+
+        public static Vector2 LeaderFollowing(MovingEntity target, MovingEntity owner, Vector2 offset, Vector2 old)
+        {
+            //    Distance between target and location in vector
+            Vector2 difference = target.Pos - owner.Pos - offset;
+            float distance = difference.Length();
+
+            if (distance <= 0) return target.Velocity;
+
+            float desiredSpeed = distance;
+            Vector2 desiredVelocity = difference * desiredSpeed / distance;
+
+            return desiredVelocity - owner.Velocity;
+        }
     }
 
     public enum DecelerationSpeed

@@ -22,20 +22,32 @@ namespace GameAI
 
         private void Populate()
         {
-            Vehicle v = new Vehicle(new Vector2(10, 10), this) {VColor = Color.Blue, MaxSpeed = 32f,};
+            Vehicle v = new Vehicle(new Vector2(10, 10), this) {VColor = Color.Blue, MaxSpeed = 64f, Mass = 1 };
+            Vehicle w = new Vehicle(new Vector2(10, 20), this) {VColor = Color.Blue, MaxSpeed = 64f, Mass = 1 };
+            Vehicle x = new Vehicle(new Vector2(20, 10), this) {VColor = Color.Blue, MaxSpeed = 64f, Mass = 1 };
+            Vehicle y = new Vehicle(new Vector2(20, 20), this) {VColor = Color.Blue, MaxSpeed = 64f, Mass = 1 };
+            Vehicle z = new Vehicle(new Vector2(20, 30), this) {VColor = Color.Blue, MaxSpeed = 64f, Mass = 1};
 
             Entities.Add(v);
+            Entities.Add(w);
+            Entities.Add(x);
+            Entities.Add(y);
+            Entities.Add(z);
 
-            Target = new Vehicle(new Vector2(100, 60), this)
+            Target = new Vehicle(new Vector2(30, 30), this)
             {
-                MaxSpeed = 48f,
-                VColor = Color.DarkRed,
+                MaxSpeed = 12f,
+                VColor = Color.Green,
                 Mass = 10
             };
 
-            Target.Steering = new FleeBehaviour(Target, v);
+            Target.Steering = new FleeBehaviour(Target, z);
 
-            v.Steering = new SeekBehaviour(v, Target);
+            v.Steering = new LeaderFollowingBehaviour(v, Target, new Vector2(10, 10));
+            w.Steering = new LeaderFollowingBehaviour(w, v, new Vector2(10, 10));
+            x.Steering = new LeaderFollowingBehaviour(x, w, new Vector2(10, 10));
+            y.Steering = new LeaderFollowingBehaviour(y, x, new Vector2(10, 10));
+            z.Steering = new LeaderFollowingBehaviour(z, y, new Vector2(10, 10));
         }
 
         public void Update(GameTime gameTime)
