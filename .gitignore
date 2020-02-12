@@ -1,5 +1,11 @@
 
 .vs/
-MonogameSteeringCS/obj/
-MonogameSteeringCS/bin/
+GameAI/obj/
+GameAI/bin/
+GameAI/.idea/*
+
+GameAI.Pathfinding/obj/
+GameAI.Pathfinding/bin/
+GameAI.Pathfinding/.idea/*
 packages
+/.idea/*
