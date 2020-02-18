@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameAI.behaviour;
+using GameAI.behaviour.Complex;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

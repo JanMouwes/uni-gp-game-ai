@@ -47,7 +47,6 @@ namespace GameAI.behaviour
             return desiredVelocity - vehicle.Velocity;
         }
 
-        
 
         public static Vector2 Wander(MovingEntity entity, float distance, float offset)
         {
@@ -79,15 +78,10 @@ namespace GameAI.behaviour
         {
             Vector2 steeringForce = Vector2.Zero;
 
-            foreach (var neighbor in neighbors)
+            foreach (MovingEntity neighbor in neighbors)
             {
-                if (neighbor != owner)
-                {
-                    Vector2 toAgent = owner.Pos - neighbor.Pos;
-                    toAgent.Normalize();
-                    steeringForce = toAgent;
-                    //steeringForce += Vector2.Normalize(toAgent) / toAgent.Length();
-                }
+                Vector2 toAgent = owner.Pos - neighbor.Pos;
+                steeringForce += toAgent;
             }
 
             return steeringForce;
@@ -98,7 +92,7 @@ namespace GameAI.behaviour
             Vector2 averageHeading = Vector2.Zero;
             int neighborCount = 0;
 
-            foreach (var neighbor in neighbors)
+            foreach (MovingEntity neighbor in neighbors)
             {
                 if (neighbor != owner)
                 {
@@ -110,7 +104,6 @@ namespace GameAI.behaviour
 
             if (neighborCount > 0)
             {
-                averageHeading /= neighborCount;
                 averageHeading.Normalize();
                 //averageHeading -= owner.Orientation;
             }
@@ -120,10 +113,11 @@ namespace GameAI.behaviour
 
         public static Vector2 Cohesion(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
-            Vector2 centerOfMass = Vector2.Zero, steeringForce = Vector2.Zero;
+            Vector2 centerOfMass = Vector2.Zero,
+                    steeringForce = Vector2.Zero;
             int neighborCount = 0;
 
-            foreach (var neighbor in neighbors)
+            foreach (MovingEntity neighbor in neighbors)
             {
                 if (neighbor != owner)
                 {
@@ -137,7 +131,6 @@ namespace GameAI.behaviour
             {
                 centerOfMass /= neighborCount;
                 steeringForce = Seek(centerOfMass, owner);
-                steeringForce.Normalize();
             }
 
             return steeringForce;

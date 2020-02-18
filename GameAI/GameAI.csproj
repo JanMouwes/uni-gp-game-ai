@@ -43,10 +43,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="behaviour\ArriveBehaviour.cs" />
+    <Compile Include="behaviour\Complex\FlockingBehaviour.cs" />
     <Compile Include="behaviour\Complex\WallAvoidance.cs" />
     <Compile Include="behaviour\DefaultBehaviour.cs" />
     <Compile Include="behaviour\FleeBehaviour.cs" />
-    <Compile Include="behaviour\FlockingBehaviour.cs" />
     <Compile Include="behaviour\LeaderFollowingBehaviour.cs" />
     <Compile Include="behaviour\PursueBehaviour.cs" />
     <Compile Include="behaviour\SeekBehaviour.cs" />

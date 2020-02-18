@@ -23,6 +23,8 @@ namespace GameAI.entity
         
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
+        
+        //TODO add maxForce
 
         public SteeringBehaviour Steering { get; set; } = DefaultBehaviour.Instance;
 
