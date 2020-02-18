@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
@@ -74,25 +75,24 @@ namespace GameAI.behaviour
             return desiredVelocity - owner.Velocity;
         }
 
-        public static Vector2 Separation(MovingEntity owner, MovingEntity[] neighbors)
+        public static Vector2 Separation(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
-            Vector2 SteeringForce = Vector2.Zero;
+            Vector2 steeringForce = Vector2.Zero;
 
-            
             foreach (var neighbor in neighbors)
             {
                 if (neighbor != owner)
                 {
                     Vector2 toAgent = owner.Pos - neighbor.Pos;
 
-                    SteeringForce += Vector2.Normalize(toAgent) / toAgent.Length();
+                    steeringForce += Vector2.Normalize(toAgent) / toAgent.Length();
                 }
             }
 
-            return SteeringForce;
+            return steeringForce;
         }
 
-        public static Vector2 Alignment(MovingEntity owner, MovingEntity[] neighbors)
+        public static Vector2 Alignment(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
             Vector2 averageHeading = Vector2.Zero;
             int neighborCount = 0;
@@ -116,7 +116,7 @@ namespace GameAI.behaviour
             return averageHeading;
         }
 
-        public static Vector2 Cohesion(MovingEntity owner, MovingEntity[] neighbors)
+        public static Vector2 Cohesion(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
             Vector2 centerOfMass = Vector2.Zero, steeringForce = Vector2.Zero;
             int neighborCount = 0;

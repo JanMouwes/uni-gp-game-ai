@@ -11,13 +11,11 @@ namespace GameAI.behaviour
 {
     class FlockingBehaviour : SteeringBehaviour
     {
-        private MovingEntity[] neighbors;
         public World World;
         private readonly double radius;
 
         public FlockingBehaviour(MovingEntity entity, World world, double radius) : base(entity)
         {
-            neighbors = new MovingEntity[] { };
             this.World = world;
             this.radius = radius;
         }
@@ -26,21 +24,23 @@ namespace GameAI.behaviour
         {
             bool IsNear(MovingEntity entity)
             {
-                Vector2 to = entity.Pos - this.Entity.Pos;
+                Vector2 to = entity.Pos - Entity.Pos;
 
                 return to.LengthSquared() < radius * radius;
             }
 
-            IEnumerable<MovingEntity> neighbours = this.World.entities.Where(IsNear);
+            IEnumerable<MovingEntity> neighbors = World.entities.Where(IsNear);
 
-            foreach (MovingEntity current in neighbours)
+            Vector2 target = (SteeringBehaviours.Separation(Entity, neighbors) * 1) +
+                             (SteeringBehaviours.Alignment(Entity, neighbors) * 10) +
+                             (SteeringBehaviours.Cohesion(Entity, neighbors) * 1);
+
+            target.Truncate(100);
+
+            if (target.X == 0 && target.Y == 0)
             {
-                
+                target = SteeringBehaviours.Wander(Entity, 10, 10);
             }
-
-            Vector2 target = SteeringBehaviours.Cohesion(Entity, neighbors)  +
-                             SteeringBehaviours.Alignment(Entity, neighbors) +
-                             SteeringBehaviours.Cohesion(Entity, neighbors);
 
             return target;
         }
