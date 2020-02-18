@@ -46,6 +46,7 @@
     <Compile Include="behaviour\Complex\WallAvoidance.cs" />
     <Compile Include="behaviour\DefaultBehaviour.cs" />
     <Compile Include="behaviour\FleeBehaviour.cs" />
+    <Compile Include="behaviour\FlockingBehaviour.cs" />
     <Compile Include="behaviour\LeaderFollowingBehaviour.cs" />
     <Compile Include="behaviour\PursueBehaviour.cs" />
     <Compile Include="behaviour\SeekBehaviour.cs" />
@@ -134,7 +135,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="behaviour\Simple" />
+    <Folder Include="behaviour\Simple\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

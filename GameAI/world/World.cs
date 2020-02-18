@@ -12,7 +12,7 @@ namespace GameAI
     public class World
     {
         // Entities and obstacles should be one list while spatial partitioning is not implemented
-        private List<MovingEntity> entities = new List<MovingEntity>();
+        public List<MovingEntity> entities = new List<MovingEntity>();
         private LinkedList<BaseGameEntity> obstacles = new LinkedList<BaseGameEntity>();
 
         public int Width { get; set; }
@@ -25,7 +25,7 @@ namespace GameAI
             populate();
         }
 
-        private void populate(int vehicleCount = 50)
+        private void populate(int vehicleCount = 10)
         {
             Random random = new Random();
 
@@ -41,9 +41,13 @@ namespace GameAI
                 {
                     VColor = Color.Blue, MaxSpeed = 24f, Mass = 1
                 };
-                v.Steering = new WanderBehaviour(v, -10, 10);
+                v.Steering = new FlockingBehaviour(v, this, 100);
 
                 entities.Add(v);
+            }
+            foreach (var entity in entities)
+            {
+                entity.World = this;
             }
         }
 

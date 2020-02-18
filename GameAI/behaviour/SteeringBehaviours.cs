@@ -73,6 +73,72 @@ namespace GameAI.behaviour
 
             return desiredVelocity - owner.Velocity;
         }
+
+        public static Vector2 Separation(MovingEntity owner, MovingEntity[] neighbors)
+        {
+            Vector2 SteeringForce = Vector2.Zero;
+
+            
+            foreach (var neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    Vector2 toAgent = owner.Pos - neighbor.Pos;
+
+                    SteeringForce += Vector2.Normalize(toAgent) / toAgent.Length();
+                }
+            }
+
+            return SteeringForce;
+        }
+
+        public static Vector2 Alignment(MovingEntity owner, MovingEntity[] neighbors)
+        {
+            Vector2 averageHeading = Vector2.Zero;
+            int neighborCount = 0;
+
+            foreach (var neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    averageHeading += neighbor.Orientation;
+
+                    ++neighborCount;
+                }
+            }
+
+            if (neighborCount > 0)
+            {
+                averageHeading /= neighborCount;
+                averageHeading -= owner.Orientation;
+            }
+
+            return averageHeading;
+        }
+
+        public static Vector2 Cohesion(MovingEntity owner, MovingEntity[] neighbors)
+        {
+            Vector2 centerOfMass = Vector2.Zero, steeringForce = Vector2.Zero;
+            int neighborCount = 0;
+
+            foreach (var neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    centerOfMass += neighbor.Pos;
+
+                    ++neighborCount;
+                }
+            }
+
+            if (neighborCount > 0)
+            {
+                centerOfMass /= neighborCount;
+                steeringForce = Seek(centerOfMass, owner);
+            }
+
+            return steeringForce;
+        }
     }
 
     public enum DecelerationSpeed
