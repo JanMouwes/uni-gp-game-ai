@@ -9,3 +9,7 @@ GameAI.Pathfinding/bin/
 GameAI.Pathfinding/.idea/*
 packages
 /.idea/*
+
+MonogameSteeringCS/obj/
+MonogameSteeringCS/bin/
+
