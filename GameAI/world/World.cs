@@ -39,7 +39,7 @@ namespace GameAI
 
                 Vehicle v = new Vehicle(position, this)
                 {
-                    VColor = Color.Blue, MaxSpeed = 24f, Mass = 10
+                    VColor = Color.Blue, MaxSpeed = 24f, Mass = 1
                 };
                 v.Steering = new FlockingBehaviour(v, this, 100);
 

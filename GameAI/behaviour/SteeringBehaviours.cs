@@ -84,8 +84,9 @@ namespace GameAI.behaviour
                 if (neighbor != owner)
                 {
                     Vector2 toAgent = owner.Pos - neighbor.Pos;
-
-                    steeringForce += Vector2.Normalize(toAgent) / toAgent.Length();
+                    toAgent.Normalize();
+                    steeringForce = toAgent;
+                    //steeringForce += Vector2.Normalize(toAgent) / toAgent.Length();
                 }
             }
 
@@ -110,7 +111,8 @@ namespace GameAI.behaviour
             if (neighborCount > 0)
             {
                 averageHeading /= neighborCount;
-                averageHeading -= owner.Orientation;
+                averageHeading.Normalize();
+                //averageHeading -= owner.Orientation;
             }
 
             return averageHeading;
@@ -135,6 +137,7 @@ namespace GameAI.behaviour
             {
                 centerOfMass /= neighborCount;
                 steeringForce = Seek(centerOfMass, owner);
+                steeringForce.Normalize();
             }
 
             return steeringForce;
