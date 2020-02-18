@@ -17,30 +17,31 @@ namespace GameAI.behaviour
 
         public FlockingBehaviour(MovingEntity entity, World world, double radius) : base(entity)
         {
-            neighbors = new MovingEntity[] {};
+            neighbors = new MovingEntity[] { };
             this.World = world;
             this.radius = radius;
         }
 
         public override Vector2 Calculate()
         {
-            foreach (var current in World.entities)
+            bool IsNear(MovingEntity entity)
             {
-                //  removing neighbors
-                neighbors = neighbors?.Where(val => val != current).ToArray();
+                Vector2 to = entity.Pos - this.Entity.Pos;
 
-                Vector2 to = Vector2.Zero;
-                to = current.Pos - Entity.Pos;
-
-                if (current != Entity && to.LengthSquared() < radius * radius)
-                {
-                    neighbors.Append(current);
-                }
+                return to.LengthSquared() < radius * radius;
             }
 
-            Vector2 target = SteeringBehaviours.Cohesion(Entity, neighbors) +
+            IEnumerable<MovingEntity> neighbours = this.World.entities.Where(IsNear);
+
+            foreach (MovingEntity current in neighbours)
+            {
+                
+            }
+
+            Vector2 target = SteeringBehaviours.Cohesion(Entity, neighbors)  +
                              SteeringBehaviours.Alignment(Entity, neighbors) +
                              SteeringBehaviours.Cohesion(Entity, neighbors);
+
             return target;
         }
     }
