@@ -16,14 +16,7 @@ namespace GameAI.Pathfinding.Algorithms
 
         private readonly Dictionary<Vertex, DijkstraVertexInfo> vertexMap = new Dictionary<Vertex, DijkstraVertexInfo>();
 
-        private DijkstraVertexInfo GetDijkstraVertexInfo(Vertex vertex)
-        {
-            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new DijkstraVertexInfo(vertex); }
-
-            return this.vertexMap[vertex];
-        }
-
-        private PriorityQueue<DijkstraVertexInfo> queue = new PriorityQueue<DijkstraVertexInfo>();
+        private readonly PriorityQueue<DijkstraVertexInfo> queue = new PriorityQueue<DijkstraVertexInfo>();
 
         public DijkstraResult Run(Vertex origin)
         {
@@ -60,6 +53,13 @@ namespace GameAI.Pathfinding.Algorithms
             foreach ((Vertex vertex, DijkstraVertexInfo vertexInfo) in this.vertexMap) { results[vertex] = (vertexInfo.Previous, vertexInfo.Distance); }
 
             return new DijkstraResult(results);
+        }
+
+        private DijkstraVertexInfo GetDijkstraVertexInfo(Vertex vertex)
+        {
+            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new DijkstraVertexInfo(vertex); }
+
+            return this.vertexMap[vertex];
         }
     }
 }
