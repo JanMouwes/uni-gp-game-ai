@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="AStar" />
       <Folder Include="Graph" />
       <Folder Include="PriorityQueue" />
     </ItemGroup>

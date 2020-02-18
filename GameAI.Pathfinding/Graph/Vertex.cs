@@ -5,7 +5,7 @@ namespace GameAI.Pathfinding.Graph
 {
     public class Vertex : IVertex
     {
-        public readonly string Name;
+        public readonly int Id;
 
         public readonly LinkedList<Edge> Edges;
 
@@ -17,9 +17,9 @@ namespace GameAI.Pathfinding.Graph
 
         #endregion
 
-        public Vertex(string name)
+        public Vertex(int id)
         {
-            this.Name = name;
+            this.Id = id;
 
             this.Edges = new LinkedList<Edge>();
         }
@@ -32,8 +32,8 @@ namespace GameAI.Pathfinding.Graph
 
         public override string ToString()
         {
-            string currentVertexString = this.Known ? $"{this.Name}({this.Dist})" : this.Name;
-            string neighbourString = this.Edges.Any() ? $" [ {string.Join(" ", this.Edges.Select(edge => $"{edge.dest.Name}({edge.cost})"))} ] " : string.Empty;
+            string currentVertexString = this.Known ? $"{this.Id}({this.Dist})" : this.Id.ToString();
+            string neighbourString = this.Edges.Any() ? $" [ {string.Join(" ", this.Edges.Select(edge => $"{edge.dest.Id}({edge.cost})"))} ] " : string.Empty;
 
             return currentVertexString + neighbourString;
         }

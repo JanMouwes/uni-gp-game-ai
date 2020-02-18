@@ -1,5 +1,6 @@
 
 .vs/
+
 GameAI/obj/
 GameAI/bin/
 GameAI/.idea/*
@@ -7,5 +8,10 @@ GameAI/.idea/*
 GameAI.Pathfinding/obj/
 GameAI.Pathfinding/bin/
 GameAI.Pathfinding/.idea/*
+
+GameAI.Pathfinding.Tests/obj/
+GameAI.Pathfinding.Tests/bin/
+GameAI.Pathfinding.Tests/.idea/*
+
 packages
 /.idea/*

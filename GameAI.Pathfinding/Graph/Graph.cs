@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,28 @@ namespace GameAI.Pathfinding.Graph
     {
         public static readonly double INFINITY = System.Double.MaxValue;
 
-        private Dictionary<string, Vertex> vertexMap;
+        private Dictionary<int, Vertex> vertexMap;
 
         public Graph()
         {
-            this.vertexMap = new Dictionary<string, Vertex>();
+            this.vertexMap = new Dictionary<int, Vertex>();
         }
 
-        public Vertex GetVertex(string name)
+        public Vertex GetVertex(int id)
         {
-            if (!this.vertexMap.ContainsKey(name)) { this.vertexMap[name] = new Vertex(name); }
+            if (!this.vertexMap.ContainsKey(id)) { this.vertexMap[id] = new Vertex(id); }
 
-            return this.vertexMap[name];
+            return this.vertexMap[id];
         }
 
-        public void AddEdge(string source, string dest, double cost)
+        public void AddVertex(Vertex vertex)
+        {
+            if (this.vertexMap.ContainsKey(vertex.Id)) { throw new ArgumentException(); }
+
+            this.vertexMap[vertex.Id] = vertex;
+        }
+
+        public void AddEdge(int source, int dest, double cost)
         {
             Vertex sourceVertex = GetVertex(source);
             Vertex destVertex = GetVertex(dest);
@@ -34,14 +42,14 @@ namespace GameAI.Pathfinding.Graph
 
         public void ClearAll()
         {
-            foreach ((string _, Vertex vertex) in this.vertexMap) { vertex.Edges.Clear(); }
+            foreach ((int _, Vertex vertex) in this.vertexMap) { vertex.Edges.Clear(); }
         }
 
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            foreach ((string _, Vertex vertex) in this.vertexMap)
+            foreach ((int _, Vertex vertex) in this.vertexMap)
             {
                 stringBuilder.Append(vertex);
                 stringBuilder.Append("\n");
