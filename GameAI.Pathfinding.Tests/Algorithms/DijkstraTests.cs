@@ -10,7 +10,7 @@ namespace GameAI.Pathfinding.Tests.Algorithms
         public void Setup() { }
 
         [Test]
-        public void Test1()
+        public void Test_Simple3VertexGraph()
         {
             Graph.Graph graph = GraphHelper.CreateGraph_3Vertex_Simple();
 
