@@ -7,7 +7,7 @@ namespace GameAI.Pathfinding.Graph
 {
     public class Graph : IGraph
     {
-        public static readonly double INFINITY = System.Double.MaxValue;
+        public const double INFINITY = double.MaxValue;
 
         private Dictionary<int, Vertex> vertexMap;
 

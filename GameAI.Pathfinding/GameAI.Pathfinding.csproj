@@ -5,8 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Graph" />
+      <Folder Include="Algorithms\A*" />
       <Folder Include="PriorityQueue" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\Mono.framework\External\xbuild\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

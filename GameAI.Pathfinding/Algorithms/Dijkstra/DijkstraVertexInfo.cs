@@ -1,7 +1,7 @@
 using System;
 using GameAI.Pathfinding.Graph;
 
-namespace GameAI.Pathfinding.Algorithms
+namespace GameAI.Pathfinding.Algorithms.Dijkstra
 {
     public class DijkstraVertexInfo : IComparable<DijkstraVertexInfo>
     {

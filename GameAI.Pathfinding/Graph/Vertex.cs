@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace GameAI.Pathfinding.Graph
 {
@@ -9,13 +10,7 @@ namespace GameAI.Pathfinding.Graph
 
         public readonly LinkedList<Edge> Edges;
 
-        #region Search-specific attributes
-
-        public double Dist;
-        public IVertex Prev;
-        public bool Known = false; //    Scratch
-
-        #endregion
+        public Vector2 Position { get; set; }
 
         public Vertex(int id)
         {
@@ -24,15 +19,9 @@ namespace GameAI.Pathfinding.Graph
             this.Edges = new LinkedList<Edge>();
         }
 
-        public void Reset()
-        {
-            this.Known = false;
-            this.Dist = int.MaxValue;
-        }
-
         public override string ToString()
         {
-            string currentVertexString = this.Known ? $"{this.Id}({this.Dist})" : this.Id.ToString();
+            string currentVertexString = this.Id.ToString();
             string neighbourString = this.Edges.Any() ? $" [ {string.Join(" ", this.Edges.Select(edge => $"{edge.dest.Id}({edge.cost})"))} ] " : string.Empty;
 
             return currentVertexString + neighbourString;

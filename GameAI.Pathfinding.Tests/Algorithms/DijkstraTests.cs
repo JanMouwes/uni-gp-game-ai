@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GameAI.Pathfinding.Algorithms;
+using GameAI.Pathfinding.Algorithms.Dijkstra;
 using GameAI.Pathfinding.Graph;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace GameAI.Pathfinding.Tests.Algorithms
         {
             Graph.Graph graph = GraphHelper.CreateGraph_3Vertex_Simple();
 
-            Dijkstra.DijkstraResult result = new Dijkstra().Run(graph.GetVertex(1));
+            DijkstraRunner.DijkstraResult result = new DijkstraRunner().Run(graph.GetVertex(1));
 
             Vertex vertex1 = graph.GetVertex(1);
             Vertex vertex2 = graph.GetVertex(2);

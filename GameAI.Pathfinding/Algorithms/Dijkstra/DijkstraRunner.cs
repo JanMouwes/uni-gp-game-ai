@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using GameAI.Pathfinding.Graph;
 using GameAI.Pathfinding.PriorityQueue;
 
-namespace GameAI.Pathfinding.Algorithms
+namespace GameAI.Pathfinding.Algorithms.Dijkstra
 {
-    public class Dijkstra
+    public class DijkstraRunner
     {
         public struct DijkstraResult
         {
