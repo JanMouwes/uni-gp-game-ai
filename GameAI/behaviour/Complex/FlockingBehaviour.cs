@@ -9,12 +9,22 @@ namespace GameAI.behaviour.Complex
     {
         public World World;
         private readonly double radius;
+        public int separation;
+        public int alignment;
+        public int cohesion;
 
-        public FlockingBehaviour(MovingEntity entity, World world, double radius) : base(entity)
+        public FlockingBehaviour(MovingEntity entity, World world, double radius, int separation, int alignment,
+            int cohesion) : base(entity)
         {
             this.World = world;
             this.radius = radius;
+            this.separation = separation;
+            this.alignment = alignment;
+            this.cohesion = cohesion;
         }
+
+        public FlockingBehaviour(MovingEntity entity, World world, double radius) : this(entity, world, radius, 1, 2, 5)
+        { }
 
         public override Vector2 Calculate()
         {
@@ -28,9 +38,9 @@ namespace GameAI.behaviour.Complex
             // Check whether there are any entities nearby
             IEnumerable<MovingEntity> neighbors = this.World.entities.Where(IsNear);
 
-            Vector2 target = (SteeringBehaviours.Separation(this.Entity, neighbors) * 1) + 
-                             (SteeringBehaviours.Alignment(this.Entity, neighbors) * 3) +
-                             (SteeringBehaviours.Cohesion(this.Entity, neighbors) * 2);
+            Vector2 target = (SteeringBehaviours.Separation(this.Entity, neighbors) * separation) + 
+                             (SteeringBehaviours.Alignment(this.Entity, neighbors) * alignment) +
+                             (SteeringBehaviours.Cohesion(this.Entity, neighbors) * cohesion);
             
             if (target.Equals(Vector2.Zero))
             {

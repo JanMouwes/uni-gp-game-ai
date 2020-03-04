@@ -55,6 +55,7 @@
     <Compile Include="behaviour\WanderBehaviour.cs" />
     <Compile Include="entity\BaseGameEntity.cs" />
     <Compile Include="entity\MovingEntity.cs" />
+    <Compile Include="entity\Rock.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
