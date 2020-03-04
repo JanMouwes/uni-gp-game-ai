@@ -61,7 +61,7 @@ namespace GameAI.entity
         {
             spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Blue);
 
-            spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
+            //spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
         }
 
         public override string ToString()

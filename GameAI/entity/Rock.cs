@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 namespace GameAI.entity
 {
@@ -12,10 +13,13 @@ namespace GameAI.entity
     {
         public Vector2 Pos { get; set; }
         public float Scale { get; set; }
+        public Color Color { get; set; }
         public World World { get; set; }
 
-        public Rock(Vector2 pos, World w) : base(pos, w)
-        { }
+        public Rock(Vector2 pos, World w, Color color) : base(pos, w)
+        {
+            this.Color = color;
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -24,7 +28,8 @@ namespace GameAI.entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            throw new NotImplementedException();
+            spriteBatch.DrawCircle(Pos, Scale, 360, Color);
+
         }
     }
 }

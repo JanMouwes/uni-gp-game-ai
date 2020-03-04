@@ -28,6 +28,8 @@ namespace GameAI
 
         private void populate(int vehicleCount = 100)
         {
+            //Rock r = new Rock(position);
+
             Random random = new Random();
 
             for (int i = 0; i < vehicleCount; i++)
@@ -40,9 +42,9 @@ namespace GameAI
 
                 Vehicle v = new Vehicle(position, this)
                 {
-                    VColor = Color.Blue, MaxSpeed = 24f, Mass = 1
+                    VColor = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                v.Steering = new FlockingBehaviour(v, this, 100);
+                v.Steering = new FlockingBehaviour(v, this, 50);
 
                 entities.Add(v);
             }
