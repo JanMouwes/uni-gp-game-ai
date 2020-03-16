@@ -12,12 +12,14 @@ namespace GameAI.entity
     class Rock : BaseGameEntity
     {
         public Vector2 Pos { get; set; }
-        public float Scale { get; set; }
+        public int Scale { get; set; }
         public Color Color { get; set; }
         public World World { get; set; }
 
-        public Rock(Vector2 pos, World w, Color color) : base(pos, w)
+        public Rock(World w, Vector2 pos, int scale, Color color) : base(pos, w, scale)
         {
+            this.Pos = pos;
+            this.Scale = scale;
             this.Color = color;
         }
 
