@@ -12,10 +12,15 @@ namespace GameAI
         public float Scale { get; set; }
         public World World { get; set; }
 
-        public BaseGameEntity(Vector2 pos, World w)
+        public BaseGameEntity(Vector2 pos, World w, float s)
         {
             this.Pos = pos;
             this.World = w;
+            this.Scale = s;
+        }
+
+        public BaseGameEntity(Vector2 pos, World w) : this(pos, w, 1)
+        {
         }
 
         public abstract void Update(GameTime gameTime);

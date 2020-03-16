@@ -14,7 +14,7 @@ namespace GameAI
     {
         // Entities and obstacles should be one list while spatial partitioning is not implemented
         public List<MovingEntity> entities = new List<MovingEntity>();
-        private LinkedList<BaseGameEntity> obstacles = new LinkedList<BaseGameEntity>();
+        private List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -28,10 +28,13 @@ namespace GameAI
 
         private void populate(int vehicleCount = 100)
         {
-            //Rock r = new Rock(position);
-
             Random random = new Random();
 
+            // Add obstacles
+            Rock r = new Rock(this, new Vector2(300, 300), 100, Color.Black);
+            obstacles.Add(r);
+
+            // Add Entities
             for (int i = 0; i < vehicleCount; i++)
             {
                 Vector2 position = new Vector2
@@ -44,7 +47,7 @@ namespace GameAI
                 {
                     Color = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                v.Steering = new FlockingBehaviour(v, this, 50);
+                v.Steering = new ObstacleAvoidance(v, obstacles, 50);
 
                 entities.Add(v);
             }
@@ -79,11 +82,17 @@ namespace GameAI
                 // me.SB = new SeekBehaviour(me); // restore later
                 me.Update(gameTime);
             }
+
+            foreach (BaseGameEntity me in obstacles)
+            {
+                me.Update(gameTime);
+            }
         }
 
         public void Render(SpriteBatch spriteBatch)
         {
             entities.ForEach(e => e.Render(spriteBatch));
+            obstacles.ForEach(o => o.Render(spriteBatch));
         }
     }
 }
