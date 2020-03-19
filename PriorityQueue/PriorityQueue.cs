@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameAI.Pathfinding.PriorityQueue
+namespace PriorityQueue
 {
     public class PriorityQueue<T> : IPriorityQueue<T>
         where T : IComparable<T>
@@ -47,7 +47,7 @@ namespace GameAI.Pathfinding.PriorityQueue
         // Removes the smallest item in the priority queue
         public T Remove()
         {
-            if (Size == 0) { throw new PriorityQueueEmptyException(); }
+            if (this.Size == 0) { throw new PriorityQueueEmptyException(); }
 
             T min = this.array[1];
             T last = this.array[this.Size];
@@ -99,9 +99,9 @@ namespace GameAI.Pathfinding.PriorityQueue
             //        It's left
             int minChildIndex = leftChildIndex;
 
-            if (rightChildIndex > Size) { return; }
+            if (rightChildIndex > this.Size) { return; }
 
-            if (leftChildIndex > Size || this.array[leftChildIndex].CompareTo(this.array[rightChildIndex]) > 0) { minChildIndex = rightChildIndex; }
+            if (leftChildIndex > this.Size || this.array[leftChildIndex].CompareTo(this.array[rightChildIndex]) > 0) { minChildIndex = rightChildIndex; }
 
             T minChild = this.array[minChildIndex];
 
@@ -115,12 +115,12 @@ namespace GameAI.Pathfinding.PriorityQueue
 
         public override string ToString()
         {
-            return string.Join(" ", this.array.Where((comparable, i) => i > 0 && i <= Size));
+            return string.Join(" ", this.array.Where((comparable, i) => i > 0 && i <= this.Size));
         }
 
         public void AddFreely(T x)
         {
-            EnsureCapacity(Size + 1);
+            EnsureCapacity(this.Size + 1);
             this.array[this.Size + 1] = x;
 
             this.Size++;
@@ -129,7 +129,7 @@ namespace GameAI.Pathfinding.PriorityQueue
 
         private int GetDepth()
         {
-            return (int) Math.Log(Size, 2);
+            return (int) Math.Log(this.Size, 2);
         }
 
         public void BuildHeap()

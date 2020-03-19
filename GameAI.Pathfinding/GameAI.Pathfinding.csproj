@@ -6,7 +6,6 @@
 
     <ItemGroup>
       <Folder Include="Algorithms\A*" />
-      <Folder Include="PriorityQueue" />
     </ItemGroup>
 
     <ItemGroup>
@@ -17,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Graph\Graph.csproj" />
+      <ProjectReference Include="..\PriorityQueue\PriorityQueue.csproj" />
     </ItemGroup>
 
 </Project>

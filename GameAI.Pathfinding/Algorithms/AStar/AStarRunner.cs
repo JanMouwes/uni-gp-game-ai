@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using GameAI.Pathfinding.Algorithms.Dijkstra;
-using GameAI.Pathfinding.PriorityQueue;
 using Graph;
+using PriorityQueue;
 
 namespace GameAI.Pathfinding.Algorithms.AStar
 {
