@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
-using GameAI.Pathfinding.Graph;
+using Graph;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Pathfinding.Tests.Algorithms
 {
     public static class GraphHelper
     {
-        public static Graph.Graph CreateGraph_3Vertex_Simple()
+        public static Graph<Vector2> CreateGraph_3Vertex_Simple()
         {
-            Graph.Graph graph = new Graph.Graph();
+            Graph<Vector2> graph = new Graph<Vector2>();
 
-            graph.AddVertex(new Vertex(1));
-            graph.AddVertex(new Vertex(2));
-            graph.AddVertex(new Vertex(3));
+            graph.AddVertex(new Vertex<Vector2>(1));
+            graph.AddVertex(new Vertex<Vector2>(2));
+            graph.AddVertex(new Vertex<Vector2>(3));
 
             graph.AddEdge(1, 2, 20);
             graph.AddEdge(2, 3, 10);
@@ -66,24 +66,24 @@ namespace GameAI.Pathfinding.Tests.Algorithms
             foreach (int axisIndex in DiagonalIndices(x, y, width, height)) { yield return axisIndex; }
         }
 
-        public static Graph.Graph CreateGridGraph_AdjacentOnly(int width, int height)
+        public static Graph<Vector2> CreateGridGraph_AdjacentOnly(int width, int height)
         {
             return CreateGridGraph_Base(width, height, AdjacentIndices);
         }
 
-        public static Graph.Graph CreateGridGraph_DiagonalOnly(int width, int height)
+        public static Graph<Vector2> CreateGridGraph_DiagonalOnly(int width, int height)
         {
             return CreateGridGraph_Base(width, height, DiagonalIndices);
         }
 
-        public static Graph.Graph CreateGridGraph_AllNeighbours(int width, int height)
+        public static Graph<Vector2> CreateGridGraph_AllNeighbours(int width, int height)
         {
             return CreateGridGraph_Base(width, height, AxisAndDiagonalIndices);
         }
 
-        private static Graph.Graph CreateGridGraph_Base(int width, int height, Func<int, int, int, int, IEnumerable<int>> neighbourGetter)
+        private static Graph<Vector2> CreateGridGraph_Base(int width, int height, Func<int, int, int, int, IEnumerable<int>> neighbourGetter)
         {
-            Graph.Graph graph = new Graph.Graph();
+            Graph<Vector2> graph = new Graph<Vector2>();
 
             int index = 0;
 
@@ -91,13 +91,10 @@ namespace GameAI.Pathfinding.Tests.Algorithms
             {
                 for (int x = 0; x < width; x++)
                 {
-                    Vertex vertex = graph.GetVertex(index + 1);
-                    vertex.Position = new Vector2(x, y);
+                    Vertex<Vector2> vertex = graph.GetVertex(index + 1);
+                    vertex.Value = new Vector2(x, y);
 
-                    foreach (int neighbourIndex in neighbourGetter(x, y, width, height))
-                    {
-                        graph.AddEdge(index + 1, neighbourIndex, 1);
-                    }
+                    foreach (int neighbourIndex in neighbourGetter(x, y, width, height)) { graph.AddEdge(index + 1, neighbourIndex, 1); }
 
                     index++;
                 }

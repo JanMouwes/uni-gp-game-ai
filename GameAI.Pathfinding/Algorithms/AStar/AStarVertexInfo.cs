@@ -1,15 +1,15 @@
 using GameAI.Pathfinding.Algorithms.Dijkstra;
-using GameAI.Pathfinding.Graph;
+using Graph;
 
 namespace GameAI.Pathfinding.Algorithms.AStar
 {
-    public class AStarVertexInfo : DijkstraVertexInfo
+    public class AStarVertexInfo<TValue> : DijkstraVertexInfo<TValue>
     {
-        public AStarVertexInfo(Vertex vertex) : base(vertex) { }
+        public AStarVertexInfo(Vertex<TValue> vertex) : base(vertex) { }
 
         public double HeuristicValue { get; set; }
 
-        public int CompareTo(AStarVertexInfo other)
+        public int CompareTo(AStarVertexInfo<TValue> other)
         {
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;

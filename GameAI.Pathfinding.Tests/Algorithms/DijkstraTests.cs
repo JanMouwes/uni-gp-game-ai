@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms;
 using GameAI.Pathfinding.Algorithms.Dijkstra;
-using GameAI.Pathfinding.Graph;
+using Graph;
+using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
 namespace GameAI.Pathfinding.Tests.Algorithms
@@ -14,13 +14,13 @@ namespace GameAI.Pathfinding.Tests.Algorithms
         [Test]
         public void Test_Algorithm_Simple3VertexGraph()
         {
-            Graph.Graph graph = GraphHelper.CreateGraph_3Vertex_Simple();
+            Graph<Vector2> graph = GraphHelper.CreateGraph_3Vertex_Simple();
 
-            DijkstraRunner.DijkstraResult result = new DijkstraRunner().Run(graph.GetVertex(1));
+            DijkstraRunner<Vector2>.DijkstraResult result = new DijkstraRunner<Vector2>().Run(graph.GetVertex(1));
 
-            Vertex vertex1 = graph.GetVertex(1);
-            Vertex vertex2 = graph.GetVertex(2);
-            Vertex vertex3 = graph.GetVertex(3);
+            Vertex<Vector2> vertex1 = graph.GetVertex(1);
+            Vertex<Vector2> vertex2 = graph.GetVertex(2);
+            Vertex<Vector2> vertex3 = graph.GetVertex(3);
 
             Assert.AreEqual(null, result.Results[vertex1].Item1);
             Assert.AreEqual(vertex1, result.Results[vertex2].Item1);
@@ -30,19 +30,19 @@ namespace GameAI.Pathfinding.Tests.Algorithms
         [Test]
         public void Test_Iterator_Simple3VertexGraph()
         {
-            Graph.Graph graph = GraphHelper.CreateGraph_3Vertex_Simple();
+            Graph<Vector2> graph = GraphHelper.CreateGraph_3Vertex_Simple();
 
-            Vertex vertex1 = graph.GetVertex(1);
-            Vertex vertex2 = graph.GetVertex(2);
-            Vertex vertex3 = graph.GetVertex(3);
+            Vertex<Vector2> vertex1 = graph.GetVertex(1);
+            Vertex<Vector2> vertex2 = graph.GetVertex(2);
+            Vertex<Vector2> vertex3 = graph.GetVertex(3);
 
-            DijkstraIterator iterator = new DijkstraIterator(vertex1);
+            DijkstraIterator<Vector2> iterator = new DijkstraIterator<Vector2>(vertex1);
 
-            Dictionary<Vertex, (Vertex, double)> results = new Dictionary<Vertex, (Vertex, double)>();
+            Dictionary<Vertex<Vector2>, (Vertex<Vector2>, double)> results = new Dictionary<Vertex<Vector2>, (Vertex<Vector2>, double)>();
 
             while (iterator.MoveNext())
             {
-                (Vertex vertex, (Vertex, double) previousDistance) = iterator.Current;
+                (Vertex<Vector2> vertex, (Vertex<Vector2>, double) previousDistance) = iterator.Current;
 
                 results[vertex] = previousDistance;
             }
