@@ -7,7 +7,7 @@ namespace Graph
     {
         public readonly int Id;
 
-        public readonly SortedSet<Edge<TValue>> Edges;
+        public readonly HashSet<Edge<TValue>> Edges;
 
         public TValue Value;
 
@@ -16,7 +16,7 @@ namespace Graph
             this.Id = id;
             this.Value = value;
 
-            this.Edges = new SortedSet<Edge<TValue>>();
+            this.Edges = new HashSet<Edge<TValue>>();
         }
 
         public void AddEdge(Vertex<TValue> dest, double cost)

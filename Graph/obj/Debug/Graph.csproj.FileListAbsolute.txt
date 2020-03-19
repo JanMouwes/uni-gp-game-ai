@@ -1,6 +1,0 @@
-/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA & AI/Portfolio/MonogameSteeringCS/Graph/obj/Debug/Graph.csprojAssemblyReference.cache
-/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA & AI/Portfolio/MonogameSteeringCS/Graph/obj/Debug/Graph.csproj.CoreCompileInputs.cache
-/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA & AI/Portfolio/MonogameSteeringCS/Graph/bin/Debug/Graph.dll
-/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA & AI/Portfolio/MonogameSteeringCS/Graph/bin/Debug/Graph.pdb
-/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA & AI/Portfolio/MonogameSteeringCS/Graph/obj/Debug/Graph.dll
-/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA & AI/Portfolio/MonogameSteeringCS/Graph/obj/Debug/Graph.pdb
