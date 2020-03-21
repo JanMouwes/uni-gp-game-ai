@@ -8,6 +8,8 @@ namespace Graph
     {
         private readonly Dictionary<int, Vertex<TValue>> vertexMap;
 
+        public IEnumerable<Vertex<TValue>> Vertices => this.vertexMap.Values;
+
         public Graph()
         {
             this.vertexMap = new Dictionary<int, Vertex<TValue>>();
