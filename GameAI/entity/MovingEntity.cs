@@ -16,7 +16,8 @@ namespace GameAI.entity
     {
         // for testing purposes
         private WallAvoidance wallAvoidance;
-
+        private ObstacleAvoidance obstacleAvoidance;
+        
         public Vector2 Velocity { get; set; }
 
         public Vector2 Orientation { get; set; } = new Vector2(1, 0);
@@ -32,6 +33,7 @@ namespace GameAI.entity
             MaxSpeed = 150;
             Velocity = new Vector2();
             this.wallAvoidance = new WallAvoidance(this, w);
+            this.obstacleAvoidance = new ObstacleAvoidance(this, w.obstacles);
         }
 
         public override void Update(GameTime gameTime)
@@ -42,7 +44,8 @@ namespace GameAI.entity
             {
                 Vector2 steeringForce = this.Steering.Calculate();
                 steeringForce += this.wallAvoidance.Calculate();
-
+steeringForce += this.obstacleAvoidance.Calculate();
+                
                 Vector2 acceleration = steeringForce / Mass;
 
                 Velocity += acceleration * elapsedSeconds * 0.95f;

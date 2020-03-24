@@ -14,7 +14,7 @@ namespace GameAI.behaviour.Complex
         private int range;
         private List<BaseGameEntity> obstacles;
 
-        public ObstacleAvoidance(MovingEntity entity, List<BaseGameEntity> obstacles, int range) : base(entity)
+        public ObstacleAvoidance(MovingEntity entity, List<BaseGameEntity> obstacles, int range = 100) : base(entity)
         {
             this.obstacles = obstacles;
             this.range = range;
@@ -22,18 +22,22 @@ namespace GameAI.behaviour.Complex
 
         public override Vector2 Calculate()
         {
-            var box = Entity.Velocity / Entity.MaxSpeed * 100;
+            // The detection box is the current velocity divided by the max velocity of the entity
+            // range is the minimum size of the box
+            var box = Entity.Velocity / Entity.MaxSpeed * range;
+            // Add the box in front of the entity
             var ahead = box + Entity.Pos;
+            // These will be the x and y in the returning Velocity
             float x = 0;
             float y = 0;
-            //var ahead2 = Entity.Pos + Entity.Velocity * 1 / 2;
-
 
             foreach (var o in obstacles)
             {
+                // Add a circle around the obstacle which can't be crossed
                 CircleF c = new CircleF(o.Pos, o.Scale);
                 if(c.Contains(ahead))
                 {
+
                     if (Entity.Pos.X < o.Pos.X)
                     {
                         x = -ahead.X - Entity.Velocity.X;
@@ -53,7 +57,8 @@ namespace GameAI.behaviour.Complex
                     return new Vector2(x, y);
                 }
             }
-            return new Vector2(-10, -10);
+            // Return identity vector if there will be no collision
+            return new Vector2();
         }
     }
 }
