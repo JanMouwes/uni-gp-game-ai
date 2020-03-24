@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
+using GameAI.Pathfinding.Dijkstra;
 using Graph;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;

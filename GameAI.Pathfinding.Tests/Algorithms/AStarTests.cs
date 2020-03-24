@@ -1,5 +1,5 @@
-using GameAI.Pathfinding.Algorithms.AStar;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
+using GameAI.Pathfinding.AStar;
+using GameAI.Pathfinding.Dijkstra;
 using Graph;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
