@@ -22,19 +22,35 @@ namespace GameAI.behaviour.Complex
 
         public override Vector2 Calculate()
         {
-            var ahead = Entity.Pos + Entity.Velocity * 1;
-            var ahead2 = Entity.Pos + Entity.Velocity * 1 / 2;
+            var box = Entity.Velocity / Entity.MaxSpeed * 100;
+            var ahead = box + Entity.Pos;
+            float x = 0;
+            float y = 0;
+            //var ahead2 = Entity.Pos + Entity.Velocity * 1 / 2;
+
 
             foreach (var o in obstacles)
             {
                 CircleF c = new CircleF(o.Pos, o.Scale);
-                if (c.Contains(ahead2))
-                {
-                    return new Vector2(ahead.X - Entity.Velocity.X, ahead.Y - Entity.Velocity.Y);
-                }
                 if(c.Contains(ahead))
                 {
-                    return new Vector2(0, 0);
+                    if (Entity.Pos.X < o.Pos.X)
+                    {
+                        x = -ahead.X - Entity.Velocity.X;
+                    }
+                    if (Entity.Pos.X > o.Pos.X)
+                    {
+                        x = ahead.X - Entity.Velocity.X;
+                    }
+                    if (Entity.Pos.Y < o.Pos.Y)
+                    {
+                        y = -ahead.Y - Entity.Velocity.Y;
+                    }
+                    if (Entity.Pos.Y > o.Pos.Y)
+                    {
+                        y = ahead.Y - Entity.Velocity.Y;
+                    }
+                    return new Vector2(x, y);
                 }
             }
             return new Vector2(-10, -10);
