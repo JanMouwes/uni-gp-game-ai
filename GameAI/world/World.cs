@@ -14,7 +14,7 @@ namespace GameAI
     {
         // Entities and obstacles should be one list while spatial partitioning is not implemented
         public List<MovingEntity> entities = new List<MovingEntity>();
-        private List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
+        public List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -47,7 +47,7 @@ namespace GameAI
                 {
                     VColor = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                v.Steering = new ObstacleAvoidance(v, obstacles, 50);
+                v.Steering = new FlockingBehaviour(v, this, 100);
 
                 entities.Add(v);
             }
