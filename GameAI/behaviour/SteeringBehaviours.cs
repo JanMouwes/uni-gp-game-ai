@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
@@ -46,7 +47,6 @@ namespace GameAI.behaviour
             return desiredVelocity - vehicle.Velocity;
         }
 
-        
 
         public static Vector2 Wander(MovingEntity entity, float distance, float offset)
         {
@@ -72,6 +72,68 @@ namespace GameAI.behaviour
             Vector2 desiredVelocity = difference * desiredSpeed / distance;
 
             return desiredVelocity - owner.Velocity;
+        }
+
+        public static Vector2 Separation(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
+        {
+            Vector2 steeringForce = Vector2.Zero;
+
+            foreach (MovingEntity neighbor in neighbors)
+            {
+                Vector2 toAgent = owner.Pos - neighbor.Pos;
+                steeringForce += toAgent;
+            }
+
+            return steeringForce;
+        }
+
+        public static Vector2 Alignment(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
+        {
+            Vector2 averageHeading = Vector2.Zero;
+            int neighborCount = 0;
+
+            foreach (MovingEntity neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    averageHeading += neighbor.Orientation;
+
+                    ++neighborCount;
+                }
+            }
+
+            if (neighborCount > 0)
+            {
+                averageHeading.Normalize();
+                //averageHeading -= owner.Orientation;
+            }
+
+            return averageHeading;
+        }
+
+        public static Vector2 Cohesion(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
+        {
+            Vector2 centerOfMass = Vector2.Zero,
+                    steeringForce = Vector2.Zero;
+            int neighborCount = 0;
+
+            foreach (MovingEntity neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    centerOfMass += neighbor.Pos;
+
+                    ++neighborCount;
+                }
+            }
+
+            if (neighborCount > 0)
+            {
+                centerOfMass /= neighborCount;
+                steeringForce = Seek(centerOfMass, owner);
+            }
+
+            return steeringForce;
         }
     }
 

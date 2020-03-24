@@ -15,3 +15,7 @@ GameAI.Pathfinding.Tests/.idea/*
 
 packages
 /.idea/*
+
+MonogameSteeringCS/obj/
+MonogameSteeringCS/bin/
+

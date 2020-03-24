@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameAI.behaviour;
+using GameAI.behaviour.Complex;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,7 @@ namespace GameAI
     public class World
     {
         // Entities and obstacles should be one list while spatial partitioning is not implemented
-        private List<MovingEntity> entities = new List<MovingEntity>();
+        public List<MovingEntity> entities = new List<MovingEntity>();
         private LinkedList<BaseGameEntity> obstacles = new LinkedList<BaseGameEntity>();
 
         public int Width { get; set; }
@@ -25,8 +26,10 @@ namespace GameAI
             populate();
         }
 
-        private void populate(int vehicleCount = 50)
+        private void populate(int vehicleCount = 100)
         {
+            //Rock r = new Rock(position);
+
             Random random = new Random();
 
             for (int i = 0; i < vehicleCount; i++)
@@ -39,11 +42,15 @@ namespace GameAI
 
                 Vehicle v = new Vehicle(position, this)
                 {
-                    VColor = Color.Blue, MaxSpeed = 24f, Mass = 1
+                    VColor = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                v.Steering = new WanderBehaviour(v, -10, 10);
+                v.Steering = new FlockingBehaviour(v, this, 50);
 
                 entities.Add(v);
+            }
+            foreach (var entity in entities)
+            {
+                entity.World = this;
             }
         }
 
