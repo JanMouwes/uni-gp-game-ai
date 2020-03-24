@@ -23,10 +23,11 @@ namespace GameAI.behaviour.Complex
         public override Vector2 Calculate()
         {
             // The detection box is the current velocity divided by the max velocity of the entity
-            // range is the minimum size of the box
+            // range is the maximum size of the box
             var box = Entity.Velocity / Entity.MaxSpeed * range;
             // Add the box in front of the entity
             var ahead = box + Entity.Pos;
+            var ahead2 = (box / 2) + Entity.Pos;
             // These will be the x and y in the returning Velocity
             float x = 0;
             float y = 0;
@@ -35,9 +36,8 @@ namespace GameAI.behaviour.Complex
             {
                 // Add a circle around the obstacle which can't be crossed
                 CircleF c = new CircleF(o.Pos, o.Scale);
-                if(c.Contains(ahead))
+                if(c.Contains(ahead) || c.Contains(ahead2))
                 {
-
                     if (Entity.Pos.X < o.Pos.X)
                     {
                         x = -ahead.X - Entity.Velocity.X;
