@@ -1,7 +1,7 @@
 using GameAI.Pathfinding.Algorithms.Dijkstra;
 using Graph;
 
-namespace GameAI.Pathfinding.Algorithms.AStar
+namespace GameAI.Pathfinding.AStar
 {
     public class AStarVertexInfo<TValue> : DijkstraVertexInfo<TValue>
     {

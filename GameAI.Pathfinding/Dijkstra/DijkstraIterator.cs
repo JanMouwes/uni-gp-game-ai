@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameAI.Pathfinding.Algorithms.Dijkstra;
 using Graph;
 using PriorityQueue;
 
-namespace GameAI.Pathfinding.Algorithms.Dijkstra
+namespace GameAI.Pathfinding.Dijkstra
 {
     public class DijkstraIterator<TValue> : IEnumerator<(Vertex<TValue>, (Vertex<TValue>, double))>
     {

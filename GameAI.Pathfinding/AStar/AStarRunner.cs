@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using GameAI.Pathfinding.Algorithms.Dijkstra;
+using GameAI.Pathfinding.Dijkstra;
 using Graph;
 using PriorityQueue;
 
-namespace GameAI.Pathfinding.Algorithms.AStar
+namespace GameAI.Pathfinding.AStar
 {
     public delegate double Heuristic<TValue>(Vertex<TValue> from, Vertex<TValue> to);
 
@@ -48,7 +49,10 @@ namespace GameAI.Pathfinding.Algorithms.AStar
 
             Dictionary<Vertex<TValue>, (Vertex<TValue>, double)> results = new Dictionary<Vertex<TValue>, (Vertex<TValue>, double)>();
 
-            foreach ((Vertex<TValue> vertex, DijkstraVertexInfo<TValue> vertexInfo) in this.vertexMap) { results[vertex] = (vertexInfo.Previous, vertexInfo.Distance); }
+            foreach (KeyValuePair<Vertex<TValue>, DijkstraVertexInfo<TValue>> pair in this.vertexMap)
+            {
+                results[pair.Key] = (pair.Value.Previous, pair.Value.Distance);
+            }
 
             return new DijkstraRunner<TValue>.DijkstraResult(results);
         }

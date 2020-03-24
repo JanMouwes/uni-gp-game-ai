@@ -1,7 +1,7 @@
 using Graph;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Pathfinding.Algorithms.AStar
+namespace GameAI.Pathfinding.AStar
 {
     public static class Heuristics
     {

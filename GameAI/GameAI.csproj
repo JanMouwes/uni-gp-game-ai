@@ -56,6 +56,9 @@
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Navigation\DefaultPathSmoother.cs" />
+    <Compile Include="Navigation\IPathSmoother.cs" />
+    <Compile Include="Navigation\NavigationGraph.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\GraphGenerator.cs" />
@@ -139,6 +142,10 @@
     <Folder Include="behaviour\Simple" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">
+      <Project>{79167b99-76c3-4cc2-afae-09e16212a3cf}</Project>
+      <Name>GameAI.Pathfinding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Graph\Graph.csproj">
       <Project>{e6e34c74-1821-4c55-9240-ed3fcd9fd17d}</Project>
       <Name>Graph</Name>
