@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Graph;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Pathfinding.Tests.Algorithms
+namespace GameAI.Pathfinding.Tests
 {
     public static class GraphHelper
     {
