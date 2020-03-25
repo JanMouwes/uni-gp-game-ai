@@ -6,19 +6,19 @@ namespace GameAI.entity
 {
     public class Vehicle : MovingEntity
     {
-        public Color VColor { get; set; }
+        public Color Color { get; set; }
 
         public Vehicle(Vector2 pos, World w) : base(pos, w)
         {
             Velocity = new Vector2(0, 0);
             Scale = 5;
 
-            VColor = Color.Black;
+            this.Color = Color.Black;
         }
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawCircle(Pos, Scale, 360, VColor);
+            spriteBatch.DrawCircle(Pos, Scale, 360, this.Color);
             
             // Vector2 offsetY = this.Pos + new Vector2(0, this.Scale * -0.5f);
             // Vector2 offsetX = new Vector2(this.Scale * .5f, 0);
