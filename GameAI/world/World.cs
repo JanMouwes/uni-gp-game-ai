@@ -42,7 +42,7 @@ namespace GameAI
 
                 Vehicle v = new Vehicle(position, this)
                 {
-                    VColor = Color.Blue, MaxSpeed = 100f, Mass = 1
+                    Color = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
                 v.Steering = new FlockingBehaviour(v, this, 50);
 
@@ -64,7 +64,9 @@ namespace GameAI
         {
             bool IsNear(BaseGameEntity entity)
             {
-                return (location - entity.Pos).LengthSquared() < range * range;
+                float realRange = range + entity.Scale;
+                
+                return (location - entity.Pos).LengthSquared() < realRange * realRange;
             }
 
             return this.entities.Concat(this.obstacles).Where(IsNear);

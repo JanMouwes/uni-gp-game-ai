@@ -6,8 +6,11 @@ namespace GameAI.Input
 {
     public class MouseInput : Input<MouseButtons>
     {
+        public MouseState MouseState { get; set; }
+
         public void Update(MouseState mouseState)
         {
+            MouseState = mouseState;
             this.Update(GetPressedMouseButtons(mouseState));
         }
 
