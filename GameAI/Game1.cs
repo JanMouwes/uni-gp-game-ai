@@ -2,6 +2,8 @@ using GameAI.Util;
 using Graph;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using GameAI.Input;
 
 namespace GameAI
 {
@@ -12,6 +14,8 @@ namespace GameAI
         private SpriteBatch spriteBatch;
 
         private GraphRenderer graphRenderer;
+
+        private KeyboardInput keyboardInput;
 
         private const int WORLD_WIDTH = 800;
         private const int WORLD_HEIGHT = 600;
@@ -49,12 +53,18 @@ namespace GameAI
 
             this.graphRenderer = new GraphRenderer(this.NavGraph);
 
+            this.keyboardInput = new Input.KeyboardInput();
+
+            this.keyboardInput.OnKeyPress(Keys.G, (key, state) => { this.graphRenderer.ToggleEnabled(); });
+
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
             this.world.Update(gameTime);
+
+            this.keyboardInput.Update(Keyboard.GetState());
 
             base.Update(gameTime);
         }
