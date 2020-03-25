@@ -45,9 +45,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj" />
-    </ItemGroup>
-    <ItemGroup>
         <Compile Include="AStarTests.cs" />
         <Compile Include="DijkstraTests.cs" />
         <Compile Include="GraphHelper.cs" />
