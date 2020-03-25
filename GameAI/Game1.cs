@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using GameAI.behaviour;
+using GameAI.entity;
 using GameAI.Util;
 using Graph;
 using Microsoft.Xna.Framework;
@@ -16,11 +20,14 @@ namespace GameAI
         private GraphRenderer graphRenderer;
 
         private KeyboardInput keyboardInput;
+        private MouseInput mouseInput;
 
         private const int WORLD_WIDTH = 800;
         private const int WORLD_HEIGHT = 600;
 
         public Graph<Vector2> NavGraph;
+
+        private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
 
         public Game1()
         {
@@ -53,11 +60,35 @@ namespace GameAI
 
             this.graphRenderer = new GraphRenderer(this.NavGraph);
 
-            this.keyboardInput = new Input.KeyboardInput();
+            this.keyboardInput = new KeyboardInput();
+            this.mouseInput = new MouseInput();
 
             this.keyboardInput.OnKeyPress(Keys.G, (key, state) => { this.graphRenderer.ToggleEnabled(); });
 
+            this.mouseInput.OnKeyPress(MouseButtons.Left, (input, state) =>
+            {
+                IEnumerable<Vehicle> entitiesNearMouse = this.world.FindEntitiesNear(this.mouseInput.MouseState.Position.ToVector2(), 3).OfType<Vehicle>();
+
+                if (!this.keyboardInput.KeyboardState.IsKeyDown(Keys.LeftShift)) { ClearSelected(); }
+
+                foreach (Vehicle baseGameEntity in entitiesNearMouse)
+                {
+                    this.selectedEntities.AddLast(baseGameEntity);
+                    baseGameEntity.Color = Color.Red;
+                }
+            });
+
+            this.mouseInput.OnKeyPress(MouseButtons.Right, (input, state) =>
+            {
+                foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Steering = new SeekBehaviour(selectedEntity, this.mouseInput.MouseState.Position.ToVector2()); }
+            });
+
             base.LoadContent();
+        }
+
+        private void ClearSelected()
+        {
+            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Color = Color.Blue; }
         }
 
         protected override void Update(GameTime gameTime)
@@ -65,6 +96,7 @@ namespace GameAI
             this.world.Update(gameTime);
 
             this.keyboardInput.Update(Keyboard.GetState());
+            this.mouseInput.Update(Mouse.GetState());
 
             base.Update(gameTime);
         }

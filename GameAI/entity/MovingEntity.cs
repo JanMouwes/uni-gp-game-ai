@@ -16,14 +16,14 @@ namespace GameAI.entity
     {
         // for testing purposes
         private WallAvoidance wallAvoidance;
-        
+
         public Vector2 Velocity { get; set; }
 
         public Vector2 Orientation { get; set; } = new Vector2(1, 0);
-        
+
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
-
+        
         public SteeringBehaviour Steering { get; set; } = DefaultBehaviour.Instance;
 
         public MovingEntity(Vector2 pos, World w) : base(pos, w)
@@ -42,7 +42,7 @@ namespace GameAI.entity
             {
                 Vector2 steeringForce = this.Steering.Calculate();
                 steeringForce += this.wallAvoidance.Calculate();
-                
+
                 Vector2 acceleration = steeringForce / Mass;
 
                 Velocity += acceleration * elapsedSeconds * 0.95f;
@@ -57,7 +57,7 @@ namespace GameAI.entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Blue);
+            spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Yellow);
 
             spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
         }
