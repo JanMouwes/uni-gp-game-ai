@@ -56,6 +56,7 @@
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="Navigation\DefaultPathSmoother.cs" />
     <Compile Include="Navigation\IPathSmoother.cs" />
     <Compile Include="Navigation\NavigationGraph.cs" />
