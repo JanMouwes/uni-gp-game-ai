@@ -58,7 +58,10 @@
     <Compile Include="entity\Rock.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\InputState.cs" />
     <Compile Include="Input\KeyboardInput.cs" />
+    <Compile Include="Input\MouseInput.cs" />
     <Compile Include="Navigation\DefaultPathSmoother.cs" />
     <Compile Include="Navigation\IPathSmoother.cs" />
     <Compile Include="Navigation\NavigationGraph.cs" />
