@@ -4,7 +4,7 @@ using Graph;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
-namespace GameAI.Pathfinding.Tests.Algorithms
+namespace GameAI.Pathfinding.Tests
 {
     public class DijkstraTests
     {
