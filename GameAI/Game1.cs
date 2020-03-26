@@ -61,7 +61,7 @@ namespace GameAI
 
         protected override void Draw(GameTime gameTime)
         {
-            this.graphics.GraphicsDevice.Clear(Color.Black);
+            this.graphics.GraphicsDevice.Clear(Color.White);
 
             this.spriteBatch.Begin();
 

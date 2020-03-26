@@ -23,6 +23,8 @@ namespace GameAI.entity
         
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
+        
+        //TODO add maxForce
 
         public SteeringBehaviour Steering { get; set; } = DefaultBehaviour.Instance;
 
@@ -59,7 +61,7 @@ namespace GameAI.entity
         {
             spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Blue);
 
-            spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
+            //spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
         }
 
         public override string ToString()
