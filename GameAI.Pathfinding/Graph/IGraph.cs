@@ -2,8 +2,9 @@ namespace GameAI.Pathfinding.Graph
 {
     public interface IGraph
     {
-        Vertex GetVertex(string name);
-        void AddEdge(string source, string dest, double cost);
+        Vertex GetVertex(int id);
+        void AddVertex(Vertex vertex);
+        void AddEdge(int source, int dest, double cost);
         void ClearAll();
     }
 }
