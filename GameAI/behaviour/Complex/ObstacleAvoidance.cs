@@ -34,13 +34,13 @@ namespace GameAI.behaviour.Complex
             {
                 // Add a circle around the obstacle which can't be crossed
                 CircleF c = new CircleF(o.Pos, o.Scale + Entity.Scale);
-                if(c.Contains(Entity.Pos) || c.Contains(ahead) || c.Contains(ahead2) || c.Contains(ahead05))
+                if(c.Contains(ahead) || c.Contains(ahead2) || c.Contains(ahead05))
                 {
                     Vector2 dist = new Vector2(Entity.Pos.X - o.Pos.X, Entity.Pos.Y - o.Pos.Y);
                     Vector2 haaks = new Vector2(-dist.Y, dist.X);
-                    Vector2 minHaaks = -haaks;
+                    Vector2 minHaaks = new Vector2(dist.Y, -dist.X);
 
-                    Vector2 haaksDistPlus = new Vector2(haaks.X = ahead.X, haaks.Y - ahead.Y);
+                    Vector2 haaksDistPlus = new Vector2(haaks.X - ahead.X, haaks.Y - ahead.Y);
                     Vector2 haaksDistMin = new Vector2(minHaaks.X - ahead.X, minHaaks.Y - ahead.Y);
 
                     if (haaksDistPlus.Length() > haaksDistMin.Length()) return Entity.Velocity + minHaaks;
