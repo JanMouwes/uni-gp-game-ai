@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="behaviour\ArriveBehaviour.cs" />
+    <Compile Include="behaviour\Complex\FlockingBehaviour.cs" />
     <Compile Include="behaviour\Complex\WallAvoidance.cs" />
     <Compile Include="behaviour\DefaultBehaviour.cs" />
     <Compile Include="behaviour\FleeBehaviour.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="behaviour\WanderBehaviour.cs" />
     <Compile Include="entity\BaseGameEntity.cs" />
     <Compile Include="entity\MovingEntity.cs" />
+    <Compile Include="entity\Rock.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Navigation\DefaultPathSmoother.cs" />
@@ -139,7 +141,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="behaviour\Simple" />
+    <Folder Include="behaviour\Simple\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">
