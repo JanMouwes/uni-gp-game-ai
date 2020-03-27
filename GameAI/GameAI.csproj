@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="behaviour\ArriveBehaviour.cs" />
     <Compile Include="behaviour\Complex\FlockingBehaviour.cs" />
+    <Compile Include="behaviour\Complex\ObstacleAvoidance.cs" />
     <Compile Include="behaviour\Complex\WallAvoidance.cs" />
     <Compile Include="behaviour\DefaultBehaviour.cs" />
     <Compile Include="behaviour\FleeBehaviour.cs" />
@@ -58,6 +59,10 @@
     <Compile Include="entity\Rock.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\InputState.cs" />
+    <Compile Include="Input\KeyboardInput.cs" />
+    <Compile Include="Input\MouseInput.cs" />
     <Compile Include="Navigation\DefaultPathSmoother.cs" />
     <Compile Include="Navigation\IPathSmoother.cs" />
     <Compile Include="Navigation\NavigationGraph.cs" />

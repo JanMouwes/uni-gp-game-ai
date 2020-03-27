@@ -38,5 +38,17 @@ namespace GameAI.Util
 
             foreach (Vector2 vector2 in NeighboursDiagonal(x, y)) { yield return vector2; }
         }
+
+        public static Vector2 PerpendicularRightAngleOf(Vector2 vector)
+        {
+            (float x, float y) = vector;
+            return new Vector2(-y, x);
+        }
+        
+        // public static Vector2 PerpendicularLeftAngleOf(Vector2 vector)
+        // {
+        //     (float x, float y) = vector;
+        //     return new Vector2(-y, x);
+        // }
     }
 }

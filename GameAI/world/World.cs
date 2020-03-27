@@ -14,7 +14,7 @@ namespace GameAI
     {
         // Entities and obstacles should be one list while spatial partitioning is not implemented
         public List<MovingEntity> entities = new List<MovingEntity>();
-        private LinkedList<BaseGameEntity> obstacles = new LinkedList<BaseGameEntity>();
+        public List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -26,12 +26,15 @@ namespace GameAI
             populate();
         }
 
-        private void populate(int vehicleCount = 100)
+        private void populate(int vehicleCount = 20)
         {
-            //Rock r = new Rock(position);
-
             Random random = new Random();
 
+            // Add obstacles
+            Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
+            obstacles.Add(r);
+
+            // Add Entities
             for (int i = 0; i < vehicleCount; i++)
             {
                 Vector2 position = new Vector2
@@ -42,9 +45,9 @@ namespace GameAI
 
                 Vehicle v = new Vehicle(position, this)
                 {
-                    VColor = Color.Blue, MaxSpeed = 100f, Mass = 1
+                    Color = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                v.Steering = new FlockingBehaviour(v, this, 50);
+                v.Steering = new FlockingBehaviour(v, this, 100);
 
                 entities.Add(v);
             }
@@ -64,7 +67,9 @@ namespace GameAI
         {
             bool IsNear(BaseGameEntity entity)
             {
-                return (location - entity.Pos).LengthSquared() < range * range;
+                float realRange = range + entity.Scale;
+                
+                return (location - entity.Pos).LengthSquared() < realRange * realRange;
             }
 
             return this.entities.Concat(this.obstacles).Where(IsNear);
@@ -77,11 +82,17 @@ namespace GameAI
                 // me.SB = new SeekBehaviour(me); // restore later
                 me.Update(gameTime);
             }
+
+            foreach (BaseGameEntity me in obstacles)
+            {
+                me.Update(gameTime);
+            }
         }
 
         public void Render(SpriteBatch spriteBatch)
         {
             entities.ForEach(e => e.Render(spriteBatch));
+            obstacles.ForEach(o => o.Render(spriteBatch));
         }
     }
 }
