@@ -1,24 +1,24 @@
 using System;
-using GameAI.Pathfinding.Graph;
+using Graph;
 
 namespace GameAI.Pathfinding.Algorithms.Dijkstra
 {
-    public class DijkstraVertexInfo : IComparable<DijkstraVertexInfo>
+    public class DijkstraVertexInfo<TValue> : IComparable<DijkstraVertexInfo<TValue>>
     {
         public double Distance { get; set; } = double.PositiveInfinity;
 
-        public Vertex Previous { get; set; }
+        public Vertex<TValue> Previous { get; set; }
 
-        public Vertex Vertex { get; set; }
+        public Vertex<TValue> Vertex { get; set; }
 
         public bool Known { get; set; }
 
-        public DijkstraVertexInfo(Vertex vertex)
+        public DijkstraVertexInfo(Vertex<TValue> vertex)
         {
             this.Vertex = vertex;
         }
 
-        public int CompareTo(DijkstraVertexInfo other)
+        public int CompareTo(DijkstraVertexInfo<TValue> other)
         {
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;

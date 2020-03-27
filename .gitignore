@@ -13,6 +13,14 @@ GameAI.Pathfinding.Tests/obj/
 GameAI.Pathfinding.Tests/bin/
 GameAI.Pathfinding.Tests/.idea/*
 
+Graph/obj/
+Graph/bin/
+Graph/.idea/*
+
+PriorityQueue/obj/
+PriorityQueue/bin/
+PriorityQueue/.idea/*
+
 packages
 /.idea/*
 
