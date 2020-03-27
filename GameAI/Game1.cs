@@ -103,7 +103,7 @@ namespace GameAI
 
         protected override void Draw(GameTime gameTime)
         {
-            this.graphics.GraphicsDevice.Clear(Color.White);
+            this.graphics.GraphicsDevice.Clear(Color.LightBlue);
 
             this.spriteBatch.Begin();
 
