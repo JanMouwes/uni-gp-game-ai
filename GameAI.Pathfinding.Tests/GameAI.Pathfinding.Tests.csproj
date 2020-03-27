@@ -6,6 +6,7 @@
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{0D0AF179-23DC-4E31-A7FE-10B3F7283C49}</ProjectGuid>
         <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <TargetFramework>.NETFramework,Version=v4.8</TargetFramework>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>GameAI.Pathfinding.Tests</RootNamespace>
@@ -34,7 +35,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\Mono.framework\External\xbuild\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+            <HintPath>..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\Mono.framework\External\xbuild\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
