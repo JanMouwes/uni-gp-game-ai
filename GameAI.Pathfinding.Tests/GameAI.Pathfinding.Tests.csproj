@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GameAI.Pathfinding-old\GameAI.Pathfinding-old.csproj" />
       <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj" />
     </ItemGroup>
 
