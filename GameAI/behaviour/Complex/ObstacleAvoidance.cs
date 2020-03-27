@@ -12,11 +12,11 @@ namespace GameAI.behaviour.Complex
     class ObstacleAvoidance : SteeringBehaviour
     {
         private int range;
-        private List<BaseGameEntity> obstacles;
+        private World w;
 
-        public ObstacleAvoidance(MovingEntity entity, List<BaseGameEntity> obstacles, int range = 100) : base(entity)
+        public ObstacleAvoidance(MovingEntity entity, World w, int range = 100) : base(entity)
         {
-            this.obstacles = obstacles;
+            this.w = w;
             this.range = range;
         }
 
@@ -24,15 +24,15 @@ namespace GameAI.behaviour.Complex
         {
             // The detection box is the current velocity divided by the max velocity of the entity
             // range is the maximum size of the box
-            var box = Entity.Velocity / Entity.MaxSpeed * range;
+            Vector2 box = Entity.Velocity / Entity.MaxSpeed * range;
             // Add the box in front of the entity
-            var ahead = box + Entity.Pos;
-            var ahead2 = (box / 2) + Entity.Pos;
+            Vector2 ahead = box + Entity.Pos;
+            Vector2 ahead2 = (box / 2) + Entity.Pos;
             // These will be the x and y in the returning Velocity
             float x = 0;
             float y = 0;
 
-            foreach (var o in obstacles)
+            foreach (BaseGameEntity o in w.obstacles)
             {
                 // Add a circle around the obstacle which can't be crossed
                 CircleF c = new CircleF(o.Pos, o.Scale);
