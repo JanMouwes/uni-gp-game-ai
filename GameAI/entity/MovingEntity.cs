@@ -62,12 +62,17 @@ namespace GameAI.entity
         public override void Render(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Yellow);
-            //spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
+            spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
         }
 
         public override string ToString()
         {
             return $"{this.Pos} with velocity {Velocity}";
         }
+
+        // public string DebugInfo()
+        // {
+        //     
+        // }
     }
 }

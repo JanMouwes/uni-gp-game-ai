@@ -85,11 +85,7 @@ namespace GameAI
                 foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Steering = new SeekBehaviour(selectedEntity, this.mouseInput.MouseState.Position.ToVector2()); }
             });
 
-            this.keyboardInput.OnKeyPress(Keys.Space, (input, state) =>
-            {
-                this.paused = !this.paused; 
-                
-            });
+            this.keyboardInput.OnKeyPress(Keys.Space, (input, state) => { this.paused = !this.paused; });
 
             base.LoadContent();
         }
@@ -97,6 +93,8 @@ namespace GameAI
         private void ClearSelected()
         {
             foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Color = Color.Blue; }
+
+            this.selectedEntities.Clear();
         }
 
         protected override void Update(GameTime gameTime)
@@ -116,7 +114,6 @@ namespace GameAI
         private void DebugDraw(SpriteBatch spriteBatch)
         {
             Rock theRock = this.world.obstacles.OfType<Rock>().First();
-
             Vehicle vehicle = this.selectedEntities.FirstOrDefault();
 
             if (vehicle != null)

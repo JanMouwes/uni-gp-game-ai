@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameAI.entity;
+using GameAI.Util;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
@@ -48,7 +49,7 @@ namespace GameAI.behaviour.Complex
                 if (checkpoints.Any(checkpoint => notAllowedZone.Contains(checkpoint)))
                 {
                     Vector2 dist = new Vector2(o.Pos.X - Entity.Pos.X, o.Pos.X - Entity.Pos.Y);
-                    Vector2 perpendicular = new Vector2(-dist.Y, dist.X);
+                    Vector2 perpendicular = Vector2Helper.PerpendicularRightAngleOf(dist);
 
                     Vector2 perpendicularPos = o.Pos         + perpendicular;
                     Vector2 perpendicularNegativePos = o.Pos - perpendicular;
@@ -56,7 +57,9 @@ namespace GameAI.behaviour.Complex
                     float haaksDistPlus = Vector2.DistanceSquared(perpendicularPos, Entity.Pos        + Entity.Velocity);
                     float haaksDistMin = Vector2.DistanceSquared(perpendicularNegativePos, Entity.Pos + Entity.Velocity);
 
-                    return haaksDistPlus > haaksDistMin ? perpendicularNegativePos : perpendicularPos;
+                    Vector2 targetRelative =(haaksDistPlus > haaksDistMin ? perpendicularNegativePos : perpendicularPos) - Entity.Pos;
+                    
+                    return Vector2Helper.PerpendicularRightAngleOf(targetRelative);
                 }
             }
 
