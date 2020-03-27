@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+
+        <IsPackable>false</IsPackable>
+
+        <RootNamespace>GameAI.Pathfinding.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="nunit" Version="3.12.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\Mono.framework\External\xbuild\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj" />
+    </ItemGroup>
+
+</Project>

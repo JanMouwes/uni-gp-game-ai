@@ -4,11 +4,11 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{79167B99-76C3-4CC2-AFAE-09E16212A3CF}</ProjectGuid>
+        <ProjectGuid>{45DD05D4-5B85-4FE6-BA54-B48D5210BDE2}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>GameAI.Pathfinding</RootNamespace>
-        <AssemblyName>GameAI.Pathfinding</AssemblyName>
+        <RootNamespace>PriorityQueue</RootNamespace>
+        <AssemblyName>PriorityQueue</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -32,32 +32,15 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="MonoGame.Framework, Version=3.7.0.1708, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\Mono.framework\External\xbuild\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
-        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="AStar\AStarRunner.cs" />
-        <Compile Include="AStar\AStarVertexInfo.cs" />
-        <Compile Include="AStar\Heuristics.cs" />
-        <Compile Include="Dijkstra\DijkstraIterator.cs" />
-        <Compile Include="Dijkstra\DijkstraRunner.cs" />
-        <Compile Include="Dijkstra\DijkstraVertexInfo.cs" />
+        <Compile Include="IPriorityQueue.cs" />
+        <Compile Include="PriorityQueue.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Graph\Graph.csproj">
-        <Project>{e6e34c74-1821-4c55-9240-ed3fcd9fd17d}</Project>
-        <Name>Graph</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\PriorityQueue\PriorityQueue.csproj">
-        <Project>{45dd05d4-5b85-4fe6-ba54-b48d5210bde2}</Project>
-        <Name>PriorityQueue</Name>
-      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,34 +8,49 @@ namespace GameAI.behaviour.Complex
     public class FlockingBehaviour : SteeringBehaviour
     {
         public World World;
-        private readonly double radius;
+        private readonly double separationRadius;
+        private readonly double alignmentRadius;
+        private readonly double cohesionRadius;
 
         public FlockingBehaviour(MovingEntity entity, World world, double radius) : base(entity)
         {
             this.World = world;
-            this.radius = radius;
+            this.separationRadius = radius;
+            this.alignmentRadius = radius;
+            this.cohesionRadius = radius;
         }
 
         public override Vector2 Calculate()
         {
-            bool IsNear(MovingEntity entity)
+            bool IsNearSeparation(MovingEntity entity)
             {
                 Vector2 to = entity.Pos - this.Entity.Pos;
 
-                return to.LengthSquared() < this.radius * this.radius;
+                return to.LengthSquared() < separationRadius * separationRadius;
+            }
+            bool IsNearAlignment(MovingEntity entity)
+            {
+                Vector2 to = entity.Pos - this.Entity.Pos;
+
+                return to.LengthSquared() < alignmentRadius * alignmentRadius;
+            }
+            bool IsNearCohesion(MovingEntity entity)
+            {
+                Vector2 to = entity.Pos - this.Entity.Pos;
+
+                return to.LengthSquared() < cohesionRadius * cohesionRadius;
             }
 
-            // Check whether there are any entities nearby
-            IEnumerable<MovingEntity> neighbors = this.World.entities.Where(IsNear);
-
-            Vector2 target = (SteeringBehaviours.Separation(this.Entity, neighbors) * 1) + 
-                             (SteeringBehaviours.Alignment(this.Entity, neighbors) * 3) +
-                             (SteeringBehaviours.Cohesion(this.Entity, neighbors) * 2);
+            Vector2 target = this.Entity.Velocity +
+                             SteeringBehaviours.Separation(this.Entity, this.World.entities.Where(IsNearSeparation)) + 
+                             SteeringBehaviours.Alignment(this.Entity, this.World.entities.Where(IsNearAlignment)) +
+                             SteeringBehaviours.Cohesion(this.Entity, this.World.entities.Where(IsNearCohesion));
             
             if (target.Equals(Vector2.Zero))
             {
                 //  When there is no target, start wandering
-                target = SteeringBehaviours.Wander(this.Entity, 10, 10);
+                target = this.Entity.Velocity +
+                         SteeringBehaviours.Wander(this.Entity, 10, 10);
             }
 
             return target;
