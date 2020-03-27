@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAI.Pathfinding", "GameA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAI.Pathfinding.Tests", "GameAI.Pathfinding.Tests\GameAI.Pathfinding.Tests.csproj", "{0D0AF179-23DC-4E31-A7FE-10B3F7283C49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameAI.Pathfinding.Tests", "GameAI.Pathfinding.Tests\GameAI.Pathfinding.Tests.csproj", "{0D0AF179-23DC-4E31-A7FE-10B3F7283C49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
