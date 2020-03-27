@@ -1,18 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameAI.entity;
-using System.Collections.Generic;
-using System.Linq;
 using GameAI.behaviour;
-using GameAI.entity;
 using GameAI.Util;
 using Graph;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
-using Microsoft.Xna.Framework.Input;
 using GameAI.Input;
 
 namespace GameAI
@@ -90,6 +85,12 @@ namespace GameAI
                 foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Steering = new SeekBehaviour(selectedEntity, this.mouseInput.MouseState.Position.ToVector2()); }
             });
 
+            this.keyboardInput.OnKeyPress(Keys.Space, (input, state) =>
+            {
+                this.paused = !this.paused; 
+                
+            });
+
             base.LoadContent();
         }
 
@@ -100,23 +101,12 @@ namespace GameAI
 
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState current = Keyboard.GetState();
-            if (current.IsKeyDown(Keys.Space) && previous.IsKeyUp(Keys.Space)) { this.paused = !this.paused; }
+            this.keyboardInput.Update(Keyboard.GetState());
+            this.mouseInput.Update(Mouse.GetState());
 
-            if (current.IsKeyDown(Keys.N) && previous.IsKeyUp(Keys.N))
-            {
-                this.currentVehicleIndex++;
-
-                if (this.currentVehicleIndex > this.world.entities.Count - 1) { this.currentVehicleIndex = 0; }
-            }
-
-            previous = Keyboard.GetState();
             if (this.paused) { return; }
 
             this.world.Update(gameTime);
-
-            this.keyboardInput.Update(Keyboard.GetState());
-            this.mouseInput.Update(Mouse.GetState());
 
             base.Update(gameTime);
         }
@@ -127,8 +117,7 @@ namespace GameAI
         {
             Rock theRock = this.world.obstacles.OfType<Rock>().First();
 
-            Vehicle vehicle = this.world.FindEntitiesNear(theRock.Pos, 1000).OfType<Vehicle>().OrderBy(v => Vector2.DistanceSquared(v.Pos, theRock.Pos)).FirstOrDefault();
-
+            Vehicle vehicle = this.selectedEntities.FirstOrDefault();
 
             if (vehicle != null)
             {
