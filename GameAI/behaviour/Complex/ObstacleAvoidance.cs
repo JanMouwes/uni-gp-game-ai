@@ -43,7 +43,7 @@ namespace GameAI.behaviour.Complex
                     Vector2 haaksDistPlus = new Vector2(haaks.X = ahead.X, haaks.Y - ahead.Y);
                     Vector2 haaksDistMin = new Vector2(minHaaks.X - ahead.X, minHaaks.Y - ahead.Y);
 
-                    if (haaksDistPlus.Length() > haaksDistMin.Length()) return Entity.Velocity - haaks;
+                    if (haaksDistPlus.Length() > haaksDistMin.Length()) return Entity.Velocity + minHaaks;
                     
                     return Entity.Velocity + haaks;
                 }
