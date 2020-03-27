@@ -26,12 +26,12 @@ namespace GameAI
             populate();
         }
 
-        private void populate(int vehicleCount = 100)
+        private void populate(int vehicleCount = 20)
         {
             Random random = new Random();
 
             // Add obstacles
-            Rock r = new Rock(this, new Vector2(300, 300), 100, Color.Black);
+            Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
             obstacles.Add(r);
 
             // Add Entities

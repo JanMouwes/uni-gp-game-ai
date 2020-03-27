@@ -30,7 +30,7 @@ namespace GameAI.entity
         public MovingEntity(Vector2 pos, World w) : base(pos, w)
         {
             Mass = 30;
-            MaxSpeed = 150;
+            MaxSpeed = .01f;
             Velocity = new Vector2();
             this.wallAvoidance = new WallAvoidance(this, w);
             this.obstacleAvoidance = new ObstacleAvoidance(this, w);
@@ -42,10 +42,16 @@ namespace GameAI.entity
 
             if (this.Steering != null)
             {
-                Vector2 steeringForce = this.Steering.Calculate();
-                steeringForce += this.wallAvoidance.Calculate();
-steeringForce += this.obstacleAvoidance.Calculate();
-                
+                Vector2 obstacleCalc = this.obstacleAvoidance.Calculate();
+                bool shouldAvoid = obstacleCalc.LengthSquared() > 0;
+
+                Vector2 steeringForce = shouldAvoid ? obstacleCalc : this.Steering.Calculate() + this.wallAvoidance.Calculate();
+
+                if (shouldAvoid)
+                {
+                    Console.WriteLine($"Obstacle avoidance:{obstacleCalc}");
+                    Console.WriteLine($"Steering:{steeringForce}");
+                }
                 Vector2 acceleration = steeringForce / Mass;
 
                 Velocity += acceleration * elapsedSeconds * 0.95f;
@@ -66,7 +72,7 @@ steeringForce += this.obstacleAvoidance.Calculate();
 
         public override string ToString()
         {
-            return $"{this.Velocity}";
+            return $"{this.Pos} with velocity {Velocity}";
         }
     }
 }

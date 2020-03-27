@@ -9,7 +9,7 @@ using MonoGame.Extended;
 
 namespace GameAI.behaviour.Complex
 {
-    class ObstacleAvoidance : SteeringBehaviour
+    public class ObstacleAvoidance : SteeringBehaviour
     {
         private World w;
         private int range;
@@ -26,28 +26,40 @@ namespace GameAI.behaviour.Complex
             // range is the maximum size of the box
             Vector2 viewBox = Entity.Velocity / Entity.MaxSpeed * range;
             // Add the box in front of the entity
-            Vector2 ahead05 = (viewBox / 2) + Entity.Pos;
-            Vector2 ahead = viewBox + Entity.Pos;
-            Vector2 ahead2 = (viewBox * viewBox) + Entity.Pos;
+            IEnumerable<Vector2> checkpoints = new[]
+            {
+                Entity.Pos,
+                this.Entity.Pos + viewBox / 2f, // Halfway
+                this.Entity.Pos + viewBox,      // At the end
+                this.Entity.Pos + viewBox * 2   // Double
+            };
 
             foreach (BaseGameEntity o in w.obstacles)
             {
+                // Vector2 obstacleCentre = o.Pos;
+                // Vector2 entityVelocityPos = Entity.Pos + Entity.Velocity;
+                // bool isObstacleBehind = Vector2.DistanceSquared(Entity.Pos, obstacleCentre) < Vector2.DistanceSquared(entityVelocityPos, obstacleCentre);
+                //
+                // if (isObstacleBehind) { continue; }
+
                 // Add a circle around the obstacle which can't be crossed
-                CircleF c = new CircleF(o.Pos, o.Scale + Entity.Scale);
-                if(c.Contains(Entity.Pos) || c.Contains(ahead) || c.Contains(ahead2) || c.Contains(ahead05))
+                CircleF notAllowedZone = new CircleF(o.Pos, o.Scale + Entity.Scale * 2);
+
+                if (checkpoints.Any(checkpoint => notAllowedZone.Contains(checkpoint)))
                 {
-                    Vector2 dist = new Vector2(Entity.Pos.X - o.Pos.X, Entity.Pos.Y - o.Pos.Y);
-                    Vector2 haaks = new Vector2(-dist.Y, dist.X);
-                    Vector2 minHaaks = -haaks;
+                    Vector2 dist = new Vector2(o.Pos.X - Entity.Pos.X, o.Pos.X - Entity.Pos.Y);
+                    Vector2 perpendicular = new Vector2(-dist.Y, dist.X);
 
-                    Vector2 haaksDistPlus = new Vector2(haaks.X = ahead.X, haaks.Y - ahead.Y);
-                    Vector2 haaksDistMin = new Vector2(minHaaks.X - ahead.X, minHaaks.Y - ahead.Y);
+                    Vector2 perpendicularPos = o.Pos         + perpendicular;
+                    Vector2 perpendicularNegativePos = o.Pos - perpendicular;
 
-                    if (haaksDistPlus.Length() > haaksDistMin.Length()) return Entity.Velocity + minHaaks;
-                    
-                    return Entity.Velocity + haaks;
+                    float haaksDistPlus = Vector2.DistanceSquared(perpendicularPos, Entity.Pos        + Entity.Velocity);
+                    float haaksDistMin = Vector2.DistanceSquared(perpendicularNegativePos, Entity.Pos + Entity.Velocity);
+
+                    return haaksDistPlus > haaksDistMin ? perpendicularNegativePos : perpendicularPos;
                 }
             }
+
             // Return identity vector if there will be no collision
             return new Vector2();
         }
