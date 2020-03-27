@@ -33,7 +33,7 @@ namespace GameAI.entity
             MaxSpeed = 150;
             Velocity = new Vector2();
             this.wallAvoidance = new WallAvoidance(this, w);
-            this.obstacleAvoidance = new ObstacleAvoidance(this, w.obstacles);
+            this.obstacleAvoidance = new ObstacleAvoidance(this, w);
         }
 
         public override void Update(GameTime gameTime)
