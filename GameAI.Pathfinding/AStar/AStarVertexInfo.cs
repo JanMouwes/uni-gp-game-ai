@@ -1,20 +1,19 @@
-using GameAI.Pathfinding.Algorithms.Dijkstra;
+using GameAI.Pathfinding.Dijkstra;
 using Graph;
 
 namespace GameAI.Pathfinding.AStar
 {
     public class AStarVertexInfo<TValue> : DijkstraVertexInfo<TValue>
     {
+        public new double TotalDistance => TravelledDistance + HeuristicValue;
+
         public AStarVertexInfo(Vertex<TValue> vertex) : base(vertex) { }
 
         public double HeuristicValue { get; set; }
 
-        public int CompareTo(AStarVertexInfo<TValue> other)
+        public override string ToString()
         {
-            if (ReferenceEquals(this, other)) return 0;
-            if (ReferenceEquals(null, other)) return 1;
-
-            return this.Distance.CompareTo(other.Distance + other.HeuristicValue);
+            return "(" + this.Vertex.Id + " <-" + ((int) this.TravelledDistance + (int) HeuristicValue) + "- " + this.Previous.Id + ")";
         }
     }
 }

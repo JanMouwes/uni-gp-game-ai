@@ -15,7 +15,7 @@ namespace GameAI.entity
     public abstract class MovingEntity : BaseGameEntity
     {
         // for testing purposes
-        private WallAvoidance wallAvoidance;
+        private readonly WallAvoidance wallAvoidance;
 
         public Vector2 Velocity { get; set; }
 
@@ -45,8 +45,10 @@ namespace GameAI.entity
 
                 Vector2 acceleration = steeringForce / Mass;
 
-                Velocity += acceleration * elapsedSeconds * 0.95f;
+                Velocity += acceleration * elapsedSeconds;
             }
+
+            Velocity *= .95f;
 
             Velocity = Velocity.Truncate(MaxSpeed);
 

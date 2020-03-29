@@ -31,12 +31,16 @@ namespace GameAI.behaviour
             return desiredVelocity - owner.Velocity;
         }
 
-        public static Vector2 Arrive(Vector2 target, MovingEntity vehicle)
+        public static Vector2 Arrive(Vector2 target, MovingEntity vehicle, float decelerateDistance)
         {
             //    Distance between target and location in vector
             Vector2 difference = target - vehicle.Pos;
 
+            // If not close enough to decelerate, don't decelerate 
+            if (difference.LengthSquared() > decelerateDistance * decelerateDistance) { return Seek(target, vehicle); }
+
             float distance = difference.Length();
+
 
             if (distance <= 0) { return Vector2.Zero; }
 

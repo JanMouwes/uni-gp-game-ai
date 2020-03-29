@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PriorityQueue
 {
@@ -115,7 +116,21 @@ namespace PriorityQueue
 
         public override string ToString()
         {
-            return string.Join(" ", this.array.Where((comparable, i) => i > 0 && i <= this.Size));
+            StringBuilder stringBuilder = new StringBuilder();
+            int layerSize = 2;
+
+            for (int i = 1; i < this.array.Length; i++)
+            {
+                if (i == layerSize)
+                {
+                    layerSize <<= 1;
+                    stringBuilder.Append("\n");
+                }
+
+                stringBuilder.Append(this.array[i] + " ");
+            }
+
+            return stringBuilder.ToString(); //string.Join(" ", this.array.Where((comparable, i) => i > 0 && i <= this.Size));
         }
 
         public void AddFreely(T x)

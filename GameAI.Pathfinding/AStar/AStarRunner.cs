@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
-using GameAI.Pathfinding.Dijkstra;
 using Graph;
 using PriorityQueue;
 
@@ -10,21 +8,28 @@ namespace GameAI.Pathfinding.AStar
 
     public class AStarRunner<TValue>
     {
-        private readonly Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>>();
+        private readonly Dictionary<Vertex<TValue>, AStarVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, AStarVertexInfo<TValue>>();
 
-        private readonly PriorityQueue<DijkstraVertexInfo<TValue>> queue = new PriorityQueue<DijkstraVertexInfo<TValue>>();
+        private readonly PriorityQueue<AStarVertexInfo<TValue>> queue = new PriorityQueue<AStarVertexInfo<TValue>>();
 
-        public DijkstraRunner<TValue>.DijkstraResult Run(Vertex<TValue> origin, Vertex<TValue> target, Heuristic<TValue> heuristic)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="destination"></param>
+        /// <param name="heuristic"></param>
+        /// <returns>Path of vertices, including origin and destination</returns>
+        public IEnumerable<Vertex<TValue>> Run(Vertex<TValue> origin, Vertex<TValue> destination, Heuristic<TValue> heuristic)
         {
-            DijkstraVertexInfo<TValue> originDijkstraVertexInfo = GetDijkstraVertexInfo(origin);
-            originDijkstraVertexInfo.Distance = 0;
-            this.queue.Add(originDijkstraVertexInfo);
+            AStarVertexInfo<TValue> originVertexInfo = GetVertexInfo(origin);
+            originVertexInfo.TravelledDistance = 0;
+            this.queue.Add(originVertexInfo);
 
             while (this.queue.Size > 0)
             {
-                DijkstraVertexInfo<TValue> currentVertex = this.queue.Remove();
+                AStarVertexInfo<TValue> currentVertex = this.queue.Remove();
 
-                bool isFarther = currentVertex.Distance > GetDijkstraVertexInfo(currentVertex.Vertex).Distance;
+                bool isFarther = currentVertex.TravelledDistance > GetVertexInfo(currentVertex.Vertex).TravelledDistance;
 
                 if (currentVertex.Known || isFarther) { continue; }
 
@@ -34,11 +39,11 @@ namespace GameAI.Pathfinding.AStar
 
                 foreach (Edge<TValue> edge in currentVertex.Vertex.Edges)
                 {
-                    double heuristicDist = heuristic(edge.Dest, target);
+                    double heuristicDist = heuristic(edge.Dest, destination);
 
                     AStarVertexInfo<TValue> vertexInfo = new AStarVertexInfo<TValue>(edge.Dest)
                     {
-                        Distance = currentVertex.Distance + edge.Cost,
+                        TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
                         HeuristicValue = heuristicDist,
                         Previous = currentVertex.Vertex
                     };
@@ -47,19 +52,29 @@ namespace GameAI.Pathfinding.AStar
                 }
             }
 
-            Dictionary<Vertex<TValue>, (Vertex<TValue>, double)> results = new Dictionary<Vertex<TValue>, (Vertex<TValue>, double)>();
+            LinkedList<Vertex<TValue>> results = new LinkedList<Vertex<TValue>>();
 
-            foreach (KeyValuePair<Vertex<TValue>, DijkstraVertexInfo<TValue>> pair in this.vertexMap)
+            AStarVertexInfo<TValue> currentNodeInfo = GetVertexInfo(destination);
+
+            while (currentNodeInfo.Vertex != origin)
             {
-                results[pair.Key] = (pair.Value.Previous, pair.Value.Distance);
+                if (currentNodeInfo.Previous == null) { throw new PathNotFoundException(); }
+
+                AStarVertexInfo<TValue> previous = GetVertexInfo(currentNodeInfo.Previous);
+                // Next node & cost to get there
+                results.AddFirst(currentNodeInfo.Vertex);
+
+                currentNodeInfo = previous;
             }
 
-            return new DijkstraRunner<TValue>.DijkstraResult(results);
+            results.AddFirst(origin);
+
+            return results;
         }
 
-        private DijkstraVertexInfo<TValue> GetDijkstraVertexInfo(Vertex<TValue> vertex)
+        private AStarVertexInfo<TValue> GetVertexInfo(Vertex<TValue> vertex)
         {
-            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new DijkstraVertexInfo<TValue>(vertex); }
+            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new AStarVertexInfo<TValue>(vertex); }
 
             return this.vertexMap[vertex];
         }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
 using Graph;
 using PriorityQueue;
 
@@ -7,28 +6,21 @@ namespace GameAI.Pathfinding.Dijkstra
 {
     public class DijkstraRunner<TValue>
     {
-        public struct DijkstraResult
-        {
-            public Dictionary<Vertex<TValue>, (Vertex<TValue>, double)> Results { get; }
-
-            public DijkstraResult(Dictionary<Vertex<TValue>, (Vertex<TValue>, double)> results) => this.Results = results;
-        }
-
         private readonly Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>>();
 
         private readonly PriorityQueue<DijkstraVertexInfo<TValue>> queue = new PriorityQueue<DijkstraVertexInfo<TValue>>();
 
-        public DijkstraResult Run(Vertex<TValue> origin)
+        public IEnumerable<(Vertex<TValue>dest, double cost)> Run(Vertex<TValue> origin)
         {
             DijkstraVertexInfo<TValue> originDijkstraVertexInfo = GetDijkstraVertexInfo(origin);
-            originDijkstraVertexInfo.Distance = 0;
+            originDijkstraVertexInfo.TravelledDistance = 0;
             this.queue.Add(originDijkstraVertexInfo);
 
             while (this.queue.Size > 0)
             {
                 DijkstraVertexInfo<TValue> currentVertex = this.queue.Remove();
 
-                bool isFarther = currentVertex.Distance > GetDijkstraVertexInfo(currentVertex.Vertex).Distance;
+                bool isFarther = currentVertex.TravelledDistance > GetDijkstraVertexInfo(currentVertex.Vertex).TravelledDistance;
 
                 if (currentVertex.Known || isFarther) { continue; }
 
@@ -40,7 +32,7 @@ namespace GameAI.Pathfinding.Dijkstra
                 {
                     DijkstraVertexInfo<TValue> vertexInfo = new DijkstraVertexInfo<TValue>(edge.Dest)
                     {
-                        Distance = currentVertex.Distance + edge.Cost,
+                        TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
                         Previous = currentVertex.Vertex
                     };
 
@@ -48,14 +40,15 @@ namespace GameAI.Pathfinding.Dijkstra
                 }
             }
 
-            Dictionary<Vertex<TValue>, (Vertex<TValue>, double)> results = new Dictionary<Vertex<TValue>, (Vertex<TValue>, double)>();
+            LinkedList<(Vertex<TValue>, double)> results = new LinkedList<(Vertex<TValue>, double)>();
 
             foreach (KeyValuePair<Vertex<TValue>, DijkstraVertexInfo<TValue>> pair in this.vertexMap)
             {
-                results[pair.Key] = (pair.Value.Previous, pair.Value.Distance);
+                // Next node & cost to get there
+                results.AddLast((pair.Key, pair.Value.TravelledDistance));
             }
 
-            return new DijkstraResult(results);
+            return results;
         }
 
         private DijkstraVertexInfo<TValue> GetDijkstraVertexInfo(Vertex<TValue> vertex)

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
 using Graph;
 using PriorityQueue;
 
@@ -14,7 +13,7 @@ namespace GameAI.Pathfinding.Dijkstra
 
         private DijkstraVertexInfo<TValue> current;
 
-        public (Vertex<TValue>, (Vertex<TValue>, double)) Current => (this.current.Vertex, (this.current.Previous, this.current.Distance));
+        public (Vertex<TValue>, (Vertex<TValue>, double)) Current => (this.current.Vertex, (this.current.Previous, this.current.TravelledDistance));
         object IEnumerator.Current => this.Current;
 
         public DijkstraIterator(Vertex<TValue> origin)
@@ -36,7 +35,7 @@ namespace GameAI.Pathfinding.Dijkstra
 
             DijkstraVertexInfo<TValue> currentVertex = this.queue.Remove();
 
-            bool isFarther = currentVertex.Distance > GetVertexInfo(currentVertex.Vertex).Distance;
+            bool isFarther = currentVertex.TravelledDistance > GetVertexInfo(currentVertex.Vertex).TravelledDistance;
 
             if (currentVertex.Known || isFarther) { return MoveNext(); }
 
@@ -48,7 +47,7 @@ namespace GameAI.Pathfinding.Dijkstra
             {
                 DijkstraVertexInfo<TValue> vertexInfo = new DijkstraVertexInfo<TValue>(edge.Dest)
                 {
-                    Distance = currentVertex.Distance + edge.Cost,
+                    TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
                     Previous = currentVertex.Vertex
                 };
 
@@ -69,7 +68,7 @@ namespace GameAI.Pathfinding.Dijkstra
         private void Init(Vertex<TValue> withOrigin)
         {
             DijkstraVertexInfo<TValue> originVertexInfo = GetVertexInfo(withOrigin);
-            originVertexInfo.Distance = 0;
+            originVertexInfo.TravelledDistance = 0;
             this.queue.Add(originVertexInfo);
         }
 

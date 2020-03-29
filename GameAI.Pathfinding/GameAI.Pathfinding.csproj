@@ -47,6 +47,7 @@
         <Compile Include="Dijkstra\DijkstraIterator.cs" />
         <Compile Include="Dijkstra\DijkstraRunner.cs" />
         <Compile Include="Dijkstra\DijkstraVertexInfo.cs" />
+        <Compile Include="PathNotFoundException.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

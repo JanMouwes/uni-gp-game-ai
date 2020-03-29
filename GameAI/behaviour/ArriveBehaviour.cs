@@ -11,16 +11,18 @@ namespace GameAI.behaviour
 {
     public class ArriveBehaviour : SteeringBehaviour
     {
+        private readonly float decelerateDistance;
         public Vector2 Target { get; set; }
 
-        public ArriveBehaviour(MovingEntity entity, Vector2 target) : base(entity)
+        public ArriveBehaviour(MovingEntity entity, Vector2 target, float decelerateDistance) : base(entity)
         {
             this.Target = target;
+            this.decelerateDistance = decelerateDistance;
         }
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Arrive(Target, Entity);
+            return SteeringBehaviours.Arrive(Target, Entity, decelerateDistance);
         }
     }
 }
