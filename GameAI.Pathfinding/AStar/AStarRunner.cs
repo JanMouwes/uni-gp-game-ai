@@ -8,9 +8,31 @@ namespace GameAI.Pathfinding.AStar
 
     public class AStarRunner<TValue>
     {
-        private readonly Dictionary<Vertex<TValue>, AStarVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, AStarVertexInfo<TValue>>();
+        private readonly Graph<TValue> graph;
+        // private readonly Dictionary<Vertex<TValue>, VertexAStarData<TValue>> vertexMap = new Dictionary<Vertex<TValue>, VertexAStarData<TValue>>();
 
-        private readonly PriorityQueue<AStarVertexInfo<TValue>> queue = new PriorityQueue<AStarVertexInfo<TValue>>();
+        /// <summary>
+        /// Vertices by ID
+        /// </summary>
+        private readonly Dictionary<int, Vertex<TValue>> vertices;
+
+        private readonly Dictionary<int, VertexAStarData> vertexData;
+
+        private readonly PriorityQueue<VertexAStarData> queue = new PriorityQueue<VertexAStarData>();
+
+        public AStarRunner(Graph<TValue> graph)
+        {
+            this.graph = graph;
+
+            this.vertices = new Dictionary<int, Vertex<TValue>>();
+            this.vertexData = new Dictionary<int, VertexAStarData>();
+
+            foreach (Vertex<TValue> vertex in graph.Vertices)
+            {
+                this.vertices[vertex.Id] = vertex;
+                this.vertexData.Add(vertex.Id, new VertexAStarData(vertex.Id));
+            }
+        }
 
         /// <summary>
         /// 
@@ -21,48 +43,49 @@ namespace GameAI.Pathfinding.AStar
         /// <returns>Path of vertices, including origin and destination</returns>
         public IEnumerable<Vertex<TValue>> Run(Vertex<TValue> origin, Vertex<TValue> destination, Heuristic<TValue> heuristic)
         {
-            AStarVertexInfo<TValue> originVertexInfo = GetVertexInfo(origin);
-            originVertexInfo.TravelledDistance = 0;
-            this.queue.Add(originVertexInfo);
+            VertexAStarData originData = this.vertexData[origin.Id];
+            originData.TravelledDistance = 0;
+            this.queue.Add(originData);
 
             while (this.queue.Size > 0)
             {
-                AStarVertexInfo<TValue> currentVertex = this.queue.Remove();
+                VertexAStarData currentVertex = this.queue.Remove();
 
-                bool isFarther = currentVertex.TravelledDistance > GetVertexInfo(currentVertex.Vertex).TravelledDistance;
+                if (this.vertexData[currentVertex.VertexId].Known) { continue; }
 
-                if (currentVertex.Known || isFarther) { continue; }
+                this.vertexData[currentVertex.VertexId] = currentVertex;
 
-                currentVertex.Known = true;
+                this.vertexData[currentVertex.VertexId].Known = true;
 
-                this.vertexMap[currentVertex.Vertex] = currentVertex;
-
-                foreach (Edge<TValue> edge in currentVertex.Vertex.Edges)
+                foreach (Edge<TValue> edge in this.vertices[currentVertex.VertexId].Edges)
                 {
                     double heuristicDist = heuristic(edge.Dest, destination);
 
-                    AStarVertexInfo<TValue> vertexInfo = new AStarVertexInfo<TValue>(edge.Dest)
+                    // Prevent adding to queue if already known
+                    if (this.vertexData[edge.Dest.Id].Known) { continue; }
+
+                    VertexAStarData data = new VertexAStarData(edge.Dest.Id)
                     {
                         TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
                         HeuristicValue = heuristicDist,
-                        Previous = currentVertex.Vertex
+                        PreviousId = currentVertex.VertexId
                     };
 
-                    this.queue.Add(vertexInfo);
+                    this.queue.Add(data);
                 }
             }
 
             LinkedList<Vertex<TValue>> results = new LinkedList<Vertex<TValue>>();
 
-            AStarVertexInfo<TValue> currentNodeInfo = GetVertexInfo(destination);
+            VertexAStarData currentNodeInfo = this.vertexData[destination.Id];
 
-            while (currentNodeInfo.Vertex != origin)
+            while (currentNodeInfo.VertexId != origin.Id)
             {
-                if (currentNodeInfo.Previous == null) { throw new PathNotFoundException(); }
+                if (!currentNodeInfo.Known) { throw new PathNotFoundException(); }
 
-                AStarVertexInfo<TValue> previous = GetVertexInfo(currentNodeInfo.Previous);
+                VertexAStarData previous = this.vertexData[currentNodeInfo.PreviousId];
                 // Next node & cost to get there
-                results.AddFirst(currentNodeInfo.Vertex);
+                results.AddFirst(this.vertices[currentNodeInfo.VertexId]);
 
                 currentNodeInfo = previous;
             }
@@ -70,13 +93,6 @@ namespace GameAI.Pathfinding.AStar
             results.AddFirst(origin);
 
             return results;
-        }
-
-        private AStarVertexInfo<TValue> GetVertexInfo(Vertex<TValue> vertex)
-        {
-            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new AStarVertexInfo<TValue>(vertex); }
-
-            return this.vertexMap[vertex];
         }
     }
 }

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using GameAI.Pathfinding.AStar;
-using GameAI.Pathfinding.Dijkstra;
 using Graph;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
@@ -15,7 +13,7 @@ namespace GameAI.Pathfinding.Tests
         {
             Graph<Vector2> graph = GraphHelper.CreateGraph_3Vertex_Simple();
 
-            Vertex<Vector2>[] result = new AStarRunner<Vector2>().Run(graph.GetVertex(1), graph.GetVertex(3), Heuristics.Manhattan).ToArray();
+            Vertex<Vector2>[] result = new AStarRunner<Vector2>(graph).Run(graph.GetVertex(1), graph.GetVertex(3), Heuristics.Manhattan).ToArray();
 
             Vertex<Vector2> vertex1 = graph.GetVertex(1);
             Vertex<Vector2> vertex2 = graph.GetVertex(2);
@@ -36,7 +34,7 @@ namespace GameAI.Pathfinding.Tests
             Vertex<Vector2> source = graph.GetVertex(sourceId);
             Vertex<Vector2> dest = graph.GetVertex(destId);
 
-            Vertex<Vector2>[] result = new AStarRunner<Vector2>().Run(source, dest, Heuristics.Manhattan).ToArray();
+            Vertex<Vector2>[] result = new AStarRunner<Vector2>(graph).Run(source, dest, Heuristics.Manhattan).ToArray();
 
             int pathLength = result.Length;
 
@@ -53,7 +51,7 @@ namespace GameAI.Pathfinding.Tests
             Vertex<Vector2> source = graph.GetVertex(sourceId);
             Vertex<Vector2> dest = graph.GetVertex(destId);
 
-            Vertex<Vector2>[] result = new AStarRunner<Vector2>().Run(source, dest, Heuristics.Manhattan).ToArray();
+            Vertex<Vector2>[] result = new AStarRunner<Vector2>(graph).Run(source, dest, Heuristics.Manhattan).ToArray();
 
             int pathLength = result.Length;
 
@@ -71,7 +69,7 @@ namespace GameAI.Pathfinding.Tests
             Vertex<Vector2> source = graph.GetVertex(sourceId);
             Vertex<Vector2> dest = graph.GetVertex(destId);
 
-            Vertex<Vector2>[] result = new AStarRunner<Vector2>().Run(source, dest, Heuristics.Manhattan).ToArray();
+            Vertex<Vector2>[] result = new AStarRunner<Vector2>(graph).Run(source, dest, Heuristics.Manhattan).ToArray();
 
             int pathLength = result.Length;
 

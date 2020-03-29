@@ -45,7 +45,7 @@ namespace GameAI.Navigation
             Vertex<Vector2> sourceVertex = GetNearestVertex(source);
             Vertex<Vector2> destVertex = GetNearestVertex(destination);
 
-            IEnumerable<Vertex<Vector2>> result = new AStarRunner<Vector2>().Run(sourceVertex, destVertex, Heuristics.Euclidean);
+            IEnumerable<Vertex<Vector2>> result = new AStarRunner<Vector2>(this.graph).Run(sourceVertex, destVertex, Heuristics.Manhattan);
 
             LinkedList<Vector2> path = new LinkedList<Vector2>(result.Select(item => item.Value));
 

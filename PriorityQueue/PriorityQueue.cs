@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace PriorityQueue
@@ -62,56 +63,66 @@ namespace PriorityQueue
             return min;
         }
 
-        private void Swap(int index1, int index2)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void Swap(IList<T> array, int index1, int index2)
         {
-            T temp = this.array[index1];
-            this.array[index1] = this.array[index2];
-            this.array[index2] = temp;
+            T temp = array[index1];
+            array[index1] = array[index2];
+            array[index2] = temp;
         }
 
         public void PercolateUp(int nodeIndex)
         {
-            int parentIndex = nodeIndex >> 1;
+            while (true)
+            {
+                int parentIndex = nodeIndex >> 1;
 
-            //    If node has no parent, do nothing
-            if (parentIndex < 1) { return; }
+                //    If node has no parent, do nothing
+                if (parentIndex < 1) { return; }
 
-            //    If node is in it's correct place, do nothing
-            if (this.array[parentIndex].CompareTo(this.array[nodeIndex]) <= 0) return;
+                //    If node is in it's correct place, do nothing
+                if (this.array[parentIndex].CompareTo(this.array[nodeIndex]) <= 0) return;
 
-            //    Swap parent & node
-            Swap(parentIndex, nodeIndex);
-            PercolateUp(parentIndex);
+                //    Swap parent & node
+                Swap(this.array, parentIndex, nodeIndex);
+                nodeIndex = parentIndex;
+            }
         }
 
         public void PercolateDown(int nodeIndex)
         {
-            T node = this.array[nodeIndex];
+            T node;
+            
+            while (true)
+            {
+                node = this.array[nodeIndex];
 
-            int rightChildIndex = nodeIndex << 1;
-            int leftChildIndex = rightChildIndex + 1;
+                int rightChildIndex = nodeIndex << 1;
+                int leftChildIndex = rightChildIndex + 1;
 
-            //    Determine smallest child;
-            //    If right is out of bounds
-            //        stop
-            //    If left is out of bounds or left is bigger than right
-            //        It's right
-            //    Else
-            //        It's left
-            int minChildIndex = leftChildIndex;
+                //    Determine smallest child;
+                //    If right is out of bounds
+                //        stop
+                //    If left is out of bounds or left is bigger than right
+                //        It's right
+                //    Else
+                //        It's left
+                int minChildIndex = leftChildIndex;
 
-            if (rightChildIndex > this.Size) { return; }
+                if (rightChildIndex > this.Size) { return; }
 
-            if (leftChildIndex > this.Size || this.array[leftChildIndex].CompareTo(this.array[rightChildIndex]) > 0) { minChildIndex = rightChildIndex; }
+                if (leftChildIndex > this.Size || this.array[leftChildIndex].CompareTo(this.array[rightChildIndex]) > 0)
+                {
+                    minChildIndex = rightChildIndex;
+                }
+                
+                //    If node is in it's correct place, do nothing
+                if (node.CompareTo(this.array[minChildIndex]) <= 0) { return; }
 
-            T minChild = this.array[minChildIndex];
-
-            //    If node is in it's correct place, do nothing
-            if (node.CompareTo(minChild) <= 0) { return; }
-
-            //    Swap parent & node
-            Swap(nodeIndex, minChildIndex);
-            PercolateDown(minChildIndex);
+                //    Swap parent & node
+                Swap(this.array, nodeIndex, minChildIndex);
+                nodeIndex = minChildIndex;
+            }
         }
 
         public override string ToString()

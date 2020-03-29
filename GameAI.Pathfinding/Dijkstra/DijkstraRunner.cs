@@ -6,56 +6,61 @@ namespace GameAI.Pathfinding.Dijkstra
 {
     public class DijkstraRunner<TValue>
     {
-        private readonly Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>>();
+        // private readonly Dictionary<Vertex<TValue>, VertexDijkstraData> vertexMap = new Dictionary<Vertex<TValue>, VertexDijkstraData>();
+        private readonly Dictionary<int, VertexDijkstraData> vertexMap = new Dictionary<int, VertexDijkstraData>();
+        private readonly Dictionary<int, Vertex<TValue>> vertices = new Dictionary<int, Vertex<TValue>>();
 
-        private readonly PriorityQueue<DijkstraVertexInfo<TValue>> queue = new PriorityQueue<DijkstraVertexInfo<TValue>>();
+        private readonly PriorityQueue<VertexDijkstraData> queue = new PriorityQueue<VertexDijkstraData>();
+
+        public DijkstraRunner(Graph<TValue> graph)
+        {
+            foreach (Vertex<TValue> vertex in graph.Vertices) { this.vertices[vertex.Id] = vertex; }
+        }
 
         public IEnumerable<(Vertex<TValue>dest, double cost)> Run(Vertex<TValue> origin)
         {
-            DijkstraVertexInfo<TValue> originDijkstraVertexInfo = GetDijkstraVertexInfo(origin);
-            originDijkstraVertexInfo.TravelledDistance = 0;
-            this.queue.Add(originDijkstraVertexInfo);
+            VertexDijkstraData originVertexDijkstraData = GetVertexInfo(origin.Id);
+            originVertexDijkstraData.TravelledDistance = 0;
+            this.queue.Add(originVertexDijkstraData);
 
             while (this.queue.Size > 0)
             {
-                DijkstraVertexInfo<TValue> currentVertex = this.queue.Remove();
+                VertexDijkstraData currentVertex = this.queue.Remove();
 
-                bool isFarther = currentVertex.TravelledDistance > GetDijkstraVertexInfo(currentVertex.Vertex).TravelledDistance;
-
-                if (currentVertex.Known || isFarther) { continue; }
+                if (currentVertex.Known) { continue; }
 
                 currentVertex.Known = true;
 
-                this.vertexMap[currentVertex.Vertex] = currentVertex;
+                this.vertexMap[currentVertex.VertexId] = currentVertex;
 
-                foreach (Edge<TValue> edge in currentVertex.Vertex.Edges)
+                foreach (Edge<TValue> edge in this.vertices[currentVertex.VertexId].Edges)
                 {
-                    DijkstraVertexInfo<TValue> vertexInfo = new DijkstraVertexInfo<TValue>(edge.Dest)
+                    VertexDijkstraData data = new VertexDijkstraData(edge.Dest.Id)
                     {
                         TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
-                        Previous = currentVertex.Vertex
+                        PreviousId = currentVertex.VertexId
                     };
 
-                    this.queue.Add(vertexInfo);
+                    this.queue.Add(data);
                 }
             }
 
             LinkedList<(Vertex<TValue>, double)> results = new LinkedList<(Vertex<TValue>, double)>();
 
-            foreach (KeyValuePair<Vertex<TValue>, DijkstraVertexInfo<TValue>> pair in this.vertexMap)
+            foreach (KeyValuePair<int, VertexDijkstraData> pair in this.vertexMap)
             {
                 // Next node & cost to get there
-                results.AddLast((pair.Key, pair.Value.TravelledDistance));
+                results.AddLast((this.vertices[pair.Key], pair.Value.TravelledDistance));
             }
 
             return results;
         }
 
-        private DijkstraVertexInfo<TValue> GetDijkstraVertexInfo(Vertex<TValue> vertex)
+        private VertexDijkstraData GetVertexInfo(int vertexId)
         {
-            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new DijkstraVertexInfo<TValue>(vertex); }
+            if (!this.vertexMap.ContainsKey(vertexId)) { this.vertexMap[vertexId] = new VertexDijkstraData(vertexId); }
 
-            return this.vertexMap[vertex];
+            return this.vertexMap[vertexId];
         }
     }
 }

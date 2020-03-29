@@ -17,7 +17,7 @@ namespace GameAI.Pathfinding.Tests
         {
             Graph<Vector2> graph = GraphHelper.CreateGraph_3Vertex_Simple();
 
-            (Vertex<Vector2>dest, double cost)[] result = new DijkstraRunner<Vector2>().Run(graph.GetVertex(1)).ToArray();
+            (Vertex<Vector2>dest, double cost)[] result = new DijkstraRunner<Vector2>(graph).Run(graph.GetVertex(1)).ToArray();
 
             Vertex<Vector2> vertex1 = graph.GetVertex(1);
             Vertex<Vector2> vertex2 = graph.GetVertex(2);
@@ -36,7 +36,7 @@ namespace GameAI.Pathfinding.Tests
             Vertex<Vector2> vertex2 = graph.GetVertex(2);
             Vertex<Vector2> vertex3 = graph.GetVertex(3);
 
-            DijkstraIterator<Vector2> iterator = new DijkstraIterator<Vector2>(vertex1);
+            DijkstraIterator<Vector2> iterator = new DijkstraIterator<Vector2>(graph, vertex1);
 
             Dictionary<Vertex<Vector2>, (Vertex<Vector2>, double)> results = new Dictionary<Vertex<Vector2>, (Vertex<Vector2>, double)>();
 
