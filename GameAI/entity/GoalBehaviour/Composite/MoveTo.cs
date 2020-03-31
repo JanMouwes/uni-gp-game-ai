@@ -12,7 +12,7 @@ namespace GameAI.GoalBehaviour.Composite
 
         public MoveTo(TOwner owner, Vector2 target, PathFinder pathFinder) : base(owner)
         {
-            this.Path = pathFinder.FindPath(this.Owner.Pos, target);
+            this.Path = pathFinder.FindPath(this.Owner.Position, target);
             this.AddSubgoal(new FollowPath<TOwner>(owner, this.Path));
         }
     }

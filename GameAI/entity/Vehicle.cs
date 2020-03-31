@@ -14,7 +14,7 @@ namespace GameAI.entity
 
         public Team Team;
 
-        public Vehicle(Vector2 pos, World w, Team team) : base(pos, w)
+        public Vehicle(World world, Team team) : base(world)
         {
             this.Team = team;
 
@@ -22,7 +22,7 @@ namespace GameAI.entity
             Scale = 5;
 
             this.Color = team.Colour;
-            
+
             this.Brain = new Think<Vehicle>(this);
             this.Brain.Activate();
         }
@@ -36,7 +36,7 @@ namespace GameAI.entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawCircle(Pos, Scale, 360, this.Color);
+            spriteBatch.DrawCircle(this.Position, Scale, 360, this.Color);
 
             // Vector2 offsetY = this.Pos + new Vector2(0, this.Scale * -0.5f);
             // Vector2 offsetX = new Vector2(this.Scale * .5f, 0);

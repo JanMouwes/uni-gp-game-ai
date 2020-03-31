@@ -13,9 +13,9 @@ namespace GameAI.entity
     {
         public Color Color { get; set; }
 
-        public Rock(World w, Vector2 pos, float scale, Color color) : base(pos, w, scale)
+        public Rock(World world, Vector2 position, float scale, Color color) : base(world, scale)
         {
-            this.Pos = pos;
+            this.Position = position;
             this.Scale = scale;
             this.Color = color;
         }
@@ -27,8 +27,7 @@ namespace GameAI.entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawCircle(Pos, Scale, 360, Color);
-
+            spriteBatch.DrawCircle(this.Position, Scale, 360, Color);
         }
     }
 }

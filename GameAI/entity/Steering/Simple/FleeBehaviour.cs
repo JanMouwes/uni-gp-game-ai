@@ -14,7 +14,7 @@ namespace GameAI.Steering.Simple
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Flee(this.Target.Pos, this.Entity);
+            return SteeringBehaviours.Flee(this.Target.Position, this.Entity);
         }
     }
 }

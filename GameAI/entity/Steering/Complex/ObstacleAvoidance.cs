@@ -29,29 +29,29 @@ namespace GameAI.Steering.Complex
             // Add the box in front of the entity
             IEnumerable<Vector2> checkpoints = new[]
             {
-                Entity.Pos,
-                this.Entity.Pos + viewBox / 2f, // Halfway
-                this.Entity.Pos + viewBox,      // At the end
-                this.Entity.Pos + viewBox * 2   // Double
+                Entity.Position,
+                this.Entity.Position + viewBox / 2f, // Halfway
+                this.Entity.Position + viewBox,      // At the end
+                this.Entity.Position + viewBox * 2   // Double
             };
 
             foreach (BaseGameEntity o in w.obstacles)
             {
                 // Add a circle around the obstacle which can't be crossed
-                CircleF notAllowedZone = new CircleF(o.Pos, o.Scale);
+                CircleF notAllowedZone = new CircleF(o.Position, o.Scale);
 
                 if (checkpoints.Any(checkpoint => notAllowedZone.Contains(checkpoint)))
                 {
-                    Vector2 dist = new Vector2(o.Pos.X - Entity.Pos.X, o.Pos.X - Entity.Pos.Y);
+                    Vector2 dist = new Vector2(o.Position.X - Entity.Position.X, o.Position.X - Entity.Position.Y);
                     Vector2 perpendicular = Vector2Helper.PerpendicularRightAngleOf(dist);
 
-                    Vector2 perpendicularPositivePos = o.Pos + perpendicular;
-                    Vector2 perpendicularNegativePos = o.Pos - perpendicular;
+                    Vector2 perpendicularPositivePos = o.Position + perpendicular;
+                    Vector2 perpendicularNegativePos = o.Position - perpendicular;
 
-                    float perpDistPositive = Vector2.DistanceSquared(Entity.Pos + Entity.Velocity, perpendicularPositivePos);
-                    float perpDistNegative = Vector2.DistanceSquared(Entity.Pos + Entity.Velocity, perpendicularNegativePos);
+                    float perpDistPositive = Vector2.DistanceSquared(Entity.Position + Entity.Velocity, perpendicularPositivePos);
+                    float perpDistNegative = Vector2.DistanceSquared(Entity.Position + Entity.Velocity, perpendicularNegativePos);
 
-                    Vector2 targetRelative = (perpDistPositive > perpDistNegative ? perpendicularNegativePos : perpendicularPositivePos) - Entity.Pos;
+                    Vector2 targetRelative = (perpDistPositive > perpDistNegative ? perpendicularNegativePos : perpendicularPositivePos) - Entity.Position;
 
                     return Vector2Helper.PerpendicularRightAngleOf(targetRelative);
                 }

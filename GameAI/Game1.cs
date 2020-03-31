@@ -141,7 +141,7 @@ namespace GameAI
             {
                 StringBuilder text = new StringBuilder();
 
-                text.Append($"Position: {vehicle.Pos.ToPoint()}\n");
+                text.Append($"Position: {vehicle.Position.ToPoint()}\n");
                 text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
                 text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
 

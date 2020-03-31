@@ -24,19 +24,19 @@ namespace GameAI.Steering.Complex
         {
             bool IsNearSeparation(MovingEntity entity)
             {
-                Vector2 to = entity.Pos - this.Entity.Pos;
+                Vector2 to = entity.Position - this.Entity.Position;
 
                 return to.LengthSquared() < separationRadius * separationRadius;
             }
             bool IsNearAlignment(MovingEntity entity)
             {
-                Vector2 to = entity.Pos - this.Entity.Pos;
+                Vector2 to = entity.Position - this.Entity.Position;
 
                 return to.LengthSquared() < alignmentRadius * alignmentRadius;
             }
             bool IsNearCohesion(MovingEntity entity)
             {
-                Vector2 to = entity.Pos - this.Entity.Pos;
+                Vector2 to = entity.Position - this.Entity.Position;
 
                 return to.LengthSquared() < cohesionRadius * cohesionRadius;
             }

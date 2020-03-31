@@ -8,25 +8,25 @@ namespace GameAI.Steering
 {
     public static class SteeringBehaviours
     {
-        public static Vector2 Pursue(MovingEntity target, MovingEntity owner) => Seek(target.Pos + target.Velocity, owner);
+        public static Vector2 Pursue(MovingEntity target, MovingEntity owner) => Seek(target.Position + target.Velocity, owner);
 
         public static Vector2 Flee(Vector2 target, MovingEntity owner)
         {
             const float panicDistance = 32f;
-            float distance = Vector2.Distance(target, owner.Pos);
+            float distance = Vector2.Distance(target, owner.Position);
 
             if (panicDistance > distance) { return Vector2.Zero; }
 
-            Vector2 desiredVelocity = (owner.Pos - target).NormalizedCopy() * owner.MaxSpeed;
+            Vector2 desiredVelocity = (owner.Position - target).NormalizedCopy() * owner.MaxSpeed;
 
             return desiredVelocity - owner.Velocity;
         }
 
         public static Vector2 Seek(Vector2 target, MovingEntity owner)
         {
-            if (target == owner.Pos) { return Vector2.Zero; }
+            if (target == owner.Position) { return Vector2.Zero; }
 
-            Vector2 desiredVelocity = (target - owner.Pos).NormalizedCopy() * owner.MaxSpeed;
+            Vector2 desiredVelocity = (target - owner.Position).NormalizedCopy() * owner.MaxSpeed;
 
             return desiredVelocity - owner.Velocity;
         }
@@ -34,7 +34,7 @@ namespace GameAI.Steering
         public static Vector2 Arrive(Vector2 target, MovingEntity vehicle, float decelerateDistance)
         {
             //    Distance between target and location in vector
-            Vector2 difference = target - vehicle.Pos;
+            Vector2 difference = target - vehicle.Position;
 
             // If not close enough to decelerate, don't decelerate 
             if (difference.LengthSquared() > decelerateDistance * decelerateDistance) { return Seek(target, vehicle); }
@@ -66,7 +66,7 @@ namespace GameAI.Steering
 
         public static Vector2 WallAvoidance(MovingEntity entity, World world, float panicDistance)
         {
-            (float distToLeft, float distToTop) = entity.Pos + entity.Velocity;
+            (float distToLeft, float distToTop) = entity.Position + entity.Velocity;
 
             float distToBottom = world.Height - distToTop;
             float distToRight = world.Width   - distToLeft;
@@ -104,7 +104,7 @@ namespace GameAI.Steering
         public static Vector2 LeaderFollowing(MovingEntity target, MovingEntity owner, Vector2 offset)
         {
             //    Distance between target and location in vector
-            Vector2 difference = target.Pos - owner.Pos - offset;
+            Vector2 difference = target.Position - owner.Position - offset;
             float distance = difference.Length();
 
             if (distance <= 0) return target.Velocity;
@@ -121,7 +121,7 @@ namespace GameAI.Steering
 
             foreach (MovingEntity neighbor in neighbors)
             {
-                Vector2 toAgent = owner.Pos - neighbor.Pos;
+                Vector2 toAgent = owner.Position - neighbor.Position;
                 steeringForce += toAgent;
             }
 
@@ -162,7 +162,7 @@ namespace GameAI.Steering
             {
                 if (neighbor != owner)
                 {
-                    centerOfMass += neighbor.Pos;
+                    centerOfMass += neighbor.Position;
 
                     ++neighborCount;
                 }

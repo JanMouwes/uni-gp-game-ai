@@ -57,19 +57,13 @@ namespace GameAI
 
                 this.Teams.Add(team.Colour, team);
 
-
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
                 {
-                    Vector2 position = new Vector2
+                    Vehicle vehicle = new Vehicle(this, team)
                     {
-                        X = random.Next(0, Width),
-                        Y = random.Next(0, Height)
-                    };
-
-                    Vehicle vehicle = new Vehicle(position, this, team)
-                    {
-                        MaxSpeed = 100f, Mass = 1
+                        MaxSpeed = 100f,
+                        Mass = 1
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
@@ -90,7 +84,7 @@ namespace GameAI
             {
                 float realRange = range + entity.Scale;
 
-                return (location - entity.Pos).LengthSquared() < realRange * realRange;
+                return (location - entity.Position).LengthSquared() < realRange * realRange;
             }
 
             return this.entities.Concat(this.obstacles).Where(IsNear);
@@ -98,7 +92,7 @@ namespace GameAI
 
         public void SpawnVehicle(Vehicle vehicle, Vector2 position)
         {
-            vehicle.Pos = position;
+            vehicle.Position = position;
 
             this.entities.Add(vehicle);
             vehicle.Team.Vehicles.AddLast(vehicle);

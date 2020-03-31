@@ -29,7 +29,7 @@ namespace GameAI.GoalBehaviour.Atomic
 
         public override GoalStatus Process(GameTime gameTime)
         {
-            bool isNear = Vector2.DistanceSquared(this.Owner.Pos, this.target) < this.nearRange * this.nearRange;
+            bool isNear = Vector2.DistanceSquared(this.Owner.Position, this.target) < this.nearRange * this.nearRange;
 
             if (isNear) { this.Status = GoalStatus.Completed; }
 

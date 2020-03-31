@@ -27,13 +27,13 @@ namespace GameAI.entity
         //TODO add maxForce
         public SteeringBehaviour Steering { get; set; } = DefaultSteeringBehaviour.Instance;
 
-        public MovingEntity(Vector2 pos, World w) : base(pos, w)
+        public MovingEntity(World world) : base(world)
         {
             Mass = 30;
             MaxSpeed = .01f;
             Velocity = new Vector2();
-            this.wallAvoidance = new WallAvoidance(this, w, 5f, 1.5f);
-            this.obstacleAvoidance = new ObstacleAvoidance(this, w);
+            this.wallAvoidance = new WallAvoidance(this, world, 5f, 1.5f);
+            this.obstacleAvoidance = new ObstacleAvoidance(this, world);
         }
 
         public override void Update(GameTime gameTime)
@@ -63,20 +63,20 @@ namespace GameAI.entity
 
             Velocity = Velocity.Truncate(MaxSpeed);
 
-            Pos += Velocity * elapsedSeconds;
+            this.Position += Velocity * elapsedSeconds;
 
             if (Velocity != Vector2.Zero) { this.Orientation = Velocity.NormalizedCopy(); }
         }
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawLine(Pos, Pos + Velocity, Color.Yellow);
-            spriteBatch.DrawLine(Pos, Pos + Steering.Calculate(), Color.Green);
+            spriteBatch.DrawLine(this.Position, this.Position + Velocity, Color.Yellow);
+            spriteBatch.DrawLine(this.Position, this.Position + Steering.Calculate(), Color.Green);
         }
 
         public override string ToString()
         {
-            return $"{this.Pos} with velocity {Velocity}";
+            return $"{this.Position} with velocity {Velocity}";
         }
 
         // public string DebugInfo()
