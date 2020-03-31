@@ -13,8 +13,10 @@ namespace GameAI.entity
     {
         public Color Color { get; set; }
 
-        public Rock(Vector2 pos, World w, Color color) : base(pos, w)
+        public Rock(World w, Vector2 pos, float scale, Color color) : base(pos, w, scale)
         {
+            this.Pos = pos;
+            this.Scale = scale;
             this.Color = color;
         }
 
