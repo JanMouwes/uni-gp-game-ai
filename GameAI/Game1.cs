@@ -144,7 +144,6 @@ namespace GameAI
                 text.Append($"Position: {vehicle.Pos.ToPoint()}\n");
                 text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
                 text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
-                text.Append($"Wall: {vehicle.wallAvoidance.Calculate().ToPoint()}\n");
 
                 spriteBatch.DrawString(this.mainFont, text.ToString(), Vector2.Zero, Color.Black);
             }
