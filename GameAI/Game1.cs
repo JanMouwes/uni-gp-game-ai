@@ -25,6 +25,7 @@ namespace GameAI
         private GraphRenderer graphRenderer;
 
         private PathFinder pathFinder;
+        private CustomizablePathSmoother pathSmoother;
 
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
@@ -71,7 +72,8 @@ namespace GameAI
 
             this.graphRenderer = new GraphRenderer(this.NavGraph,this.mainFont, Color.White);
 
-            this.pathFinder = new PathFinder(this.NavGraph);
+            this.pathSmoother = new CustomizablePathSmoother(2);
+            this.pathFinder = new PathFinder(this.NavGraph, pathSmoother);
 
             this.keyboardInput = new KeyboardInput();
             this.mouseInput = new MouseInput();

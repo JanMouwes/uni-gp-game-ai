@@ -70,6 +70,7 @@
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
+    <Compile Include="Navigation\CustomizablePathSmoother.cs" />
     <Compile Include="Navigation\DefaultPathSmoother.cs" />
     <Compile Include="Navigation\IPathSmoother.cs" />
     <Compile Include="Navigation\PathFinder.cs" />

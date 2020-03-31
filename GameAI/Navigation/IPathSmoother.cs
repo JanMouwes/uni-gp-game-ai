@@ -10,6 +10,6 @@ namespace GameAI.Navigation
         /// </summary>
         /// <param name="path">Path to smooth</param>
         /// <returns>Smoothed path</returns>
-        IEnumerable<Vector2> SmoothPath(LinkedList<Vector2> path);
+        IEnumerable<Vector2> SmoothPath(IEnumerable<Vector2> path);
     }
 }
