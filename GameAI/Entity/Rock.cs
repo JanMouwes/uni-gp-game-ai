@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
-namespace GameAI.entity
+namespace GameAI.Entity
 {
     public class Rock : BaseGameEntity
     {

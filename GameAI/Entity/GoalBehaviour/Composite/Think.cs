@@ -1,4 +1,7 @@
-namespace GameAI.GoalBehaviour.Composite
+using GameAI.GoalBehaviour;
+using Microsoft.Xna.Framework;
+
+namespace GameAI.Entity.GoalBehaviour.Composite
 {
     public class Think<TOwner> : GoalComposite<TOwner>
     {

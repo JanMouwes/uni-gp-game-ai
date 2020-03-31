@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameAI.entity;
+using GameAI.Entity;
 using GameAI.Util;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
@@ -35,7 +35,7 @@ namespace GameAI.Steering.Complex
                 this.Entity.Position + viewBox * 2   // Double
             };
 
-            foreach (BaseGameEntity o in w.obstacles)
+            foreach (Rock o in w.Entities.OfType<Rock>())
             {
                 // Add a circle around the obstacle which can't be crossed
                 CircleF notAllowedZone = new CircleF(o.Position, o.Scale);

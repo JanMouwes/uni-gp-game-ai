@@ -1,4 +1,4 @@
-using GameAI.entity;
+using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Steering.Complex

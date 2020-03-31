@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameAI.entity;
+using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Steering.Complex
@@ -28,12 +28,14 @@ namespace GameAI.Steering.Complex
 
                 return to.LengthSquared() < separationRadius * separationRadius;
             }
+
             bool IsNearAlignment(MovingEntity entity)
             {
                 Vector2 to = entity.Position - this.Entity.Position;
 
                 return to.LengthSquared() < alignmentRadius * alignmentRadius;
             }
+
             bool IsNearCohesion(MovingEntity entity)
             {
                 Vector2 to = entity.Position - this.Entity.Position;
@@ -41,11 +43,11 @@ namespace GameAI.Steering.Complex
                 return to.LengthSquared() < cohesionRadius * cohesionRadius;
             }
 
-            Vector2 target = this.Entity.Velocity +
-                             SteeringBehaviours.Separation(this.Entity, this.World.entities.Where(IsNearSeparation)) + 
-                             SteeringBehaviours.Alignment(this.Entity, this.World.entities.Where(IsNearAlignment)) +
-                             SteeringBehaviours.Cohesion(this.Entity, this.World.entities.Where(IsNearCohesion));
-            
+            Vector2 target = this.Entity.Velocity                                                                                      +
+                             SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation)) +
+                             SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearAlignment))   +
+                             SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearCohesion));
+
             if (target.Equals(Vector2.Zero))
             {
                 //  When there is no target, start wandering

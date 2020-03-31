@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GameAI.entity;
+using GameAI.Entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 

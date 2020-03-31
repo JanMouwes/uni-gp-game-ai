@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GameAI.entity;
-using GameAI.GoalBehaviour.Atomic;
+using GameAI.Entity;
 using GameAI.GoalBehaviour.Composite;
 using GameAI.Steering;
 using GameAI.Util;
@@ -30,8 +29,8 @@ namespace GameAI
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
 
-        private const int WORLD_WIDTH = 800;
-        private const int WORLD_HEIGHT = 600;
+        private const int WORLD_WIDTH = 150;
+        private const int WORLD_HEIGHT = 150;
 
         public Graph<Vector2> NavGraph;
 
@@ -46,8 +45,18 @@ namespace GameAI
 
         protected override void Initialize()
         {
-            this.world = new World(WORLD_WIDTH, WORLD_HEIGHT);
-            this.world.Populate(10);
+            (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
+            (int, int) vertexCounts = (4, 3);
+            (float, float) offset = (10, 10);
+            this.NavGraph = GraphGenerator.GenerateGraphWithPadding(
+                dimensions, vertexCounts, offset,
+                GraphGenerator.AxisAndDiagonalIndices
+            );
+
+            this.pathFinder = new PathFinder(this.NavGraph);
+
+            this.world = new World(WORLD_WIDTH, WORLD_HEIGHT, this.pathFinder);
+            this.world.Populate(1);
 
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT;
@@ -62,17 +71,7 @@ namespace GameAI
 
             this.mainFont = Content.Load<SpriteFont>("Content/opensans");
 
-            (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
-            (int, int) vertexCounts = (24, 18);
-            (float, float) offset = (10, 10);
-            this.NavGraph = GraphGenerator.GenerateGraphWithPadding(
-                dimensions, vertexCounts, offset,
-                GraphGenerator.AxisAndDiagonalIndices
-            );
-
             this.graphRenderer = new GraphRenderer(this.NavGraph, this.mainFont, Color.White);
-
-            this.pathFinder = new PathFinder(this.NavGraph);
 
             this.keyboardInput = new KeyboardInput();
             this.mouseInput = new MouseInput();

@@ -1,9 +1,8 @@
-using GameAI.Steering;
+using GameAI.GoalBehaviour;
 using GameAI.Steering.Simple;
-using GameAI.entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.GoalBehaviour.Atomic
+namespace GameAI.Entity.GoalBehaviour.Atomic
 {
     public class TraverseEdge<TOwner> : Goal<TOwner> where TOwner : MovingEntity
     {

@@ -31,11 +31,11 @@ namespace GameAI.GoalBehaviour
 
             if (current.IsInactive()) { current.Activate(); }
 
-            GoalStatus status = current.Process(gameTime);
+            this.Status = current.Process(gameTime);
 
-            if (status == GoalStatus.Completed && this.GoalQueue.Count > 1) { return GoalStatus.Active; }
+            if (this.Status == GoalStatus.Completed && this.GoalQueue.Count > 1) { this.Status = GoalStatus.Active; }
 
-            return status;
+            return this.Status;
         }
 
         /// <summary>
