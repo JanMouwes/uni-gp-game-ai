@@ -44,12 +44,19 @@ namespace GameAI
                 Color.Blue,
                 Color.Orange
             };
+            Vector2[] teamSpawns =
+            {
+                new Vector2(50, 50),
+                new Vector2(this.Width - 50, this.Height - 50)
+            };
 
             for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
             {
                 Team team = new Team(teamColours[teamIndex]);
+                team.AddSpawnPoint(teamSpawns[teamIndex]);
 
                 this.Teams.Add(team.Colour, team);
+
 
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
@@ -66,7 +73,7 @@ namespace GameAI
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
-                    SpawnVehicle(vehicle, position);
+                    SpawnVehicle(vehicle);
                 }
             }
         }
@@ -95,6 +102,11 @@ namespace GameAI
 
             this.entities.Add(vehicle);
             vehicle.Team.Vehicles.AddLast(vehicle);
+        }
+
+        public void SpawnVehicle(Vehicle vehicle)
+        {
+            SpawnVehicle(vehicle, vehicle.Team.RandomSpawnPoint());
         }
 
         public void Update(GameTime gameTime)
