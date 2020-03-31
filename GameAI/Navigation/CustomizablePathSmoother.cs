@@ -15,27 +15,40 @@ namespace GameAI.Navigation
             this.nodesAhead = nodesAhead;
         }
 
-        public IEnumerable<Vector2> SmoothPath(IEnumerable<Vector2> path)
+        public IEnumerable<Vector2> SmoothPath(LinkedList<Vector2> path)
         {
-            // First remove points with the first node as base point
-            Vector2 node = path.First();
+            LinkedListNode<Vector2> node = path.First;
+            yield return node.Value;
             for (int i = 0; i < path.Count(); i++)
             {
-                // Checking if this is the last item in the linkedlist
-                if (node.Next == null) break;
-                LinkedListNode<Vector2> one = node.Next;
-                // Checking to see if one is the last item in the linkedlist
-                if (one.Next == null) break;
-                LinkedListNode<Vector2> two = one.Next;
+                LinkedListNode<Vector2> add = node;
+                float distOriginal = 0;
+                for (int j = 0; j < nodesAhead; j++)
+                {
+                    if (add == null) break;
+                    try {
+                        add = add.Next;
+                    }
+                    catch
+                    {
+                        break;
+                    }
 
-                // Checking if the distance from the source to the second next node is faster by approaching it directly
-                float distOriginal = Vector2.DistanceSquared(node.Value, one.Value) + Vector2.DistanceSquared(one.Value, two.Value);
-                float distNew = Vector2.DistanceSquared(node.Value, two.Value);
-                if (distNew <= distOriginal) path.Remove((one));
+                    if (add != node && add != null) distOriginal += Vector2.DistanceSquared(node.Value, add.Value);
+                }
 
-                node = node.Next;
+                if (add != node && add != null)
+                {
+                    // Checking if the distance from the source to the second next node is faster by approaching it directly
+                    float distNew = Vector2.DistanceSquared(node.Value, add.Value);
+                    if (distNew <= distOriginal)
+                    {
+                        node = add;
+                        yield return add.Value;
+                    }
+
+                }
             }
-            return path;
         }
     }
 }
