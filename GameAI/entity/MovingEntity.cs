@@ -12,9 +12,9 @@ namespace GameAI.entity
     {
         // for testing purposes
 
-        public readonly WallAvoidance wallAvoidance;
+        private readonly WallAvoidance wallAvoidance;
 
-        public readonly ObstacleAvoidance obstacleAvoidance;
+        private readonly ObstacleAvoidance obstacleAvoidance;
 
         public Vector2 Velocity { get; set; }
 
