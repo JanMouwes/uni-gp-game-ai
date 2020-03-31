@@ -66,7 +66,7 @@ namespace GameAI
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
-                    entities.Add(vehicle);
+                    SpawnVehicle(vehicle, position);
                 }
             }
         }
@@ -87,6 +87,14 @@ namespace GameAI
             }
 
             return this.entities.Concat(this.obstacles).Where(IsNear);
+        }
+
+        public void SpawnVehicle(Vehicle vehicle, Vector2 position)
+        {
+            vehicle.Pos = position;
+
+            this.entities.Add(vehicle);
+            vehicle.Team.Vehicles.AddLast(vehicle);
         }
 
         public void Update(GameTime gameTime)
