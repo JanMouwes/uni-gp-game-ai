@@ -42,11 +42,12 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AStar\AStarRunner.cs" />
-        <Compile Include="AStar\AStarVertexInfo.cs" />
+        <Compile Include="AStar\VertexAStarData.cs" />
         <Compile Include="AStar\Heuristics.cs" />
         <Compile Include="Dijkstra\DijkstraIterator.cs" />
         <Compile Include="Dijkstra\DijkstraRunner.cs" />
-        <Compile Include="Dijkstra\DijkstraVertexInfo.cs" />
+        <Compile Include="Dijkstra\VertexDijkstraData.cs" />
+        <Compile Include="PathNotFoundException.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

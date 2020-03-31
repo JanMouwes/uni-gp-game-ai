@@ -23,10 +23,9 @@ namespace GameAI
         {
             Width = w;
             Height = h;
-            populate();
         }
 
-        private void populate(int vehicleCount = 20)
+        public void Populate(int vehicleCount)
         {
             Random random = new Random();
 
@@ -47,7 +46,7 @@ namespace GameAI
                 {
                     Color = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                v.Steering = new FlockingBehaviour(v, this, 100);
+                // v.Steering = new FlockingBehaviour(v, this, 50);
 
                 entities.Add(v);
             }

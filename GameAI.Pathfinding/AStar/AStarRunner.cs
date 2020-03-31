@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
-using GameAI.Pathfinding.Dijkstra;
 using Graph;
 using PriorityQueue;
 
@@ -10,58 +8,91 @@ namespace GameAI.Pathfinding.AStar
 
     public class AStarRunner<TValue>
     {
-        private readonly Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>>();
+        private readonly Graph<TValue> graph;
+        // private readonly Dictionary<Vertex<TValue>, VertexAStarData<TValue>> vertexMap = new Dictionary<Vertex<TValue>, VertexAStarData<TValue>>();
 
-        private readonly PriorityQueue<DijkstraVertexInfo<TValue>> queue = new PriorityQueue<DijkstraVertexInfo<TValue>>();
+        /// <summary>
+        /// Vertices by ID
+        /// </summary>
+        private readonly Dictionary<int, Vertex<TValue>> vertices;
 
-        public DijkstraRunner<TValue>.DijkstraResult Run(Vertex<TValue> origin, Vertex<TValue> target, Heuristic<TValue> heuristic)
+        private readonly Dictionary<int, VertexAStarData> vertexData;
+
+        private readonly PriorityQueue<VertexAStarData> queue = new PriorityQueue<VertexAStarData>();
+
+        public AStarRunner(Graph<TValue> graph)
         {
-            DijkstraVertexInfo<TValue> originDijkstraVertexInfo = GetDijkstraVertexInfo(origin);
-            originDijkstraVertexInfo.Distance = 0;
-            this.queue.Add(originDijkstraVertexInfo);
+            this.graph = graph;
+
+            this.vertices = new Dictionary<int, Vertex<TValue>>();
+            this.vertexData = new Dictionary<int, VertexAStarData>();
+
+            foreach (Vertex<TValue> vertex in graph.Vertices)
+            {
+                this.vertices[vertex.Id] = vertex;
+                this.vertexData.Add(vertex.Id, new VertexAStarData(vertex.Id));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="destination"></param>
+        /// <param name="heuristic"></param>
+        /// <returns>Path of vertices, including origin and destination</returns>
+        public IEnumerable<Vertex<TValue>> Run(Vertex<TValue> origin, Vertex<TValue> destination, Heuristic<TValue> heuristic)
+        {
+            VertexAStarData originData = this.vertexData[origin.Id];
+            originData.TravelledDistance = 0;
+            this.queue.Add(originData);
 
             while (this.queue.Size > 0)
             {
-                DijkstraVertexInfo<TValue> currentVertex = this.queue.Remove();
+                VertexAStarData currentVertex = this.queue.Remove();
 
-                bool isFarther = currentVertex.Distance > GetDijkstraVertexInfo(currentVertex.Vertex).Distance;
+                if (this.vertexData[currentVertex.VertexId].Known) { continue; }
 
-                if (currentVertex.Known || isFarther) { continue; }
+                this.vertexData[currentVertex.VertexId] = currentVertex;
 
-                currentVertex.Known = true;
+                this.vertexData[currentVertex.VertexId].Known = true;
 
-                this.vertexMap[currentVertex.Vertex] = currentVertex;
-
-                foreach (Edge<TValue> edge in currentVertex.Vertex.Edges)
+                foreach (Edge<TValue> edge in this.vertices[currentVertex.VertexId].Edges)
                 {
-                    double heuristicDist = heuristic(edge.Dest, target);
+                    double heuristicDist = heuristic(edge.Dest, destination);
 
-                    AStarVertexInfo<TValue> vertexInfo = new AStarVertexInfo<TValue>(edge.Dest)
+                    // Prevent adding to queue if already known
+                    if (this.vertexData[edge.Dest.Id].Known) { continue; }
+
+                    VertexAStarData data = new VertexAStarData(edge.Dest.Id)
                     {
-                        Distance = currentVertex.Distance + edge.Cost,
+                        TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
                         HeuristicValue = heuristicDist,
-                        Previous = currentVertex.Vertex
+                        PreviousId = currentVertex.VertexId
                     };
 
-                    this.queue.Add(vertexInfo);
+                    this.queue.Add(data);
                 }
             }
 
-            Dictionary<Vertex<TValue>, (Vertex<TValue>, double)> results = new Dictionary<Vertex<TValue>, (Vertex<TValue>, double)>();
+            LinkedList<Vertex<TValue>> results = new LinkedList<Vertex<TValue>>();
 
-            foreach (KeyValuePair<Vertex<TValue>, DijkstraVertexInfo<TValue>> pair in this.vertexMap)
+            VertexAStarData currentNodeInfo = this.vertexData[destination.Id];
+
+            while (currentNodeInfo.VertexId != origin.Id)
             {
-                results[pair.Key] = (pair.Value.Previous, pair.Value.Distance);
+                if (!currentNodeInfo.Known) { throw new PathNotFoundException(); }
+
+                VertexAStarData previous = this.vertexData[currentNodeInfo.PreviousId];
+                // Next node & cost to get there
+                results.AddFirst(this.vertices[currentNodeInfo.VertexId]);
+
+                currentNodeInfo = previous;
             }
 
-            return new DijkstraRunner<TValue>.DijkstraResult(results);
-        }
+            results.AddFirst(origin);
 
-        private DijkstraVertexInfo<TValue> GetDijkstraVertexInfo(Vertex<TValue> vertex)
-        {
-            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new DijkstraVertexInfo<TValue>(vertex); }
-
-            return this.vertexMap[vertex];
+            return results;
         }
     }
 }

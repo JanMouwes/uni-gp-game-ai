@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using GameAI.Pathfinding.Algorithms.Dijkstra;
 using Graph;
 using PriorityQueue;
 
@@ -9,53 +8,62 @@ namespace GameAI.Pathfinding.Dijkstra
     public class DijkstraIterator<TValue> : IEnumerator<(Vertex<TValue>, (Vertex<TValue>, double))>
     {
         private readonly Vertex<TValue> origin;
-        private readonly Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>> vertexMap = new Dictionary<Vertex<TValue>, DijkstraVertexInfo<TValue>>();
-        private readonly PriorityQueue<DijkstraVertexInfo<TValue>> queue = new PriorityQueue<DijkstraVertexInfo<TValue>>();
+        private readonly Dictionary<int, VertexDijkstraData> vertexMap = new Dictionary<int, VertexDijkstraData>();
+        private readonly Dictionary<int, Vertex<TValue>> vertices = new Dictionary<int, Vertex<TValue>>();
 
-        private DijkstraVertexInfo<TValue> current;
+        private readonly PriorityQueue<VertexDijkstraData> queue = new PriorityQueue<VertexDijkstraData>();
 
-        public (Vertex<TValue>, (Vertex<TValue>, double)) Current => (this.current.Vertex, (this.current.Previous, this.current.Distance));
+        private int currentVertexId;
+
+        public (Vertex<TValue>, (Vertex<TValue>, double)) Current =>
+            (this.vertices[currentVertexId],
+             (
+                 this.vertices[this.vertexMap[currentVertexId].PreviousId],
+                 this.vertexMap[currentVertexId].TravelledDistance
+             ));
+
         object IEnumerator.Current => this.Current;
 
-        public DijkstraIterator(Vertex<TValue> origin)
+        public DijkstraIterator(Graph<TValue> graph, Vertex<TValue> origin)
         {
             this.origin = origin;
+
+            foreach (Vertex<TValue> vertex in graph.Vertices) { this.vertices[vertex.Id] = vertex; }
+
             this.Init(this.origin);
         }
 
-        private DijkstraVertexInfo<TValue> GetVertexInfo(Vertex<TValue> vertex)
+        private VertexDijkstraData GetVertexInfo(Vertex<TValue> vertex)
         {
-            if (!this.vertexMap.ContainsKey(vertex)) { this.vertexMap[vertex] = new DijkstraVertexInfo<TValue>(vertex); }
+            if (!this.vertexMap.ContainsKey(vertex.Id)) { this.vertexMap[vertex.Id] = new VertexDijkstraData(vertex.Id); }
 
-            return this.vertexMap[vertex];
+            return this.vertexMap[vertex.Id];
         }
 
         public bool MoveNext()
         {
             if (this.queue.Size == 0) { return false; }
 
-            DijkstraVertexInfo<TValue> currentVertex = this.queue.Remove();
+            VertexDijkstraData currentVertex = this.queue.Remove();
 
-            bool isFarther = currentVertex.Distance > GetVertexInfo(currentVertex.Vertex).Distance;
-
-            if (currentVertex.Known || isFarther) { return MoveNext(); }
+            if (currentVertex.Known) { return MoveNext(); }
 
             currentVertex.Known = true;
 
-            this.vertexMap[currentVertex.Vertex] = currentVertex;
+            this.vertexMap[currentVertex.VertexId] = currentVertex;
 
-            foreach (Edge<TValue> edge in currentVertex.Vertex.Edges)
+            foreach (Edge<TValue> edge in this.vertices[currentVertex.VertexId].Edges)
             {
-                DijkstraVertexInfo<TValue> vertexInfo = new DijkstraVertexInfo<TValue>(edge.Dest)
+                VertexDijkstraData data = new VertexDijkstraData(edge.Dest.Id)
                 {
-                    Distance = currentVertex.Distance + edge.Cost,
-                    Previous = currentVertex.Vertex
+                    TravelledDistance = currentVertex.TravelledDistance + edge.Cost,
+                    PreviousId = currentVertex.VertexId
                 };
 
-                this.queue.Add(vertexInfo);
+                this.queue.Add(data);
             }
 
-            this.current = currentVertex;
+            this.currentVertexId = currentVertex.VertexId;
 
             return true;
         }
@@ -68,9 +76,9 @@ namespace GameAI.Pathfinding.Dijkstra
 
         private void Init(Vertex<TValue> withOrigin)
         {
-            DijkstraVertexInfo<TValue> originVertexInfo = GetVertexInfo(withOrigin);
-            originVertexInfo.Distance = 0;
-            this.queue.Add(originVertexInfo);
+            VertexDijkstraData originData = GetVertexInfo(withOrigin);
+            originData.TravelledDistance = 0;
+            this.queue.Add(originData);
         }
 
         public void Dispose() { }

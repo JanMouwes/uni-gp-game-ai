@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Graph;
@@ -7,18 +8,18 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Navigation
 {
-    public class NavigationGraph
+    public class PathFinder
     {
         private Graph<Vector2> graph;
         private IPathSmoother pathSmoother;
 
-        public NavigationGraph(Graph<Vector2> graph, IPathSmoother pathSmoother)
+        public PathFinder(Graph<Vector2> graph, IPathSmoother pathSmoother)
         {
             this.graph = graph;
             this.pathSmoother = pathSmoother;
         }
 
-        public NavigationGraph(Graph<Vector2> graph) : this(graph, new DefaultPathSmoother()) { }
+        public PathFinder(Graph<Vector2> graph) : this(graph, new DefaultPathSmoother()) { }
 
         public Vertex<Vector2> GetNearestVertex(Vector2 source)
         {
@@ -44,9 +45,11 @@ namespace GameAI.Navigation
             Vertex<Vector2> sourceVertex = GetNearestVertex(source);
             Vertex<Vector2> destVertex = GetNearestVertex(destination);
 
-            DijkstraRunner<Vector2>.DijkstraResult result = new AStarRunner<Vector2>().Run(sourceVertex, destVertex, Heuristics.Euclidean);
+            IEnumerable<Vertex<Vector2>> result = new AStarRunner<Vector2>(this.graph).Run(sourceVertex, destVertex, Heuristics.Manhattan);
 
-            IEnumerable<Vector2> path = result.Results.Keys.Select(item => item.Value);
+            LinkedList<Vector2> path = new LinkedList<Vector2>(result.Select(item => item.Value));
+
+            path.AddLast(destination);
 
             return this.pathSmoother.SmoothPath(path);
         }

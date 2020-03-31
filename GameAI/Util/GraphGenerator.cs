@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Graph;
 using Microsoft.Xna.Framework;
@@ -146,8 +145,6 @@ namespace GameAI.Util
 
                     Vertex<Vector2> vertex = returnGraph.GetVertex(index);
                     vertex.Value = vector;
-
-                    Console.WriteLine(vertex + ": " + vector);
 
                     foreach ((int neighbourIndex, float cost) in neighbourGenerator(x, y, xAxisVertexCount, yAxisVertexCount, vectorXDistance, vectorYDistance)) { returnGraph.AddEdge(index, neighbourIndex, cost); }
 
