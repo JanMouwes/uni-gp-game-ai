@@ -49,6 +49,7 @@ namespace GameAI.Navigation
 
             LinkedList<Vector2> path = new LinkedList<Vector2>(result.Select(item => item.Value));
 
+            path.AddFirst(source);
             path.AddLast(destination);
 
             return this.pathSmoother.SmoothPath(path);

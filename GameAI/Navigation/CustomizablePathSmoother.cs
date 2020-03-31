@@ -31,14 +31,14 @@ namespace GameAI.Navigation
                 // Loop through the amount of times is allowed
                 for (int j = 0; j < nodesAhead; j++)
                 {
+                    if (add.Next == null) break;
                     add = add.Next;
 
-                    if (add == null) break;
                     if (add != node) distOriginal += Vector2.DistanceSquared(node.Value, add.Value);
                 }
 
                 // Small check to see if add was changed or is not null
-                if (add != node && add != null)
+                if (add != node)
                 {
                     // Checking if the distance from the source to the second next node is faster by approaching it directly or stayed the same
                     // if that is the case, yield return the new add value
