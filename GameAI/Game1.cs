@@ -65,8 +65,9 @@ namespace GameAI
             (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
             (int, int) vertexCounts = (24, 18);
             (float, float) offset = (10, 10);
-            this.NavGraph = GraphGenerator.GenerateGraphWithPadding(
-                dimensions, vertexCounts, offset,
+            this.NavGraph = GraphGenerator.GenerateGraphWithObstacles(
+                dimensions, vertexCounts, offset, 
+                world,
                 GraphGenerator.AxisAndDiagonalIndices
             );
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA &amp; AI/Portfolio/MonogameSteeringCS/GameAI/Content/opensans.spritefont</SourceFile>
-  <SourceTime>2020-03-31T14:21:06.8055966+02:00</SourceTime>
-  <DestFile>/Users/gebruiker/Desktop/School/Windesheim/Windesheim 2019-2020/Semester 2/GA &amp; AI/Portfolio/MonogameSteeringCS/GameAI/Content/bin/DesktopGL/Content/opensans.xnb</DestFile>
-  <DestTime>2020-03-31T17:27:32.4430947+02:00</DestTime>
+  <SourceFile>C:/Users/marts/OneDrive/Documenten/School/Games Programming/Game Algorithms and Artificial Inteligence/CODE/Jan/NEW/university-game-ai/GameAI/Content/opensans.spritefont</SourceFile>
+  <SourceTime>2020-03-31T14:28:03.0919928+02:00</SourceTime>
+  <DestFile>C:/Users/marts/OneDrive/Documenten/School/Games Programming/Game Algorithms and Artificial Inteligence/CODE/Jan/NEW/university-game-ai/GameAI/Content/bin/DesktopGL/Content/opensans.xnb</DestFile>
+  <DestTime>2020-03-31T17:49:46.4571238+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2018-09-23T23:56:40+02:00</ImporterTime>
+  <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>LocalizedFontProcessor</Processor>
-  <ProcessorTime>2018-09-23T23:56:40+02:00</ProcessorTime>
+  <ProcessorTime>2018-12-08T17:35:54+01:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>
