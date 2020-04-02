@@ -264,14 +264,11 @@ namespace GameAI.Util
                         foreach ((int neighbourIndex, float cost) in neighbourGenerator(x, y, vertexCounts.Item1,
                             vertexCounts.Item2, vectorXDistance, vectorYDistance))
                         {
-                            returnGraph.AddEdge(index, neighbourIndex, cost);
+                            if (returnGraph.GetVertex(neighbourIndex).Value != Vector2.Zero) returnGraph.AddEdge(index, neighbourIndex, cost);
                         }
                     }
                     else
-                    {
-                        Vertex<Vector2> vertex = returnGraph.GetVertex(index);
-                        returnGraph.RemoveVertex(index);
-                    }
+                    { }
                     index++;
                 }
             }

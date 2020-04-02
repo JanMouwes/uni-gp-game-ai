@@ -29,15 +29,6 @@ namespace Graph
             this.vertexMap[vertex.Id] = vertex;
         }
 
-        public void RemoveVertex(int id)
-        {
-            if (this.vertexMap.ContainsKey(id))
-            {
-                return; }
-
-            this.vertexMap[id] = null;
-        }
-
         public void AddEdge(int source, int dest, double cost)
         {
             Vertex<TValue> sourceVertex = GetVertex(source);
