@@ -1,11 +1,9 @@
 using System.Collections.Generic;
-using System.Threading;
-using GameAI.Entity;
-using GameAI.Entity.GoalBehaviour.Composite;
+using GameAI.GoalBehaviour;
 using GameAI.Navigation;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.GoalBehaviour.Composite
+namespace GameAI.Entity.GoalBehaviour.Composite
 {
     public class MoveTo<TOwner> : GoalComposite<TOwner> where TOwner : MovingEntity
     {

@@ -1,6 +1,5 @@
 using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.GoalBehaviour;
-using GameAI.GoalBehaviour.Composite;
 using GameAI.Navigation;
 
 namespace GameAI.Entity.GoalBehaviour.Composite

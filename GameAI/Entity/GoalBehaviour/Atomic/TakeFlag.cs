@@ -12,15 +12,13 @@ namespace GameAI.Entity.GoalBehaviour.Atomic
             this.flag = flag;
         }
 
-        public override GoalStatus Process(GameTime gameTime)
+        public override void Process(GameTime gameTime)
         {
             if (this.flag.Carrier != null || Vector2.DistanceSquared(this.Owner.Position, this.flag.Position) > this.Owner.Scale * this.Owner.Scale) { this.Status = GoalStatus.Failed; }
 
             this.flag.Carrier = this.Owner;
 
             this.Status = GoalStatus.Completed;
-
-            return this.Status;
         }
     }
 }

@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using GameAI.Steering;
 using GameAI.Steering.Complex;
 using GameAI.Steering.Simple;
 using GameAI.Entity;
+using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.Entity.GoalBehaviour.Composite;
+using GameAI.GoalBehaviour;
 using GameAI.Navigation;
 using GameAI.world;
 using Microsoft.Xna.Framework;
@@ -23,8 +26,8 @@ namespace GameAI
         private readonly List<BaseGameEntity> entities = new List<BaseGameEntity>();
         public IEnumerable<BaseGameEntity> Entities => this.entities;
 
-        private readonly PathFinder pathFinder;
-        
+        public readonly PathFinder PathFinder;
+
         public int Width { get; set; }
         public int Height { get; set; }
 
@@ -32,7 +35,7 @@ namespace GameAI
         {
             Width = w;
             Height = h;
-            this.pathFinder = pathFinder;
+            this.PathFinder = pathFinder;
             this.Teams = new Dictionary<Color, Team>();
         }
 
@@ -86,11 +89,13 @@ namespace GameAI
             foreach (Team team in this.Teams.Values)
             {
                 Team otherTeam = this.Teams.Values.First(item => item.Colour != team.Colour);
-                
-                foreach (Vehicle vehicle in team.Vehicles)
-                {
-                    vehicle.Brain.AddSubgoal(new CaptureFlag(vehicle, otherTeam.Flag, this.pathFinder));
-                }
+
+                // Everyone in the team is going to try to defend the flag, except for one
+                foreach (Vehicle vehicle in team.Vehicles) { vehicle.Brain.AddSubgoal(new DefendFlag(vehicle, this, team.Flag)); }
+
+                Vehicle captureVehicle = team.Vehicles.First();
+                captureVehicle.Brain.ClearGoals();
+                captureVehicle.Brain.AddSubgoal(new CaptureFlag(captureVehicle, otherTeam.Flag, this.PathFinder));
             }
         }
 
@@ -118,11 +123,35 @@ namespace GameAI
 
             this.entities.Add(vehicle);
             vehicle.Team.Vehicles.AddLast(vehicle);
+
+            vehicle.Death += OnVehicleDeath;
         }
 
         public void SpawnVehicle(Vehicle vehicle)
         {
             SpawnVehicle(vehicle, vehicle.Team.RandomSpawnPoint());
+        }
+
+        /// <summary>
+        /// Removes vehicle from the world
+        /// </summary>
+        /// <param name="vehicle"></param>
+        public void DespawnVehicle(Vehicle vehicle)
+        {
+            this.entities.Remove(vehicle);
+            this.Teams[vehicle.Team.Colour].Vehicles.Remove(vehicle);
+
+            vehicle.Death -= OnVehicleDeath;
+        }
+
+        public void OnVehicleDeath(object sender, Vehicle vehicle)
+        {
+            RespawnVehicle(vehicle);
+        }
+
+        public void RespawnVehicle(Vehicle vehicle)
+        {
+            vehicle.Position = vehicle.Team.RandomSpawnPoint();
         }
 
         public void Update(GameTime gameTime)

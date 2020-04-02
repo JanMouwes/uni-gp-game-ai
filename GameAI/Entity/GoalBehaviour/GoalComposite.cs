@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameAI.Entity.GoalBehaviour;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.GoalBehaviour
@@ -16,26 +17,32 @@ namespace GameAI.GoalBehaviour
             this.GoalQueue = new Queue<Goal<TOwner>>();
         }
 
-        public override GoalStatus Process(GameTime gameTime)
+        public override void Process(GameTime gameTime)
         {
-            return ProcessSubgoals(gameTime);
+            ProcessSubgoals(gameTime);
         }
 
-        protected GoalStatus ProcessSubgoals(GameTime gameTime)
+        protected void ProcessSubgoals(GameTime gameTime)
         {
-            while (this.GoalQueue.Count > 0 && (this.GoalQueue.Peek().IsCompleted() || this.GoalQueue.Peek().HasFailed())) { this.GoalQueue.Dequeue().Terminate(); }
+            while (this.GoalQueue.Count > 0 && (this.GoalQueue.Peek().IsCompleted() || this.GoalQueue.Peek().HasFailed()))
+            {
+                // Terminate all completed or failed goals
+                this.GoalQueue.Dequeue().Terminate();
+            }
 
-            if (this.GoalQueue.Count <= 0) { return GoalStatus.Completed; }
 
-            Goal<TOwner> current = this.GoalQueue.Peek();
+            if (this.GoalQueue.Count == 0) { this.Status = GoalStatus.Completed; }
+            else
+            {
+                Goal<TOwner> current = this.GoalQueue.Peek();
 
-            if (current.IsInactive()) { current.Activate(); }
+                if (current.IsInactive()) { current.Activate(); }
 
-            this.Status = current.Process(gameTime);
+                current.Process(gameTime);
 
-            if (this.Status == GoalStatus.Completed && this.GoalQueue.Count > 1) { this.Status = GoalStatus.Active; }
-
-            return this.Status;
+                if (current.Status == GoalStatus.Completed && this.GoalQueue.Count > 1) { this.Status = GoalStatus.Active; }
+                else { this.Status = current.Status; }
+            }
         }
 
         /// <summary>

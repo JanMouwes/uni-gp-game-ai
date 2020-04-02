@@ -26,15 +26,13 @@ namespace GameAI.Entity.GoalBehaviour.Atomic
             this.Owner.Steering = new ArriveBehaviour(this.Owner, this.target, this.DecelerateDistance);
         }
 
-        public override GoalStatus Process(GameTime gameTime)
+        public override void Process(GameTime gameTime)
         {
             bool isNear = Vector2.DistanceSquared(this.Owner.Position, this.target) < this.nearRange * this.nearRange;
 
             if (isNear) { this.Status = GoalStatus.Completed; }
 
             // TODO: Check for stuck-ness
-
-            return this.Status;
         }
     }
 }
