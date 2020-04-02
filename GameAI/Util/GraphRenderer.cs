@@ -39,7 +39,11 @@ namespace GameAI.Util
                     // int distance = (int)Vector2.Distance(from, to);
                     // spriteBatch.DrawString(font, distance.ToString(), halfway, colour);
 
+                    Vector2 towardsDest = edge.Source.Value + (edge.Dest.Value - edge.Source.Value).NormalizedCopy() * 15;
+
                     spriteBatch.DrawLine(edge.Source.Value, edge.Dest.Value, this.colour);
+                    // spriteBatch.DrawPoint(towardsDest, Color.DarkRed, 5f);
+                    spriteBatch.DrawString(this.font, edge.Dest.Id.ToString(), towardsDest, Color.DarkRed);
                 }
             }
         }

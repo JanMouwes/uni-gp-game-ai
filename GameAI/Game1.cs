@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameAI.entity;
-using GameAI.GoalBehaviour.Atomic;
 using GameAI.GoalBehaviour.Composite;
-using GameAI.behaviour;
 using GameAI.Util;
 using Graph;
 using Microsoft.Xna.Framework;
