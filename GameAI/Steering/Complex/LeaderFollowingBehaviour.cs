@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameAI.entity;
+﻿using GameAI.entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.behaviour
+namespace GameAI.Steering.Complex
 {
-    class LeaderFollowingBehaviour : SteeringBehaviour
+    public class LeaderFollowingBehaviour : SteeringBehaviour
     {
         public MovingEntity Target { get; set; }
         public Vector2 Offset { get; set; }
@@ -21,7 +16,7 @@ namespace GameAI.behaviour
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.LeaderFollowing(Target, Entity, Offset);
+            return SteeringBehaviours.LeaderFollowing(this.Target, this.Entity, this.Offset);
         }
     }
 }
