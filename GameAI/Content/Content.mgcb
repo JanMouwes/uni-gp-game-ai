@@ -13,10 +13,34 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin 3DS - Fire Emblem Echoes Shadows of Valentia - Ship 1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:3DS - Fire Emblem Echoes Shadows of Valentia - Ship 1.png;ship1.png
+
 #begin opensans.spritefont
 /importer:FontDescriptionImporter
 /processor:LocalizedFontProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:opensans.spritefont
+
+#begin PlayStation - Magical Drop F - Bird.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PlayStation - Magical Drop F - Bird.png;bird-white.png
 

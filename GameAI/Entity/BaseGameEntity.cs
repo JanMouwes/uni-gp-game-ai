@@ -1,21 +1,21 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameAI.Entity.Components;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
-using MonoGame.Extended.Shapes;
-using Color = Microsoft.Xna.Framework.Color;
 
-namespace GameAI
+namespace GameAI.Entity
 {
     public abstract class BaseGameEntity
     {
-        protected World world;
+        protected World World;
+
+        public IGraphicsComponent Graphics { get; set; } = new DefaultGraphics();
 
         public Vector2 Position { get; set; }
         public float Scale { get; set; }
 
         public BaseGameEntity(World world, float scale = 1)
         {
-            this.world = world;
+            this.World = world;
             this.Scale = scale;
         }
 
