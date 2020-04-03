@@ -206,7 +206,7 @@ namespace GameAI.Util
 
                 foreach (BaseGameEntity baseGameEntity in world.obstacles)
                 {
-                    CircleF notAllowedZone = new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale);
+                    CircleF notAllowedZone = new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale + 6);
 
                     if (notAllowedZone.Contains(vertex.Value))
                     {
