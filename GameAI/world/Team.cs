@@ -1,20 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using GameAI.entity;
+using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.world
 {
     public class Team
     {
+        private readonly IList<Vector2> spawnPoints;
+
         public readonly LinkedList<Vehicle> Vehicles;
+        public readonly Color Colour;
 
         public IEnumerable<Vector2> SpawnPoints => this.spawnPoints;
 
-        private readonly IList<Vector2> spawnPoints;
-
-        public readonly Color Colour;
+        public Flag Flag { get; set; }
 
         public Team(Color colour) : this(colour, new Vehicle[0]) { }
 

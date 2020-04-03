@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using GameAI.Steering;
 using GameAI.Steering.Complex;
 using GameAI.Steering.Simple;
-using GameAI.entity;
+using GameAI.Entity;
+using GameAI.Entity.GoalBehaviour.Atomic;
+using GameAI.Entity.GoalBehaviour.Composite;
+using GameAI.GoalBehaviour;
+using GameAI.Navigation;
 using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,26 +23,27 @@ namespace GameAI
         public readonly Dictionary<Color, Team> Teams;
 
         // Entities and obstacles should be one list while spatial partitioning is not implemented
-        public List<MovingEntity> entities = new List<MovingEntity>();
-        public List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
+        private readonly List<BaseGameEntity> entities = new List<BaseGameEntity>();
+        public IEnumerable<BaseGameEntity> Entities => this.entities;
+
+        public readonly PathFinder PathFinder;
 
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public World(int w, int h)
+        public World(int w, int h, PathFinder pathFinder)
         {
             Width = w;
             Height = h;
+            this.PathFinder = pathFinder;
             this.Teams = new Dictionary<Color, Team>();
         }
 
         public void Populate(int vehicleCount)
         {
-            Random random = new Random();
-
             // Add obstacles
-            Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
-            obstacles.Add(r);
+            // Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
+            // this.entities.Add(r);
 
             const int numberOfTeams = 2;
             Color[] teamColours =
@@ -53,28 +60,42 @@ namespace GameAI
             for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
             {
                 Team team = new Team(teamColours[teamIndex]);
+
                 team.AddSpawnPoint(teamSpawns[teamIndex]);
+                Flag flag = new Flag(this, team, 5f)
+                {
+                    Position = teamSpawns[teamIndex]
+                };
+                this.entities.Add(flag);
+
+                team.Flag = flag;
 
                 this.Teams.Add(team.Colour, team);
-
 
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
                 {
-                    Vector2 position = new Vector2
+                    Vehicle vehicle = new Vehicle(this, team)
                     {
-                        X = random.Next(0, Width),
-                        Y = random.Next(0, Height)
-                    };
-
-                    Vehicle vehicle = new Vehicle(position, this, team)
-                    {
-                        MaxSpeed = 100f, Mass = 1
+                        MaxSpeed = 100f,
+                        Mass = 1
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
                     SpawnVehicle(vehicle);
                 }
+            }
+
+            foreach (Team team in this.Teams.Values)
+            {
+                Team otherTeam = this.Teams.Values.First(item => item.Colour != team.Colour);
+
+                // Everyone in the team is going to try to defend the flag, except for one
+                foreach (Vehicle vehicle in team.Vehicles) { vehicle.Brain.AddSubgoal(new DefendFlag(vehicle, this, team.Flag)); }
+
+                Vehicle captureVehicle = team.Vehicles.First();
+                captureVehicle.Brain.ClearGoals();
+                captureVehicle.Brain.AddSubgoal(new CaptureFlag(captureVehicle, otherTeam.Flag, this.PathFinder));
             }
         }
 
@@ -90,18 +111,20 @@ namespace GameAI
             {
                 float realRange = range + entity.Scale;
 
-                return (location - entity.Pos).LengthSquared() < realRange * realRange;
+                return (location - entity.Position).LengthSquared() < realRange * realRange;
             }
 
-            return this.entities.Concat(this.obstacles).Where(IsNear);
+            return this.entities.Concat(this.entities).Where(IsNear);
         }
 
         public void SpawnVehicle(Vehicle vehicle, Vector2 position)
         {
-            vehicle.Pos = position;
+            vehicle.Position = position;
 
             this.entities.Add(vehicle);
             vehicle.Team.Vehicles.AddLast(vehicle);
+
+            vehicle.Death += OnVehicleDeath;
         }
 
         public void SpawnVehicle(Vehicle vehicle)
@@ -109,21 +132,37 @@ namespace GameAI
             SpawnVehicle(vehicle, vehicle.Team.RandomSpawnPoint());
         }
 
+        /// <summary>
+        /// Removes vehicle from the world
+        /// </summary>
+        /// <param name="vehicle"></param>
+        public void DespawnVehicle(Vehicle vehicle)
+        {
+            this.entities.Remove(vehicle);
+            this.Teams[vehicle.Team.Colour].Vehicles.Remove(vehicle);
+
+            vehicle.Death -= OnVehicleDeath;
+        }
+
+        public void OnVehicleDeath(object sender, Vehicle vehicle)
+        {
+            RespawnVehicle(vehicle);
+        }
+
+        public void RespawnVehicle(Vehicle vehicle)
+        {
+            vehicle.Position = vehicle.Team.RandomSpawnPoint();
+        }
+
         public void Update(GameTime gameTime)
         {
-            foreach (MovingEntity me in entities)
-            {
-                // me.SB = new SeekBehaviour(me); // restore later
-                me.Update(gameTime);
-            }
-
-            foreach (BaseGameEntity me in obstacles) { me.Update(gameTime); }
+            foreach (BaseGameEntity me in this.entities) { me.Update(gameTime); }
         }
 
         public void Render(SpriteBatch spriteBatch)
         {
             entities.ForEach(e => e.Render(spriteBatch));
-            obstacles.ForEach(o => o.Render(spriteBatch));
+            this.entities.ForEach(o => o.Render(spriteBatch));
         }
     }
 }

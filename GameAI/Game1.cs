@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GameAI.entity;
-using GameAI.GoalBehaviour.Composite;
+using GameAI.Entity;
+using GameAI.Entity.GoalBehaviour;
+using GameAI.Entity.GoalBehaviour.Composite;
+using GameAI.GoalBehaviour;
 using GameAI.Steering;
 using GameAI.Util;
 using Graph;
@@ -30,8 +32,8 @@ namespace GameAI
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
 
-        private const int WORLD_WIDTH = 800;
-        private const int WORLD_HEIGHT = 600;
+        private const int WORLD_WIDTH = 400;
+        private const int WORLD_HEIGHT = 300;
 
         public Graph<Vector2> NavGraph;
 
@@ -46,8 +48,18 @@ namespace GameAI
 
         protected override void Initialize()
         {
-            this.world = new World(WORLD_WIDTH, WORLD_HEIGHT);
-            this.world.Populate(10);
+            (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
+            (int, int) vertexCounts = (24, 18);
+            (float, float) offset = (10, 10);
+            this.NavGraph = GraphGenerator.GenerateGraphWithPadding(
+                dimensions, vertexCounts, offset,
+                GraphGenerator.AxisAndDiagonalIndices
+            );
+
+            this.pathFinder = new PathFinder(this.NavGraph);
+
+            this.world = new World(WORLD_WIDTH, WORLD_HEIGHT, this.pathFinder);
+            this.world.Populate(5);
 
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT;
@@ -62,19 +74,7 @@ namespace GameAI
 
             this.mainFont = Content.Load<SpriteFont>("Content/opensans");
 
-            (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
-            (int, int) vertexCounts = (24, 18);
-            (float, float) offset = (10, 10);
-            this.NavGraph = GraphGenerator.GenerateGraphWithObstacles(
-                dimensions, vertexCounts, offset, 
-                world,
-                GraphGenerator.AxisAndDiagonalIndices
-            );
-
             this.graphRenderer = new GraphRenderer(this.NavGraph, this.mainFont, Color.White);
-
-            this.pathSmoother = new CustomizablePathSmoother(world);
-            this.pathFinder = new PathFinder(this.NavGraph, pathSmoother);
 
             this.keyboardInput = new KeyboardInput();
             this.mouseInput = new MouseInput();
@@ -132,20 +132,42 @@ namespace GameAI
             base.Update(gameTime);
         }
 
-        private int currentVehicleIndex = 0;
-
         private void DebugDraw(SpriteBatch spriteBatch)
         {
-            // Rock theRock = this.world.obstacles.OfType<Rock>().First();
+            // Rock theRock = this.world.Entities.OfType<Rock>().First();
             Vehicle vehicle = this.selectedEntities.FirstOrDefault();
 
             if (vehicle != null)
             {
+                string GetGoalText(Goal<Vehicle> goal, int inset)
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    for (int i = 0; i < inset; i++)
+                    {
+                        stringBuilder.Append(' ');
+                        stringBuilder.Append(' ');
+                    }
+
+                    stringBuilder.Append(goal);
+                    stringBuilder.Append('\n');
+
+                    if (goal is GoalComposite<Vehicle> composite)
+                    {
+                        foreach (Goal<Vehicle> compositeGoal in composite.Goals) { stringBuilder.Append(GetGoalText(compositeGoal, inset + 1)); }
+                    }
+
+                    return stringBuilder.ToString();
+                }
+
                 StringBuilder text = new StringBuilder();
 
-                text.Append($"Position: {vehicle.Pos.ToPoint()}\n");
-                text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
-                text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
+                text.Append($"Goals:\n");
+                text.Append(GetGoalText(vehicle.Brain, 1));
+
+                // text.Append($"Position: {vehicle.Position.ToPoint()}\n");
+                // text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
+                // text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
 
                 spriteBatch.DrawString(this.mainFont, text.ToString(), Vector2.Zero, Color.Black);
             }

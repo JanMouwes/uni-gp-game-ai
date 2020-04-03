@@ -42,32 +42,39 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="entity\GoalBehaviour\Atomic\TraverseEdge.cs" />
-    <Compile Include="entity\GoalBehaviour\Composite\FollowPath.cs" />
-    <Compile Include="entity\GoalBehaviour\Composite\MoveTo.cs" />
-    <Compile Include="entity\GoalBehaviour\Composite\Think.cs" />
-    <Compile Include="entity\GoalBehaviour\Goal.cs" />
-    <Compile Include="entity\GoalBehaviour\GoalComposite.cs" />
-    <Compile Include="entity\GoalBehaviour\GoalStatus.cs" />
-    <Compile Include="entity\Navigation\DefaultPathSmoother.cs" />
-    <Compile Include="entity\Navigation\IPathSmoother.cs" />
-    <Compile Include="entity\Navigation\PathFinder.cs" />
-    <Compile Include="entity\BaseGameEntity.cs" />
-    <Compile Include="entity\MovingEntity.cs" />
-    <Compile Include="entity\Rock.cs" />
-    <Compile Include="entity\Steering\Complex\FlockingBehaviour.cs" />
-    <Compile Include="entity\Steering\Complex\LeaderFollowingBehaviour.cs" />
-    <Compile Include="entity\Steering\Complex\ObstacleAvoidance.cs" />
-    <Compile Include="entity\Steering\Complex\WallAvoidance.cs" />
-    <Compile Include="entity\Steering\Simple\ArriveBehaviour.cs" />
-    <Compile Include="entity\Steering\Simple\DefaultSteeringBehaviour.cs" />
-    <Compile Include="entity\Steering\Simple\FleeBehaviour.cs" />
-    <Compile Include="entity\Steering\Simple\PursueBehaviour.cs" />
-    <Compile Include="entity\Steering\Simple\SeekBehaviour.cs" />
-    <Compile Include="entity\Steering\Simple\WanderBehaviour.cs" />
-    <Compile Include="entity\Steering\SteeringBehaviour.cs" />
-    <Compile Include="entity\Steering\SteeringBehaviours.cs" />
-    <Compile Include="entity\Vehicle.cs" />
+    <Compile Include="Entity\Flag.cs" />
+    <Compile Include="Entity\GoalBehaviour\Atomic\AttackEnemy.cs" />
+    <Compile Include="Entity\GoalBehaviour\Atomic\FleeEnemy.cs" />
+    <Compile Include="Entity\GoalBehaviour\Atomic\TakeFlag.cs" />
+    <Compile Include="Entity\GoalBehaviour\Atomic\TraverseEdge.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\CaptureFlag.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\DefendFlag.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\FollowPath.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\MoveTo.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\PursueEnemy.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\Think.cs" />
+    <Compile Include="Entity\GoalBehaviour\Goal.cs" />
+    <Compile Include="Entity\GoalBehaviour\GoalComposite.cs" />
+    <Compile Include="Entity\GoalBehaviour\GoalStatus.cs" />
+    <Compile Include="Entity\Navigation\DefaultPathSmoother.cs" />
+    <Compile Include="Entity\Navigation\IPathSmoother.cs" />
+    <Compile Include="Entity\Navigation\PathFinder.cs" />
+    <Compile Include="Entity\BaseGameEntity.cs" />
+    <Compile Include="Entity\MovingEntity.cs" />
+    <Compile Include="Entity\Rock.cs" />
+    <Compile Include="Entity\Steering\Complex\FlockingBehaviour.cs" />
+    <Compile Include="Entity\Steering\Complex\LeaderFollowingBehaviour.cs" />
+    <Compile Include="Entity\Steering\Complex\ObstacleAvoidance.cs" />
+    <Compile Include="Entity\Steering\Complex\WallAvoidance.cs" />
+    <Compile Include="Entity\Steering\Simple\ArriveBehaviour.cs" />
+    <Compile Include="Entity\Steering\Simple\DefaultSteeringBehaviour.cs" />
+    <Compile Include="Entity\Steering\Simple\FleeBehaviour.cs" />
+    <Compile Include="Entity\Steering\Simple\PursueBehaviour.cs" />
+    <Compile Include="Entity\Steering\Simple\SeekBehaviour.cs" />
+    <Compile Include="Entity\Steering\Simple\WanderBehaviour.cs" />
+    <Compile Include="Entity\Steering\SteeringBehaviour.cs" />
+    <Compile Include="Entity\Steering\SteeringBehaviours.cs" />
+    <Compile Include="Entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputState.cs" />
@@ -163,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\opensans.spritefont" />
+    <Folder Include="Entity\Components" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">
