@@ -1,11 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using Graph;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 
 namespace GameAI.Util
 {
-    public delegate IEnumerable<(int, float)> NeighbourGenerator(int x, int y, int width, int height, float xDistance, float yDistance);
+    public delegate IEnumerable<(int, float)> NeighbourGenerator(int x, int y, int width, int height, float xDistance,
+                                                                 float yDistance);
 
+    
+    // TODO transform this into a builder-pattern.
     public static class GraphGenerator
     {
         /// <summary>
@@ -18,7 +23,8 @@ namespace GameAI.Util
         /// <param name="xDistance">Distance to the neighbouring nodes on the x-axis</param>
         /// <param name="yDistance">Distance to the neighbouring nodes on the x-axis</param>
         /// <returns>Index and distance to this index</returns>
-        public static IEnumerable<(int, float)> AdjacentIndices(int x, int y, int width, int height, float xDistance, float yDistance)
+        public static IEnumerable<(int, float)> AdjacentIndices(int x, int y, int width, int height, float xDistance,
+                                                                float yDistance)
         {
             int currentIndex = (x + (y * width));
 
@@ -41,7 +47,8 @@ namespace GameAI.Util
         /// <param name="xDistance">Distance to the neighbouring nodes on the x-axis</param>
         /// <param name="yDistance">Distance to the neighbouring nodes on the x-axis</param>
         /// <returns>Index and distance to this index</returns>
-        public static IEnumerable<(int, float)> DiagonalIndices(int x, int y, int width, int height, float xDistance, float yDistance)
+        public static IEnumerable<(int, float)> DiagonalIndices(int x, int y, int width, int height, float xDistance,
+                                                                float yDistance)
         {
             float distance = new Vector2(xDistance, yDistance).Length();
 
@@ -77,7 +84,8 @@ namespace GameAI.Util
         /// <param name="xDistance">Distance to the neighbouring nodes on the x-axis</param>
         /// <param name="yDistance">Distance to the neighbouring nodes on the x-axis</param>
         /// <returns>Index and distance to this index</returns>
-        public static IEnumerable<(int, float)> AxisAndDiagonalIndices(int x, int y, int width, int height, float xDistance, float yDistance)
+        public static IEnumerable<(int, float)> AxisAndDiagonalIndices(int x, int y, int width, int height,
+                                                                       float xDistance, float yDistance)
         {
             foreach ((int, float) axisIndex in AdjacentIndices(x, y, width, height, xDistance, yDistance)) { yield return axisIndex; }
 
@@ -146,12 +154,14 @@ namespace GameAI.Util
                     Vertex<Vector2> vertex = returnGraph.GetVertex(index);
                     vertex.Value = vector;
 
-                    foreach ((int neighbourIndex, float cost) in neighbourGenerator(x, y, xAxisVertexCount, yAxisVertexCount, vectorXDistance, vectorYDistance)) { returnGraph.AddEdge(index, neighbourIndex, cost); }
+                    foreach ((int neighbourIndex, float cost) in neighbourGenerator(x, y, xAxisVertexCount, yAxisVertexCount, vectorXDistance, vectorYDistance))
+                    {
+                        returnGraph.AddEdge(index, neighbourIndex, cost);
+                    }
 
                     index++;
                 }
             }
-
 
             return returnGraph;
         }
@@ -180,6 +190,36 @@ namespace GameAI.Util
                                  vertexCounts.Item1, vertexCounts.Item2,
                                  padding.Item1, padding.Item2,
                                  neighbourGenerator);
+        }
+
+        public static Graph<Vector2> GenerateGraphWithObstacles((float, float) dimensions,
+                                                                (int, int) vertexCounts,
+                                                                (float, float) padding,
+                                                                World world,
+                                                                NeighbourGenerator neighbourGenerator = null)
+        {
+            Graph<Vector2> graph = GenerateGraphWithPadding(dimensions, vertexCounts, padding, neighbourGenerator);
+
+            foreach (Vertex<Vector2> vertex in graph.Vertices.ToList())
+            {
+                bool collides = false;
+
+                foreach (BaseGameEntity baseGameEntity in world.obstacles)
+                {
+                    CircleF notAllowedZone = new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale);
+
+                    if (notAllowedZone.Contains(vertex.Value))
+                    {
+                        collides = true;
+
+                        break;
+                    }
+                }
+
+                if (collides) { graph.RemoveVertex(vertex); }
+            }
+
+            return graph;
         }
     }
 }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameAI.entity;
-using GameAI.GoalBehaviour.Atomic;
 using GameAI.GoalBehaviour.Composite;
 using GameAI.Steering;
 using GameAI.Util;
@@ -26,6 +25,7 @@ namespace GameAI
         private GraphRenderer graphRenderer;
 
         private PathFinder pathFinder;
+        private CustomizablePathSmoother pathSmoother;
 
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
@@ -65,14 +65,16 @@ namespace GameAI
             (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
             (int, int) vertexCounts = (24, 18);
             (float, float) offset = (10, 10);
-            this.NavGraph = GraphGenerator.GenerateGraphWithPadding(
-                dimensions, vertexCounts, offset,
+            this.NavGraph = GraphGenerator.GenerateGraphWithObstacles(
+                dimensions, vertexCounts, offset, 
+                world,
                 GraphGenerator.AxisAndDiagonalIndices
             );
 
             this.graphRenderer = new GraphRenderer(this.NavGraph, this.mainFont, Color.White);
 
-            this.pathFinder = new PathFinder(this.NavGraph);
+            this.pathSmoother = new CustomizablePathSmoother(world);
+            this.pathFinder = new PathFinder(this.NavGraph, pathSmoother);
 
             this.keyboardInput = new KeyboardInput();
             this.mouseInput = new MouseInput();

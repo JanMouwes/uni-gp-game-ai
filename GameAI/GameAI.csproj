@@ -70,6 +70,7 @@
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
+    <Compile Include="Navigation\CustomizablePathSmoother.cs" />
     <Compile Include="Navigation\DefaultPathSmoother.cs" />
     <Compile Include="Navigation\IPathSmoother.cs" />
     <Compile Include="Navigation\PathFinder.cs" />
@@ -156,7 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Steering\Simple\" />
-    <Folder Include="entity\Components" />
+    <Folder Include="entity\Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\opensans.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">
@@ -167,9 +171,6 @@
       <Project>{e6e34c74-1821-4c55-9240-ed3fcd9fd17d}</Project>
       <Name>Graph</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\opensans.spritefont" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
