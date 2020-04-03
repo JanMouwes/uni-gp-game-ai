@@ -7,7 +7,7 @@ namespace GameAI.Entity.Components
 {
     public class TextureGraphics : IGraphicsComponent
     {
-        public Vehicle Owner { get; }
+        public BaseGameEntity Owner { get; }
         public Texture2D Texture;
         public Rectangle SourceRectangle;
         public Vector2 RotationOrigin;
@@ -23,7 +23,7 @@ namespace GameAI.Entity.Components
         public void Draw(SpriteBatch spriteBatch)
         {
             this.RotationOrigin = new Vector2(this.SourceRectangle.Width / 2f, this.SourceRectangle.Height / 2f);
-            float rotation = Owner.Orientation.ToAngle() + this.RotationOffset;
+            float rotation = Owner.Rotation + this.RotationOffset;
 
             spriteBatch.Draw(this.Texture, Owner.Position, this.SourceRectangle, Color.White, rotation, this.RotationOrigin, 1, SpriteEffects.None, 1);
         }

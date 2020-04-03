@@ -12,6 +12,7 @@ namespace GameAI.Entity
 
         public Vector2 Position { get; set; }
         public float Scale { get; set; }
+        public virtual float Rotation { get; } = 0f;
 
         public BaseGameEntity(World world, float scale = 1)
         {
