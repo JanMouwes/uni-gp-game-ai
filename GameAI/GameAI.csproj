@@ -161,6 +161,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="entity\Components" />
+    <Folder Include="Steering\Simple\" />
+    <Folder Include="entity\Components\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\opensans.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">

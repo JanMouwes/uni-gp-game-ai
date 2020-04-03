@@ -73,7 +73,7 @@ namespace GameAI
 
             this.graphRenderer = new GraphRenderer(this.NavGraph, this.mainFont, Color.White);
 
-            this.pathSmoother = new CustomizablePathSmoother();
+            this.pathSmoother = new CustomizablePathSmoother(world);
             this.pathFinder = new PathFinder(this.NavGraph, pathSmoother);
 
             this.keyboardInput = new KeyboardInput();

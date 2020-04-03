@@ -9,6 +9,6 @@ namespace GameAI.Navigation
         /// Does not smooth paths
         /// </summary>
         /// <inheritdoc cref="IPathSmoother#SmoothPath"/>
-        public IEnumerable<Vector2> SmoothPath(LinkedList<Vector2> path) => path;
+        public IEnumerable<Vector2> SmoothPath(IEnumerable<Vector2> path) => path;
     }
 }
