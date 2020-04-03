@@ -74,9 +74,6 @@
     <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
     <Compile Include="Navigation\CustomizablePathSmoother.cs" />
-    <Compile Include="Navigation\DefaultPathSmoother.cs" />
-    <Compile Include="Navigation\IPathSmoother.cs" />
-    <Compile Include="Navigation\PathFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\DebugRendering.cs" />
