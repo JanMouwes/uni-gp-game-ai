@@ -5,6 +5,7 @@ using GameAI.Steering;
 using GameAI.Steering.Complex;
 using GameAI.Steering.Simple;
 using GameAI.entity;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -13,6 +14,8 @@ namespace GameAI
 {
     public class World
     {
+        public readonly Dictionary<Color, Team> Teams;
+
         // Entities and obstacles should be one list while spatial partitioning is not implemented
         public List<MovingEntity> entities = new List<MovingEntity>();
         public List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
@@ -24,6 +27,7 @@ namespace GameAI
         {
             Width = w;
             Height = h;
+            this.Teams = new Dictionary<Color, Team>();
         }
 
         public void Populate(int vehicleCount)
@@ -34,26 +38,43 @@ namespace GameAI
             Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
             obstacles.Add(r);
 
-            // Add Entities
-            for (int i = 0; i < vehicleCount; i++)
+            const int numberOfTeams = 2;
+            Color[] teamColours =
             {
-                Vector2 position = new Vector2
-                {
-                    X = random.Next(0, Width),
-                    Y = random.Next(0, Height)
-                };
-
-                Vehicle v = new Vehicle(position, this)
-                {
-                    Color = Color.Blue, MaxSpeed = 100f, Mass = 1
-                };
-                v.Steering = new WanderBehaviour(v, 20);
-
-                entities.Add(v);
-            }
-            foreach (var entity in entities)
+                Color.Blue,
+                Color.Orange
+            };
+            Vector2[] teamSpawns =
             {
-                entity.World = this;
+                new Vector2(50, 50),
+                new Vector2(this.Width - 50, this.Height - 50)
+            };
+
+            for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
+            {
+                Team team = new Team(teamColours[teamIndex]);
+                team.AddSpawnPoint(teamSpawns[teamIndex]);
+
+                this.Teams.Add(team.Colour, team);
+
+
+                // Add Entities
+                for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
+                {
+                    Vector2 position = new Vector2
+                    {
+                        X = random.Next(0, Width),
+                        Y = random.Next(0, Height)
+                    };
+
+                    Vehicle vehicle = new Vehicle(position, this, team)
+                    {
+                        MaxSpeed = 100f, Mass = 1
+                    };
+                    vehicle.Steering = new WanderBehaviour(vehicle, 20);
+
+                    SpawnVehicle(vehicle);
+                }
             }
         }
 
@@ -68,11 +89,24 @@ namespace GameAI
             bool IsNear(BaseGameEntity entity)
             {
                 float realRange = range + entity.Scale;
-                
+
                 return (location - entity.Pos).LengthSquared() < realRange * realRange;
             }
 
             return this.entities.Concat(this.obstacles).Where(IsNear);
+        }
+
+        public void SpawnVehicle(Vehicle vehicle, Vector2 position)
+        {
+            vehicle.Pos = position;
+
+            this.entities.Add(vehicle);
+            vehicle.Team.Vehicles.AddLast(vehicle);
+        }
+
+        public void SpawnVehicle(Vehicle vehicle)
+        {
+            SpawnVehicle(vehicle, vehicle.Team.RandomSpawnPoint());
         }
 
         public void Update(GameTime gameTime)
@@ -83,10 +117,7 @@ namespace GameAI
                 me.Update(gameTime);
             }
 
-            foreach (BaseGameEntity me in obstacles)
-            {
-                me.Update(gameTime);
-            }
+            foreach (BaseGameEntity me in obstacles) { me.Update(gameTime); }
         }
 
         public void Render(SpriteBatch spriteBatch)

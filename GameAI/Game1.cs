@@ -115,7 +115,7 @@ namespace GameAI
 
         private void ClearSelected()
         {
-            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Color = Color.Blue; }
+            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Color = selectedEntity.Team.Colour; }
 
             this.selectedEntities.Clear();
         }

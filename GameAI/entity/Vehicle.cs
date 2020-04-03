@@ -1,5 +1,5 @@
-﻿using GameAI.GoalBehaviour;
-using GameAI.GoalBehaviour.Composite;
+﻿using GameAI.GoalBehaviour.Composite;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -12,13 +12,16 @@ namespace GameAI.entity
 
         public readonly Think<Vehicle> Brain;
 
-        public Vehicle(Vector2 pos, World w, Goal<Vehicle> goal = null) : base(pos, w)
+        public Team Team;
+
+        public Vehicle(Vector2 pos, World w, Team team) : base(pos, w)
         {
-            
+            this.Team = team;
+
             Velocity = new Vector2(0, 0);
             Scale = 5;
 
-            this.Color = Color.Black;
+            this.Color = team.Colour;
             
             this.Brain = new Think<Vehicle>(this);
             this.Brain.Activate();

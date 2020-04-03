@@ -1,6 +1,9 @@
 
 .vs/
 
+GameAI/Content/obj/
+GameAI/Content/bin/
+
 GameAI/obj/
 GameAI/bin/
 GameAI/.idea/*

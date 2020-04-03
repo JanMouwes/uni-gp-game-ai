@@ -42,30 +42,33 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Steering\Complex\FlockingBehaviour.cs" />
-    <Compile Include="Steering\Complex\LeaderFollowingBehaviour.cs" />
-    <Compile Include="Steering\Complex\ObstacleAvoidance.cs" />
-    <Compile Include="Steering\Complex\WallAvoidance.cs" />
-    <Compile Include="Steering\Simple\ArriveBehaviour.cs" />
-    <Compile Include="Steering\Simple\DefaultSteeringBehaviour.cs" />
-    <Compile Include="Steering\Simple\FleeBehaviour.cs" />
-    <Compile Include="Steering\Simple\PursueBehaviour.cs" />
-    <Compile Include="Steering\Simple\SeekBehaviour.cs" />
-    <Compile Include="Steering\Simple\WanderBehaviour.cs" />
-    <Compile Include="Steering\SteeringBehaviour.cs" />
-    <Compile Include="Steering\SteeringBehaviours.cs" />
+    <Compile Include="entity\GoalBehaviour\Atomic\TraverseEdge.cs" />
+    <Compile Include="entity\GoalBehaviour\Composite\FollowPath.cs" />
+    <Compile Include="entity\GoalBehaviour\Composite\MoveTo.cs" />
+    <Compile Include="entity\GoalBehaviour\Composite\Think.cs" />
+    <Compile Include="entity\GoalBehaviour\Goal.cs" />
+    <Compile Include="entity\GoalBehaviour\GoalComposite.cs" />
+    <Compile Include="entity\GoalBehaviour\GoalStatus.cs" />
+    <Compile Include="entity\Navigation\DefaultPathSmoother.cs" />
+    <Compile Include="entity\Navigation\IPathSmoother.cs" />
+    <Compile Include="entity\Navigation\PathFinder.cs" />
     <Compile Include="entity\BaseGameEntity.cs" />
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Rock.cs" />
+    <Compile Include="entity\Steering\Complex\FlockingBehaviour.cs" />
+    <Compile Include="entity\Steering\Complex\LeaderFollowingBehaviour.cs" />
+    <Compile Include="entity\Steering\Complex\ObstacleAvoidance.cs" />
+    <Compile Include="entity\Steering\Complex\WallAvoidance.cs" />
+    <Compile Include="entity\Steering\Simple\ArriveBehaviour.cs" />
+    <Compile Include="entity\Steering\Simple\DefaultSteeringBehaviour.cs" />
+    <Compile Include="entity\Steering\Simple\FleeBehaviour.cs" />
+    <Compile Include="entity\Steering\Simple\PursueBehaviour.cs" />
+    <Compile Include="entity\Steering\Simple\SeekBehaviour.cs" />
+    <Compile Include="entity\Steering\Simple\WanderBehaviour.cs" />
+    <Compile Include="entity\Steering\SteeringBehaviour.cs" />
+    <Compile Include="entity\Steering\SteeringBehaviours.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="GoalBehaviour\Atomic\TraverseEdge.cs" />
-    <Compile Include="GoalBehaviour\Composite\FollowPath.cs" />
-    <Compile Include="GoalBehaviour\Composite\MoveTo.cs" />
-    <Compile Include="GoalBehaviour\Composite\Think.cs" />
-    <Compile Include="GoalBehaviour\Goal.cs" />
-    <Compile Include="GoalBehaviour\GoalComposite.cs" />
-    <Compile Include="GoalBehaviour\GoalStatus.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Input\KeyboardInput.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="Util\GraphRenderer.cs" />
     <Compile Include="Util\PathRenderer.cs" />
     <Compile Include="Util\Vector2Helper.cs" />
+    <Compile Include="world\Team.cs" />
     <Compile Include="world\World.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +160,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Steering\Simple\" />
     <Folder Include="entity\Components" />
   </ItemGroup>
   <ItemGroup>
