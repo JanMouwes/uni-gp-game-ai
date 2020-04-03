@@ -1,13 +1,7 @@
 ﻿using GameAI.entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 
-namespace GameAI.behaviour
+namespace GameAI.Steering.Simple
 {
     public class ArriveBehaviour : SteeringBehaviour
     {
@@ -22,7 +16,7 @@ namespace GameAI.behaviour
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Arrive(Target, Entity, decelerateDistance);
+            return SteeringBehaviours.Arrive(this.Target, this.Entity, this.decelerateDistance);
         }
     }
 }

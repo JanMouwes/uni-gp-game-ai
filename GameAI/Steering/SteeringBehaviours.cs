@@ -4,7 +4,7 @@ using GameAI.entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
-namespace GameAI.behaviour
+namespace GameAI.Steering
 {
     public static class SteeringBehaviours
     {
@@ -62,6 +62,43 @@ namespace GameAI.behaviour
             localTarget *= offset;
 
             return entity.Orientation * distance + localTarget;
+        }
+
+        public static Vector2 WallAvoidance(MovingEntity entity, World world, float panicDistance)
+        {
+            (float distToLeft, float distToTop) = entity.Pos + entity.Velocity;
+
+            float distToBottom = world.Height - distToTop;
+            float distToRight = world.Width   - distToLeft;
+
+            bool isNearLeft = panicDistance   > distToLeft;
+            bool isNearRight = panicDistance  > distToRight;
+            bool isNearTop = panicDistance    > distToTop;
+            bool isNearBottom = panicDistance > distToBottom;
+
+            if (!isNearLeft && !isNearRight && !isNearTop && !isNearBottom) { return Vector2.Zero; }
+
+            Vector2 baseSteering = entity.Steering.Calculate();
+
+            if (isNearLeft)
+            {
+                baseSteering.X = (panicDistance * 2) - distToLeft; 
+            }
+            else if (isNearRight)
+            {
+                baseSteering.X = -(panicDistance * 2) + distToRight; 
+            }
+
+            if (isNearTop)
+            {
+                baseSteering.Y = (panicDistance * 2) - distToTop;
+            }
+            else if (isNearBottom)
+            {
+                baseSteering.Y = -(panicDistance * 2) + distToBottom; 
+            }
+
+            return baseSteering;
         }
 
         public static Vector2 LeaderFollowing(MovingEntity target, MovingEntity owner, Vector2 offset)

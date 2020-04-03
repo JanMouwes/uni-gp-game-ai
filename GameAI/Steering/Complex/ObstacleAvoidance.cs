@@ -8,7 +8,7 @@ using GameAI.Util;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
-namespace GameAI.behaviour.Complex
+namespace GameAI.Steering.Complex
 {
     public class ObstacleAvoidance : SteeringBehaviour
     {
@@ -37,28 +37,22 @@ namespace GameAI.behaviour.Complex
 
             foreach (BaseGameEntity o in w.obstacles)
             {
-                // Vector2 obstacleCentre = o.Pos;
-                // Vector2 entityVelocityPos = Entity.Pos + Entity.Velocity;
-                // bool isObstacleBehind = Vector2.DistanceSquared(Entity.Pos, obstacleCentre) < Vector2.DistanceSquared(entityVelocityPos, obstacleCentre);
-                //
-                // if (isObstacleBehind) { continue; }
-
                 // Add a circle around the obstacle which can't be crossed
-                CircleF notAllowedZone = new CircleF(o.Pos, o.Scale + Entity.Scale * 2);
+                CircleF notAllowedZone = new CircleF(o.Pos, o.Scale);
 
                 if (checkpoints.Any(checkpoint => notAllowedZone.Contains(checkpoint)))
                 {
                     Vector2 dist = new Vector2(o.Pos.X - Entity.Pos.X, o.Pos.X - Entity.Pos.Y);
                     Vector2 perpendicular = Vector2Helper.PerpendicularRightAngleOf(dist);
 
-                    Vector2 perpendicularPos = o.Pos         + perpendicular;
+                    Vector2 perpendicularPositivePos = o.Pos + perpendicular;
                     Vector2 perpendicularNegativePos = o.Pos - perpendicular;
 
-                    float haaksDistPlus = Vector2.DistanceSquared(perpendicularPos, Entity.Pos        + Entity.Velocity);
-                    float haaksDistMin = Vector2.DistanceSquared(perpendicularNegativePos, Entity.Pos + Entity.Velocity);
+                    float perpDistPositive = Vector2.DistanceSquared(Entity.Pos + Entity.Velocity, perpendicularPositivePos);
+                    float perpDistNegative = Vector2.DistanceSquared(Entity.Pos + Entity.Velocity, perpendicularNegativePos);
 
-                    Vector2 targetRelative =(haaksDistPlus > haaksDistMin ? perpendicularNegativePos : perpendicularPos) - Entity.Pos;
-                    
+                    Vector2 targetRelative = (perpDistPositive > perpDistNegative ? perpendicularNegativePos : perpendicularPositivePos) - Entity.Pos;
+
                     return Vector2Helper.PerpendicularRightAngleOf(targetRelative);
                 }
             }
