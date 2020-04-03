@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GameAI.Entity;
 using Graph;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
@@ -204,9 +205,9 @@ namespace GameAI.Util
             {
                 bool collides = false;
 
-                foreach (BaseGameEntity baseGameEntity in world.obstacles)
+                foreach (BaseGameEntity baseGameEntity in world.Entities.OfType<Rock>())
                 {
-                    CircleF notAllowedZone = new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale);
+                    CircleF notAllowedZone = new CircleF(baseGameEntity.Position.ToPoint(), baseGameEntity.Scale);
 
                     if (notAllowedZone.Contains(vertex.Value))
                     {

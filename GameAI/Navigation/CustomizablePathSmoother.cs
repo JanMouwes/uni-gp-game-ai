@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameAI.Entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
@@ -28,9 +29,9 @@ namespace GameAI.Navigation
 
             LinkedListNode<Vector2> lastNode = linkedPath.Last;
             bool collides = false;
-            foreach (BaseGameEntity baseGameEntity in world.obstacles)
+            foreach (BaseGameEntity baseGameEntity in world.Entities.OfType<Rock>())
             {
-                CircleF notAllowedZone = new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale);
+                CircleF notAllowedZone = new CircleF(baseGameEntity.Position.ToPoint(), baseGameEntity.Scale);
                 if (notAllowedZone.Contains(lastNode.Value))
                 {
                     collides = true;
@@ -66,10 +67,10 @@ namespace GameAI.Navigation
                     bool collidesLine = false;
                     if (distNew <= distOriginal)
                     {
-                        foreach (BaseGameEntity baseGameEntity in world.obstacles)
+                        foreach (BaseGameEntity baseGameEntity in world.Entities.OfType<Rock>())
                         {
                             CircleF notAllowedZone =
-                                new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale);
+                                new CircleF(baseGameEntity.Position.ToPoint(), baseGameEntity.Scale);
                             Vector2 line = new Vector2(add.Value.X - node.Value.X, add.Value.Y - node.Value.Y);
                             IEnumerable<Vector2> checkpoints = new[]
                             {
