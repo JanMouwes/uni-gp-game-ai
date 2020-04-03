@@ -42,18 +42,18 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="behaviour\ArriveBehaviour.cs" />
-    <Compile Include="behaviour\Complex\FlockingBehaviour.cs" />
-    <Compile Include="behaviour\Complex\ObstacleAvoidance.cs" />
-    <Compile Include="behaviour\Complex\WallAvoidance.cs" />
-    <Compile Include="behaviour\DefaultBehaviour.cs" />
-    <Compile Include="behaviour\FleeBehaviour.cs" />
-    <Compile Include="behaviour\LeaderFollowingBehaviour.cs" />
-    <Compile Include="behaviour\PursueBehaviour.cs" />
-    <Compile Include="behaviour\SeekBehaviour.cs" />
-    <Compile Include="behaviour\SteeringBehaviour.cs" />
-    <Compile Include="behaviour\SteeringBehaviours.cs" />
-    <Compile Include="behaviour\WanderBehaviour.cs" />
+    <Compile Include="Steering\Complex\FlockingBehaviour.cs" />
+    <Compile Include="Steering\Complex\LeaderFollowingBehaviour.cs" />
+    <Compile Include="Steering\Complex\ObstacleAvoidance.cs" />
+    <Compile Include="Steering\Complex\WallAvoidance.cs" />
+    <Compile Include="Steering\Simple\ArriveBehaviour.cs" />
+    <Compile Include="Steering\Simple\DefaultSteeringBehaviour.cs" />
+    <Compile Include="Steering\Simple\FleeBehaviour.cs" />
+    <Compile Include="Steering\Simple\PursueBehaviour.cs" />
+    <Compile Include="Steering\Simple\SeekBehaviour.cs" />
+    <Compile Include="Steering\Simple\WanderBehaviour.cs" />
+    <Compile Include="Steering\SteeringBehaviour.cs" />
+    <Compile Include="Steering\SteeringBehaviours.cs" />
     <Compile Include="entity\BaseGameEntity.cs" />
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Rock.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="Navigation\PathFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\DebugRendering.cs" />
     <Compile Include="Util\GraphGenerator.cs" />
     <Compile Include="Util\GraphRenderer.cs" />
     <Compile Include="Util\PathRenderer.cs" />
@@ -155,7 +156,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="behaviour\Simple\" />
+    <Folder Include="Steering\Simple\" />
     <Folder Include="entity\Components\" />
   </ItemGroup>
   <ItemGroup>

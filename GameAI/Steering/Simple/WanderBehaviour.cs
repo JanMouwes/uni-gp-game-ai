@@ -1,14 +1,8 @@
-﻿using GameAI.entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameAI.Util;
+﻿using System;
+using GameAI.entity;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 
-namespace GameAI.behaviour
+namespace GameAI.Steering.Simple
 {
     public class WanderBehaviour : SteeringBehaviour
     {
@@ -16,6 +10,8 @@ namespace GameAI.behaviour
         private readonly float max;
         private float currentOffset;
         private readonly Random random;
+
+        public WanderBehaviour(MovingEntity entity, float range) : this(entity, -range, range) { }
 
         public WanderBehaviour(MovingEntity entity, float min, float max) : base(entity)
         {
@@ -31,7 +27,7 @@ namespace GameAI.behaviour
             this.currentOffset = Math.Min(this.currentOffset, this.max);
             this.currentOffset = Math.Max(this.currentOffset, this.min);
 
-            Vector2 target = SteeringBehaviours.Wander(Entity, 80, this.currentOffset);
+            Vector2 target = SteeringBehaviours.Wander(this.Entity, 80, this.currentOffset);
 
             return target;
         }

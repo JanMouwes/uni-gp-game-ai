@@ -1,7 +1,7 @@
 ﻿using GameAI.entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.behaviour
+namespace GameAI.Steering
 {
     public abstract class SteeringBehaviour
     {

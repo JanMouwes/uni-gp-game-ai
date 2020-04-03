@@ -3,7 +3,7 @@ using System.Linq;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.behaviour.Complex
+namespace GameAI.Steering.Complex
 {
     public class FlockingBehaviour : SteeringBehaviour
     {

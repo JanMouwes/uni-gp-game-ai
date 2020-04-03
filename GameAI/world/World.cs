@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameAI.behaviour;
-using GameAI.behaviour.Complex;
+using GameAI.Steering;
+using GameAI.Steering.Complex;
+using GameAI.Steering.Simple;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -46,7 +47,7 @@ namespace GameAI
                 {
                     Color = Color.Blue, MaxSpeed = 100f, Mass = 1
                 };
-                // v.Steering = new FlockingBehaviour(v, this, 50);
+                v.Steering = new WanderBehaviour(v, 20);
 
                 entities.Add(v);
             }
