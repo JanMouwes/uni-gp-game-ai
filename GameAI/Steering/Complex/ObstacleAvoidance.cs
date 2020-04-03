@@ -8,7 +8,7 @@ using GameAI.Util;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
-namespace GameAI.behaviour.Complex
+namespace GameAI.Steering.Complex
 {
     public class ObstacleAvoidance : SteeringBehaviour
     {

@@ -1,4 +1,5 @@
-using GameAI.behaviour;
+using GameAI.Steering;
+using GameAI.Steering.Simple;
 using GameAI.entity;
 using Microsoft.Xna.Framework;
 

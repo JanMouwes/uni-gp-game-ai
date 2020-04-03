@@ -1,13 +1,7 @@
 ﻿using GameAI.entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 
-namespace GameAI.behaviour
+namespace GameAI.Steering.Simple
 {
     public class PursueBehaviour : SteeringBehaviour
     {
@@ -20,7 +14,7 @@ namespace GameAI.behaviour
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.Pursue(Target, Entity);
+            return SteeringBehaviours.Pursue(this.Target, this.Entity);
         }
     }
 }
