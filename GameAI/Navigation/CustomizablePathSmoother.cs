@@ -69,7 +69,7 @@ namespace GameAI.Navigation
                         foreach (BaseGameEntity baseGameEntity in world.obstacles)
                         {
                             CircleF notAllowedZone =
-                                new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale + 6);
+                                new CircleF(baseGameEntity.Pos.ToPoint(), baseGameEntity.Scale);
                             Vector2 line = new Vector2(add.Value.X - node.Value.X, add.Value.Y - node.Value.Y);
                             IEnumerable<Vector2> checkpoints = new[]
                             {
