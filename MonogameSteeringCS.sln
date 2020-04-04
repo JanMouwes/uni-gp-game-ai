@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph", "Graph\Graph.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriorityQueue", "PriorityQueue\PriorityQueue.csproj", "{45DD05D4-5B85-4FE6-BA54-B48D5210BDE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuzzy", "Fuzzy\Fuzzy.csproj", "{9A073F01-AE32-4EE1-8142-83DADC75E037}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{45DD05D4-5B85-4FE6-BA54-B48D5210BDE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45DD05D4-5B85-4FE6-BA54-B48D5210BDE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45DD05D4-5B85-4FE6-BA54-B48D5210BDE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A073F01-AE32-4EE1-8142-83DADC75E037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A073F01-AE32-4EE1-8142-83DADC75E037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A073F01-AE32-4EE1-8142-83DADC75E037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A073F01-AE32-4EE1-8142-83DADC75E037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

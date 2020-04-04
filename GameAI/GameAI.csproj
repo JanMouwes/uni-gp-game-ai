@@ -75,7 +75,6 @@
     <Compile Include="Entity\Steering\SteeringBehaviour.cs" />
     <Compile Include="Entity\Steering\SteeringBehaviours.cs" />
     <Compile Include="Entity\Vehicle.cs" />
-    <Compile Include="Fuzzy\FuzzySet.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputState.cs" />
@@ -85,7 +84,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\DebugRendering.cs" />
-    <Compile Include="Fuzzy\FuzzyModule.cs" />
     <Compile Include="Util\GraphGenerator.cs" />
     <Compile Include="Util\GraphRenderer.cs" />
     <Compile Include="Util\PathRenderer.cs" />
@@ -167,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="entity\Components\" />
-    <Folder Include="Steering\Simple\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\opensans.spritefont" />
