@@ -5,6 +5,12 @@ using Fuzzy.Terms;
 
 namespace Fuzzy
 {
+    public enum DefuzzifyMethods
+    {
+        Centroid,
+        MaxAverage
+    }
+
     public class FuzzyModule
     {
         private readonly Dictionary<string, Variable> variables;
@@ -48,9 +54,26 @@ namespace Fuzzy
             variable.Fuzzify(value);
         }
 
-        public double Defuzzify(string variableName, )
+        public double Defuzzify(string variableName, DefuzzifyMethods method)
         {
-            // TODO do defuzzifying
+            if (!this.variables.TryGetValue(variableName, out Variable variable)) { throw new ArgumentException($"Variable {variableName} does not exist"); }
+
+            foreach (Rule rule in this.rules)
+            {
+                rule.ClearConsequentConfidence();
+                rule.Calculate();
+            }
+
+            switch (method)
+            {
+                case DefuzzifyMethods.Centroid:
+                    return variable.DefuzzifyCentroid(10);
+                case DefuzzifyMethods.MaxAverage:
+                    return variable.DefuzzifyMaxAverage();
+                default:
+                    // Shouldn't ever happen
+                    throw new ArgumentOutOfRangeException(nameof(method), method, null);
+            }
         }
     }
 }
