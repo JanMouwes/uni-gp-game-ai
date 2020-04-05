@@ -41,15 +41,41 @@ namespace Fuzzy
 
         public double DefuzzifyMaxAverage()
         {
-            IEnumerable<FuzzySet> validCategories = this.categories.Values.Where(category => category.DegreeOfMembership > 0);
-            
-            foreach (FuzzySet category in validCategories)
+            double numerator = 0.0;
+            double denominator = 0.0;
+
+            foreach (FuzzySet category in this.categories.Values)
             {
-                category.DegreeOfMembership;
+                numerator += category.RepresentativeValue * category.DegreeOfMembership;
+                denominator += category.DegreeOfMembership;
             }
+
+            // Assure you're not dividing by 0
+            return denominator > 0.0 ? numerator / denominator : 0.0;
         }
 
-        public double DefuzzifyCentroid(int sampleCount);
+        public double DefuzzifyCentroid(int sampleCount)
+        {
+            double range = this.maxRange - this.minRange;
+            double stepSize = range / sampleCount;
+
+            double numerator = 0.0;
+            double denominator = 0.0;
+
+            double sampleValue = this.minRange;
+
+            for (int i = 0; i < sampleCount; i++)
+            {
+                sampleValue += stepSize;
+                double membershipSum = this.categories.Values.Select(category => category.CalculateMembership(sampleValue)).Sum();
+
+                numerator += membershipSum * sampleValue;
+                denominator += membershipSum;
+            }
+
+            // Assure you're not dividing by 0
+            return denominator > 0.0 ? numerator / denominator : 0.0;
+        }
 
         private void AdjustRange(double newMinRange, double newMaxRange)
         {
