@@ -2,12 +2,12 @@ using System;
 
 namespace Fuzzy.Sets
 {
-    public class RightSlopeSet : FuzzySet
+    public class LeftShoulder : FuzzySet
     {
         private readonly double peakPoint;
         private readonly double rightOffset;
 
-        public RightSlopeSet(double peakPoint, double rightOffset) : base(peakPoint)
+        public LeftShoulder(double peakPoint, double rightOffset) : base(peakPoint)
         {
             if (rightOffset < 0) throw new ArgumentOutOfRangeException(nameof(rightOffset));
 

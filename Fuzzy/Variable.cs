@@ -24,13 +24,13 @@ namespace Fuzzy
 
         public void AddLeftSlopeSet(string name, double minBound, double peakPoint, double maxBound)
         {
-            this.categories.Add(name, new LeftSlopeSet(peakPoint, peakPoint - minBound));
+            this.categories.Add(name, new RightShoulder(peakPoint, peakPoint - minBound));
             AdjustRange(minBound, maxBound);
         }
 
         public void AddRightSlopeSet(string name, double minBound, double peakPoint, double maxBound)
         {
-            this.categories.Add(name, new RightSlopeSet(peakPoint, maxBound - peakPoint));
+            this.categories.Add(name, new LeftShoulder(peakPoint, maxBound - peakPoint));
             AdjustRange(minBound, maxBound);
         }
 
