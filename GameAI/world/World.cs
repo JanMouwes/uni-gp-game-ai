@@ -41,7 +41,7 @@ namespace GameAI
             this.Teams = new Dictionary<Color, Team>();
         }
 
-        public void Populate(int vehicleCount, Texture2D vehicleTexture)
+        public void Populate(int vehicleCount, Texture2D[] teamTextures)
         {
             // Add obstacles
             // Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
@@ -62,6 +62,7 @@ namespace GameAI
             for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
             {
                 Team team = new Team(teamColours[teamIndex]);
+                Texture2D vehicleTexture = teamTextures[teamIndex];
 
                 team.AddSpawnPoint(teamSpawns[teamIndex]);
                 Flag flag = new Flag(this, team, 5f)

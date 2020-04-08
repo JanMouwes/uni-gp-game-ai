@@ -39,7 +39,7 @@ namespace GameAI
 
         private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
         private SpriteFont mainFont;
-        private Texture2D boat;
+
 
         public Game1()
         {
@@ -60,7 +60,7 @@ namespace GameAI
             this.pathFinder = new PathFinder(this.NavGraph);
 
             this.world = new World(WORLD_WIDTH, WORLD_HEIGHT, this.pathFinder);
-            
+
 
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT;
@@ -77,10 +77,16 @@ namespace GameAI
 
             this.mainFont = Content.Load<SpriteFont>("opensans");
 
-            boat = Content.Load<Texture2D>("ship1");
-            
-            this.world.Populate(5, this.boat);
-            
+            Texture2D boat = Content.Load<Texture2D>("ship1");
+            Texture2D pirateBoat = Content.Load<Texture2D>("ship-pirate");
+
+            Texture2D[] teamTextures =
+            {
+                boat, pirateBoat
+            };
+
+            this.world.Populate(5, teamTextures);
+
             this.graphRenderer = new GraphRenderer(this.NavGraph, this.mainFont, Color.White);
 
             this.keyboardInput = new KeyboardInput();
@@ -187,7 +193,6 @@ namespace GameAI
 
             this.spriteBatch.Begin();
 
-            
 
             this.graphRenderer.Render(this.spriteBatch);
 
