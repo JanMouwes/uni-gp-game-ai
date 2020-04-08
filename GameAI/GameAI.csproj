@@ -172,6 +172,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\opensans.spritefont" />
+    <Content Include="Content\rock.png" />
+    <Content Include="Content\ship-pirate.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">
