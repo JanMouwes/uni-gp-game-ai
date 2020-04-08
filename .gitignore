@@ -24,6 +24,10 @@ PriorityQueue/obj/
 PriorityQueue/bin/
 PriorityQueue/.idea/*
 
+Fuzzy/obj/
+Fuzzy/bin/
+Fuzzy/.idea/*
+
 packages
 /.idea/*
 
