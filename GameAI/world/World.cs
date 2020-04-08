@@ -53,7 +53,7 @@ namespace GameAI
             Color[] teamColours =
             {
                 Color.Blue,
-                Color.Orange
+                Color.Red
             };
             Vector2[] teamSpawns =
             {
@@ -77,7 +77,11 @@ namespace GameAI
 
                 this.Teams.Add(team.Colour, team);
 
-                Rectangle rectangle = new Rectangle(3, 102, 32, 32);
+                Rectangle[] rectangles =
+                {
+                    new Rectangle(3, 698, 32, 32),
+                    new Rectangle(3, 400, 32, 32)
+                };
 
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
@@ -89,7 +93,7 @@ namespace GameAI
                     };
                     vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
                     {
-                        SourceRectangle = rectangle, RotationOffset = (float) Math.PI
+                        SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
