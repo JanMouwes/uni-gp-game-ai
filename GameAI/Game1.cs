@@ -6,13 +6,10 @@ using GameAI.Entity.GoalBehaviour;
 using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
-using GameAI.Steering;
 using GameAI.Util;
-using Graph;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
 using GameAI.Input;
 using GameAI.Navigation;
 
@@ -28,14 +25,13 @@ namespace GameAI
         private GraphRenderer graphRenderer;
 
         private PathFinder pathFinder;
-        private CustomizablePathSmoother pathSmoother;
 
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
 
         private const int WORLD_WIDTH = 400;
         private const int WORLD_HEIGHT = 300;
-        
+
         private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
         private SpriteFont mainFont;
 
@@ -49,8 +45,6 @@ namespace GameAI
         protected override void Initialize()
         {
             this.world = new World(WORLD_WIDTH, WORLD_HEIGHT);
-
-        
 
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT;
@@ -78,7 +72,9 @@ namespace GameAI
             };
 
             this.world.Populate(5, teamTextures, rock);
-            
+
+            IPathSmoother smoother = new CustomizablePathSmoother(this.world, 3);
+
             (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
             (int, int) vertexCounts = (24, 18);
             (float, float) offset = (10, 10);
@@ -87,7 +83,7 @@ namespace GameAI
                 GraphGenerator.AxisAndDiagonalIndices
             );
 
-            this.pathFinder = new PathFinder(this.world.NavigationGraph);
+            this.pathFinder = new PathFinder(this.world.NavigationGraph, smoother);
 
             this.graphRenderer = new GraphRenderer(this.world.NavigationGraph, this.mainFont, Color.White);
 
