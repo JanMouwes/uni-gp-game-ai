@@ -20,6 +20,8 @@ namespace GameAI.Entity
 
         public Vector2 Orientation { get; set; } = new Vector2(1, 0);
 
+        public override float Rotation => Orientation.ToAngle();
+
         public float Mass { get; set; }
 
         public float MaxSpeed { get; set; }

@@ -39,21 +39,7 @@ namespace GameAI.Entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawCircle(this.Position, Scale, 360, this.Color);
-
-            // Vector2 offsetY = this.Pos + new Vector2(0, this.Scale * -0.5f);
-            // Vector2 offsetX = new Vector2(this.Scale * .5f, 0);
-            //
-            // Vector2 leftCorner = offsetY     - offsetX;
-            // Vector2 rightCorner = offsetY    + offsetX;
-            // Vector2 forwardCorner = this.Pos + new Vector2(0, this.Scale);
-            //
-            // spriteBatch.DrawLine(this.Pos, leftCorner, VColor);
-            // spriteBatch.DrawLine(this.Pos, rightCorner, VColor);
-            // spriteBatch.DrawLine(forwardCorner, leftCorner, VColor);
-            // spriteBatch.DrawLine(forwardCorner, rightCorner, VColor);
-
-            base.Render(spriteBatch);
+            this.Graphics.Draw(spriteBatch);
         }
 
         public void Kill()

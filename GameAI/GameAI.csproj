@@ -42,6 +42,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entity\Components\CircleGraphics.cs" />
+    <Compile Include="Entity\Components\DefaultGraphics.cs" />
+    <Compile Include="Entity\Components\IGraphicsComponent.cs" />
+    <Compile Include="Entity\Components\TextureGraphics.cs" />
     <Compile Include="Entity\Flag.cs" />
     <Compile Include="Entity\GoalBehaviour\Atomic\AttackEnemy.cs" />
     <Compile Include="Entity\GoalBehaviour\Atomic\FleeEnemy.cs" />
@@ -181,6 +185,11 @@
       <Project>{e6e34c74-1821-4c55-9240-ed3fcd9fd17d}</Project>
       <Name>Graph</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\3DS - Fire Emblem Echoes Shadows of Valentia - Ship 1.png" />
+    <Content Include="Content\opensans.spritefont" />
+    <Content Include="Content\PlayStation - Magical Drop F - Bird.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

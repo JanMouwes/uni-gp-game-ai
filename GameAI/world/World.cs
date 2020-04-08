@@ -7,12 +7,14 @@ using GameAI.Steering;
 using GameAI.Steering.Complex;
 using GameAI.Steering.Simple;
 using GameAI.Entity;
+using GameAI.Entity.Components;
 using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.GoalBehaviour;
 using GameAI.Navigation;
 using GameAI.world;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
@@ -39,7 +41,7 @@ namespace GameAI
             this.Teams = new Dictionary<Color, Team>();
         }
 
-        public void Populate(int vehicleCount)
+        public void Populate(int vehicleCount, Texture2D vehicleTexture)
         {
             // Add obstacles
             // Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
@@ -72,6 +74,8 @@ namespace GameAI
 
                 this.Teams.Add(team.Colour, team);
 
+                Rectangle rectangle = new Rectangle(3, 102, 32, 32);
+
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
                 {
@@ -79,6 +83,10 @@ namespace GameAI
                     {
                         MaxSpeed = 100f,
                         Mass = 1
+                    };
+                    vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
+                    {
+                        SourceRectangle = rectangle, RotationOffset = (float)Math.PI
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
