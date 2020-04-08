@@ -10,9 +10,11 @@ using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.Entity.GoalBehaviour.Composite;
+using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
 using GameAI.Navigation;
 using GameAI.world;
+using Graph;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,30 +24,30 @@ namespace GameAI
 {
     public class World
     {
+        public Graph<Vector2> NavigationGraph { get; set; }
+
         public readonly Dictionary<Color, Team> Teams;
 
         // Entities and obstacles should be one list while spatial partitioning is not implemented
         private readonly List<BaseGameEntity> entities = new List<BaseGameEntity>();
         public IEnumerable<BaseGameEntity> Entities => this.entities;
 
-        public readonly PathFinder PathFinder;
-
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public World(int w, int h, PathFinder pathFinder)
+        public World(int w, int h)
         {
             Width = w;
             Height = h;
-            this.PathFinder = pathFinder;
             this.Teams = new Dictionary<Color, Team>();
         }
 
-        public void Populate(int vehicleCount, Texture2D[] teamTextures)
+        public void Populate(int vehicleCount, Texture2D[] teamTextures, Texture2D rockTexture)
         {
             // Add obstacles
-            // Rock r = new Rock(this, new Vector2(300, 300), 150, Color.Black);
-            // this.entities.Add(r);
+            Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
+            r.Graphics = new TextureGraphics(r, rockTexture);
+            this.entities.Add(r);
 
             const int numberOfTeams = 2;
             Color[] teamColours =
@@ -87,24 +89,12 @@ namespace GameAI
                     };
                     vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
                     {
-                        SourceRectangle = rectangle, RotationOffset = (float)Math.PI
+                        SourceRectangle = rectangle, RotationOffset = (float) Math.PI
                     };
                     vehicle.Steering = new WanderBehaviour(vehicle, 20);
 
                     SpawnVehicle(vehicle);
                 }
-            }
-
-            foreach (Team team in this.Teams.Values)
-            {
-                Team otherTeam = this.Teams.Values.First(item => item.Colour != team.Colour);
-
-                // Everyone in the team is going to try to defend the flag, except for one
-                foreach (Vehicle vehicle in team.Vehicles) { vehicle.Brain.AddSubgoal(new DefendFlag(vehicle, this, team.Flag)); }
-
-                Vehicle captureVehicle = team.Vehicles.First();
-                captureVehicle.Brain.ClearGoals();
-                captureVehicle.Brain.AddSubgoal(new CaptureFlag(captureVehicle, otherTeam.Flag, this.PathFinder));
             }
         }
 

@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Graph;
+using GameAI.Navigation;
 using GameAI.Pathfinding.AStar;
-using GameAI.Pathfinding.Dijkstra;
+using Graph;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Navigation
+namespace GameAI.Entity.Navigation
 {
     public class PathFinder
     {

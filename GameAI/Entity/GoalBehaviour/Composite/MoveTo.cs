@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
-using GameAI.Navigation;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite

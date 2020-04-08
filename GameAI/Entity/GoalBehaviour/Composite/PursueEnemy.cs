@@ -1,3 +1,4 @@
+using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
 using Microsoft.Xna.Framework;
 
@@ -6,17 +7,17 @@ namespace GameAI.Entity.GoalBehaviour.Composite
     public class PursueEnemy : GoalComposite<Vehicle>
     {
         private readonly float nearRange;
-        private readonly World world;
+        private readonly PathFinder pathFinder;
 
         public readonly Vehicle Enemy;
 
         private Vector2 currentTarget;
 
-        public PursueEnemy(Vehicle owner, Vehicle enemy, float nearRange, World world) : base(owner)
+        public PursueEnemy(Vehicle owner, Vehicle enemy, float nearRange, PathFinder pathFinder) : base(owner)
         {
             this.Enemy = enemy;
             this.nearRange = nearRange;
-            this.world = world;
+            this.pathFinder = pathFinder;
         }
 
         public override void Activate()
@@ -32,7 +33,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
             this.ClearGoals();
 
-            AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.currentTarget, this.world.PathFinder));
+            AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.currentTarget, this.pathFinder));
         }
 
         public override void Process(GameTime gameTime)

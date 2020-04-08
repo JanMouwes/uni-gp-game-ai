@@ -1,5 +1,6 @@
 using System.Linq;
 using GameAI.Entity.GoalBehaviour.Atomic;
+using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
 using Microsoft.Xna.Framework;
 
@@ -11,11 +12,13 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         private readonly Flag flag;
 
         private Vehicle currentEnemy;
+        private readonly PathFinder pathFinder;
 
-        public DefendFlag(Vehicle owner, World world, Flag flag) : base(owner)
+        public DefendFlag(Vehicle owner, World world, Flag flag, PathFinder pathFinder) : base(owner)
         {
             this.world = world;
             this.flag = flag;
+            this.pathFinder = pathFinder;
         }
 
         public Vehicle FindValidEnemy()
@@ -42,11 +45,11 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                 if (this.currentEnemy != null)
                 {
                     ClearGoals();
-                    AddSubgoal(new PursueEnemy(this.Owner, this.currentEnemy, this.Owner.Scale * this.Owner.Scale, this.world));
+                    AddSubgoal(new PursueEnemy(this.Owner, this.currentEnemy, this.Owner.Scale * this.Owner.Scale, this.pathFinder));
                     AddSubgoal(new AttackEnemy(this.Owner, this.currentEnemy));
                 }
 
-                AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.flag.Position, this.world.PathFinder));
+                AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.flag.Position, this.pathFinder));
             }
 
             base.Process(gameTime);

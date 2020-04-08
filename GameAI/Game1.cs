@@ -4,6 +4,7 @@ using System.Text;
 using GameAI.Entity;
 using GameAI.Entity.GoalBehaviour;
 using GameAI.Entity.GoalBehaviour.Composite;
+using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
 using GameAI.Steering;
 using GameAI.Util;
@@ -34,9 +35,7 @@ namespace GameAI
 
         private const int WORLD_WIDTH = 400;
         private const int WORLD_HEIGHT = 300;
-
-        public Graph<Vector2> NavGraph;
-
+        
         private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
         private SpriteFont mainFont;
 
@@ -49,18 +48,9 @@ namespace GameAI
 
         protected override void Initialize()
         {
-            (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
-            (int, int) vertexCounts = (24, 18);
-            (float, float) offset = (10, 10);
-            this.NavGraph = GraphGenerator.GenerateGraphWithPadding(
-                dimensions, vertexCounts, offset,
-                GraphGenerator.AxisAndDiagonalIndices
-            );
+            this.world = new World(WORLD_WIDTH, WORLD_HEIGHT);
 
-            this.pathFinder = new PathFinder(this.NavGraph);
-
-            this.world = new World(WORLD_WIDTH, WORLD_HEIGHT, this.pathFinder);
-
+        
 
             this.graphics.PreferredBackBufferWidth = WORLD_WIDTH;
             this.graphics.PreferredBackBufferHeight = WORLD_HEIGHT;
@@ -77,6 +67,8 @@ namespace GameAI
 
             this.mainFont = Content.Load<SpriteFont>("opensans");
 
+            Texture2D rock = Content.Load<Texture2D>("rock");
+
             Texture2D boat = Content.Load<Texture2D>("ship1");
             Texture2D pirateBoat = Content.Load<Texture2D>("ship-pirate");
 
@@ -85,9 +77,19 @@ namespace GameAI
                 boat, pirateBoat
             };
 
-            this.world.Populate(5, teamTextures);
+            this.world.Populate(5, teamTextures, rock);
+            
+            (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
+            (int, int) vertexCounts = (24, 18);
+            (float, float) offset = (10, 10);
+            this.world.NavigationGraph = GraphGenerator.GenerateGraphWithObstacles(
+                dimensions, vertexCounts, offset, this.world.Entities.OfType<Rock>(),
+                GraphGenerator.AxisAndDiagonalIndices
+            );
 
-            this.graphRenderer = new GraphRenderer(this.NavGraph, this.mainFont, Color.White);
+            this.pathFinder = new PathFinder(this.world.NavigationGraph);
+
+            this.graphRenderer = new GraphRenderer(this.world.NavigationGraph, this.mainFont, Color.White);
 
             this.keyboardInput = new KeyboardInput();
             this.mouseInput = new MouseInput();

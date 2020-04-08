@@ -10,7 +10,7 @@ namespace GameAI.Util
     public delegate IEnumerable<(int, float)> NeighbourGenerator(int x, int y, int width, int height, float xDistance,
                                                                  float yDistance);
 
-    
+
     // TODO transform this into a builder-pattern.
     public static class GraphGenerator
     {
@@ -155,10 +155,7 @@ namespace GameAI.Util
                     Vertex<Vector2> vertex = returnGraph.GetVertex(index);
                     vertex.Value = vector;
 
-                    foreach ((int neighbourIndex, float cost) in neighbourGenerator(x, y, xAxisVertexCount, yAxisVertexCount, vectorXDistance, vectorYDistance))
-                    {
-                        returnGraph.AddEdge(index, neighbourIndex, cost);
-                    }
+                    foreach ((int neighbourIndex, float cost) in neighbourGenerator(x, y, xAxisVertexCount, yAxisVertexCount, vectorXDistance, vectorYDistance)) { returnGraph.AddEdge(index, neighbourIndex, cost); }
 
                     index++;
                 }
@@ -196,18 +193,21 @@ namespace GameAI.Util
         public static Graph<Vector2> GenerateGraphWithObstacles((float, float) dimensions,
                                                                 (int, int) vertexCounts,
                                                                 (float, float) padding,
-                                                                World world,
+                                                                IEnumerable<BaseGameEntity> obstacles,
                                                                 NeighbourGenerator neighbourGenerator = null)
         {
             Graph<Vector2> graph = GenerateGraphWithPadding(dimensions, vertexCounts, padding, neighbourGenerator);
+
+            // Prevent multiple enumeration by making copy
+            IEnumerable<BaseGameEntity> obstacleArray = obstacles as BaseGameEntity[] ?? obstacles.ToArray();
 
             foreach (Vertex<Vector2> vertex in graph.Vertices.ToList())
             {
                 bool collides = false;
 
-                foreach (BaseGameEntity baseGameEntity in world.Entities.OfType<Rock>())
+                foreach (BaseGameEntity obstacle in obstacleArray)
                 {
-                    CircleF notAllowedZone = new CircleF(baseGameEntity.Position.ToPoint(), baseGameEntity.Scale);
+                    CircleF notAllowedZone = new CircleF(obstacle.Position.ToPoint(), obstacle.Scale);
 
                     if (notAllowedZone.Contains(vertex.Value))
                     {

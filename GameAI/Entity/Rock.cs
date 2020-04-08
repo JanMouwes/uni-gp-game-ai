@@ -27,7 +27,7 @@ namespace GameAI.Entity
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawCircle(this.Position, Scale, 360, Color);
+            this.Graphics.Draw(spriteBatch);
         }
     }
 }
