@@ -6,37 +6,34 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
-    public class DefendFlag : GoalComposite<Vehicle>
+    public class AttackDefenders : GoalComposite<Vehicle>
     {
         private readonly World world;
-        private readonly Flag flag;
-
+        private readonly Flag enemyFlag;
         private Vehicle currentEnemy;
 
-        public DefendFlag(Vehicle owner, World world, Flag flag) : base(owner)
+        public AttackDefenders(Vehicle owner, World world, Flag enemyFlag) : base(owner)
         {
             this.world = world;
-            this.flag = flag;
+            this.enemyFlag = enemyFlag;
         }
 
         public Vehicle FindValidEnemy()
         {
             return this.world.Entities.OfType<Vehicle>()
-                       .Where(vehicle => vehicle.Team != this.Owner.Team && IsEnemyValid(vehicle))
-                       .OrderBy(vehicle => Vector2.DistanceSquared(vehicle.Position, this.flag.Position))
+                       .Where(vehicle => vehicle.Team != this.Owner.Team)
+                       .OrderBy(vehicle => Vector2.DistanceSquared(vehicle.Position, this.Owner.Position))
                        .FirstOrDefault();
         }
 
-        public bool IsEnemyValid(Vehicle enemy)
+        private static bool IsEnemyValid(Vehicle vehicle)
         {
-            const float panicDistance = 150f;
-
-            return enemy != null && Vector2.DistanceSquared(enemy.Position, this.flag.Position) < panicDistance * panicDistance;
+            return vehicle != null;
         }
 
         public override void Process(GameTime gameTime)
         {
-            if (!IsEnemyValid(this.currentEnemy))
+            if (!IsEnemyValid(this.currentEnemy) && this.GoalQueue.Count == 0)
             {
                 this.currentEnemy = FindValidEnemy();
 
@@ -46,11 +43,14 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                     AddSubgoal(new PursueEnemy(this.Owner, this.currentEnemy, this.Owner.Scale * this.Owner.Scale, this.world.PathFinder));
                     AddSubgoal(new AttackEnemy(this.Owner, this.currentEnemy));
                 }
-                else if (this.GoalQueue.Count == 0) { AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.flag.Position, this.world.PathFinder)); }
+                else if (this.GoalQueue.Count == 0) { AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.enemyFlag.Position, this.world.PathFinder)); }
             }
 
             base.Process(gameTime);
             this.Status = GoalStatus.Active;
+
+
+            base.Process(gameTime);
         }
     }
 }
