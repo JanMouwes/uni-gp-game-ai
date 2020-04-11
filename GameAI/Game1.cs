@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using GameAI.Input;
 using GameAI.Navigation;
+using GameAI.world;
 
 namespace GameAI
 {
@@ -23,8 +24,6 @@ namespace GameAI
         private bool paused;
 
         private GraphRenderer graphRenderer;
-
-        private PathFinder pathFinder;
 
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
@@ -83,7 +82,7 @@ namespace GameAI
                 GraphGenerator.AxisAndDiagonalIndices
             );
 
-            this.pathFinder = new PathFinder(this.world.NavigationGraph, smoother);
+            this.world.PathFinder = new PathFinder(this.world.NavigationGraph, smoother);
 
             this.graphRenderer = new GraphRenderer(this.world.NavigationGraph, this.mainFont, Color.White);
 
@@ -105,19 +104,19 @@ namespace GameAI
                 }
             });
 
-            this.mouseInput.OnKeyPress(MouseButtons.Right, (input, state) =>
-            {
-                Vector2 target = Mouse.GetState().Position.ToVector2();
-
-                bool shouldClear = !Keyboard.GetState().IsKeyDown(Keys.LeftShift);
-
-                foreach (Vehicle selectedEntity in this.selectedEntities)
-                {
-                    if (shouldClear) { selectedEntity.Brain.ClearGoals(); }
-
-                    selectedEntity.Brain.AddSubgoal(new MoveTo<Vehicle>(selectedEntity, target, this.pathFinder));
-                }
-            });
+            // this.mouseInput.OnKeyPress(MouseButtons.Right, (input, state) =>
+            // {
+            //     Vector2 target = Mouse.GetState().Position.ToVector2();
+            //
+            //     bool shouldClear = !Keyboard.GetState().IsKeyDown(Keys.LeftShift);
+            //
+            //     foreach (Vehicle selectedEntity in this.selectedEntities)
+            //     {
+            //         if (shouldClear) { selectedEntity.Brain.ClearGoals(); }
+            //
+            //         selectedEntity.Brain.AddSubgoal(new MoveTo<Vehicle>(selectedEntity, target, this.world.PathFinder));
+            //     }
+            // });
 
             this.keyboardInput.OnKeyPress(Keys.Space, (input, state) => { this.paused = !this.paused; });
 
@@ -188,15 +187,22 @@ namespace GameAI
         {
             this.graphics.GraphicsDevice.Clear(Color.LightBlue);
 
-
             this.spriteBatch.Begin();
-
 
             this.graphRenderer.Render(this.spriteBatch);
 
             foreach (Vehicle selectedEntity in this.selectedEntities)
             {
                 if (selectedEntity.Brain.CurrentGoal is MoveTo<Vehicle> followPath) { PathRenderer.RenderPath(this.spriteBatch, this.mainFont, followPath.Path, Color.Green); }
+            }
+
+            // Draw spawns (manually for now)
+            foreach (Team team in this.world.Teams.Values)
+            {
+                foreach (Vector2 spawn in team.SpawnPoints)
+                {
+                    this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour);
+                }
             }
 
             this.world.Render(this.spriteBatch);

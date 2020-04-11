@@ -1,16 +1,33 @@
 using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.Entity.Navigation;
 using GameAI.GoalBehaviour;
+using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
     public class CaptureFlag : GoalComposite<Vehicle>
     {
-        public CaptureFlag(Vehicle owner, Flag flag, PathFinder pathFinder) : base(owner)
+        private readonly Flag enemyFlag;
+
+        public CaptureFlag(Vehicle owner, Flag enemyFlag, PathFinder pathFinder) : base(owner)
         {
-            this.AddSubgoal(new MoveTo<Vehicle>(owner, flag.Position, pathFinder));
-            this.AddSubgoal(new TakeFlag(owner, flag));
+            this.enemyFlag = enemyFlag;
+            this.AddSubgoal(new MoveTo<Vehicle>(owner, enemyFlag.Position, pathFinder));
+            this.AddSubgoal(new TakeFlag(owner, enemyFlag));
             this.AddSubgoal(new MoveTo<Vehicle>(owner, owner.Team.Flag.Position, pathFinder));
+            this.AddSubgoal(new DropFlag(owner, enemyFlag));
+        }
+
+        public override void Process(GameTime gameTime)
+        {
+            if (this.enemyFlag.Carrier != null && this.enemyFlag.Carrier.Team == this.Owner.Team)
+            {
+                Status = GoalStatus.Failed;
+
+                return;
+            }
+
+            base.Process(gameTime);
         }
     }
 }

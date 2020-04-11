@@ -34,6 +34,7 @@ namespace GameAI
 
         public int Width { get; set; }
         public int Height { get; set; }
+        public PathFinder PathFinder { get; set; }
 
         public World(int w, int h)
         {
@@ -45,9 +46,9 @@ namespace GameAI
         public void Populate(int vehicleCount, Texture2D[] teamTextures, Texture2D rockTexture)
         {
             // Add obstacles
-            Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
-            r.Graphics = new TextureGraphics(r, rockTexture);
-            this.entities.Add(r);
+            // Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
+            // r.Graphics = new TextureGraphics(r, rockTexture);
+            // this.entities.Add(r);
 
             const int numberOfTeams = 2;
             Color[] teamColours =
@@ -55,10 +56,26 @@ namespace GameAI
                 Color.Blue,
                 Color.Red
             };
-            Vector2[] teamSpawns =
+            Vector2[][] teamSpawns =
             {
-                new Vector2(50, 50),
-                new Vector2(this.Width - 50, this.Height - 50)
+                new[]
+                {
+                    new Vector2(50, 50),
+                    new Vector2(100, 50),
+                    new Vector2(50, 100),
+                },
+                new[]
+                {
+                    new Vector2(this.Width - 50, this.Height  - 50),
+                    new Vector2(this.Width - 100, this.Height - 50),
+                    new Vector2(this.Width - 50, this.Height  - 100),
+                }
+            };
+
+            Vector2[] teamFlagPosition =
+            {
+                new Vector2(75, 75),
+                new Vector2(this.Width - 75, this.Height - 75)
             };
 
             for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
@@ -66,10 +83,10 @@ namespace GameAI
                 Team team = new Team(teamColours[teamIndex]);
                 Texture2D vehicleTexture = teamTextures[teamIndex];
 
-                team.AddSpawnPoint(teamSpawns[teamIndex]);
+                team.AddSpawnPoints(teamSpawns[teamIndex]);
                 Flag flag = new Flag(this, team, 5f)
                 {
-                    Position = teamSpawns[teamIndex]
+                    Position = teamFlagPosition[teamIndex]
                 };
                 this.entities.Add(flag);
 

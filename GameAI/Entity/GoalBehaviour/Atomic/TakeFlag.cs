@@ -17,8 +17,17 @@ namespace GameAI.Entity.GoalBehaviour.Atomic
             if (this.flag.Carrier != null || Vector2.DistanceSquared(this.Owner.Position, this.flag.Position) > this.Owner.Scale * this.Owner.Scale) { this.Status = GoalStatus.Failed; }
 
             this.flag.Carrier = this.Owner;
+            this.Owner.Death += DropFlag;
 
             this.Status = GoalStatus.Completed;
+        }
+
+        private void DropFlag(object sender, Vehicle vehicle)
+        {
+            if (this.flag.Carrier != vehicle) return;
+
+            vehicle.Death -= DropFlag;
+            this.flag.Carrier = null;
         }
     }
 }

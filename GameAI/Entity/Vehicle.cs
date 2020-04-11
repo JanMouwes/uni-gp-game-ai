@@ -11,7 +11,7 @@ namespace GameAI.Entity
     {
         public Color Color { get; set; }
 
-        public readonly Think<Vehicle> Brain;
+        public readonly Think Brain;
 
         public Team Team;
 
@@ -26,7 +26,7 @@ namespace GameAI.Entity
 
             this.Color = team.Colour;
 
-            this.Brain = new Think<Vehicle>(this);
+            this.Brain = new Think(this, world);
             this.Brain.Activate();
         }
 
