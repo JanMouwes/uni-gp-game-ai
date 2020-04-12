@@ -1,5 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Graph;
+using Microsoft.Xna.Framework;
 using PriorityQueue;
 
 namespace GameAI.Pathfinding.AStar
@@ -8,9 +11,6 @@ namespace GameAI.Pathfinding.AStar
 
     public class AStarRunner<TValue>
     {
-        private readonly Graph<TValue> graph;
-        // private readonly Dictionary<Vertex<TValue>, VertexAStarData<TValue>> vertexMap = new Dictionary<Vertex<TValue>, VertexAStarData<TValue>>();
-
         /// <summary>
         /// Vertices by ID
         /// </summary>
@@ -20,22 +20,25 @@ namespace GameAI.Pathfinding.AStar
 
         private readonly PriorityQueue<VertexAStarData> queue = new PriorityQueue<VertexAStarData>();
 
+        public IEnumerable<(Vertex<TValue> from, Vertex<TValue> to)> ConsideredEdges =>
+            this.vertexData.Values
+                .Where(data => data.Known && data.PreviousId != -1)
+                .Select(item => (this.vertices[item.PreviousId], this.vertices[item.VertexId]));
+
         public AStarRunner(Graph<TValue> graph)
         {
-            this.graph = graph;
-
             this.vertices = new Dictionary<int, Vertex<TValue>>();
             this.vertexData = new Dictionary<int, VertexAStarData>();
 
             foreach (Vertex<TValue> vertex in graph.Vertices)
             {
                 this.vertices[vertex.Id] = vertex;
-                this.vertexData.Add(vertex.Id, new VertexAStarData(vertex.Id));
+                this.vertexData.Add(vertex.Id, new VertexAStarData(vertex.Id) { PreviousId = -1});
             }
         }
 
         /// <summary>
-        /// 
+        /// Run A* from one vertex to another 
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="destination"></param>
@@ -56,6 +59,8 @@ namespace GameAI.Pathfinding.AStar
                 this.vertexData[currentVertex.VertexId] = currentVertex;
 
                 this.vertexData[currentVertex.VertexId].Known = true;
+
+                if (currentVertex.VertexId == destination.Id) { break; }
 
                 foreach (Edge<TValue> edge in this.vertices[currentVertex.VertexId].Edges)
                 {

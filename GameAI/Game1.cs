@@ -72,7 +72,7 @@ namespace GameAI
 
             this.world.Populate(5, teamTextures, rock);
 
-            IPathSmoother smoother = new CustomizablePathSmoother(this.world, 3);
+            IPathSmoother smoother = new CustomizablePathSmoother(this.world, 5);
 
             (float, float) dimensions = (WORLD_WIDTH, WORLD_HEIGHT);
             (int, int) vertexCounts = (24, 18);
