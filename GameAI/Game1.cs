@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using GameAI.Input;
 using GameAI.Navigation;
 using GameAI.world;
+using MonoGame.Extended;
 
 namespace GameAI
 {
@@ -190,7 +191,6 @@ namespace GameAI
 
             this.graphRenderer.Render(this.spriteBatch);
 
-            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Brain.Render(spriteBatch); }
 
             // Draw spawns (manually for now)
             foreach (Team team in this.world.Teams.Values)
@@ -199,6 +199,13 @@ namespace GameAI
             }
 
             this.world.Render(this.spriteBatch);
+            
+            // Special rendering for selected entities
+            foreach (Vehicle selectedEntity in this.selectedEntities)
+            {
+                this.spriteBatch.DrawCircle(selectedEntity.Position, selectedEntity.Scale, 360, selectedEntity.Team.Colour);
+                selectedEntity.Brain.Render(spriteBatch);
+            }
 
             DebugDraw(this.spriteBatch);
 
