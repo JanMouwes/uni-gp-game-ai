@@ -11,7 +11,6 @@ using GameAI.Entity.Components;
 using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.Entity.Navigation;
-using GameAI.GoalBehaviour;
 using GameAI.Navigation;
 using GameAI.world;
 using Graph;

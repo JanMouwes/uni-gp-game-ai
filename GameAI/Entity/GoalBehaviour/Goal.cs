@@ -1,11 +1,14 @@
-using GameAI.GoalBehaviour;
+using GameAI.Entity.GoalBehaviour.Rendering;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameAI.Entity.GoalBehaviour
 {
     public abstract class Goal<TOwner>
     {
-        protected TOwner Owner;
+        public IGoalRenderer Renderer { get; set; } = DefaultRenderer.Instance;
+
+        protected readonly TOwner Owner;
         public GoalStatus Status { get; protected set; } = GoalStatus.Inactive;
 
         protected Goal(TOwner owner)
@@ -21,6 +24,8 @@ namespace GameAI.Entity.GoalBehaviour
         public bool IsInactive() => this.Status  == GoalStatus.Inactive;
         public bool IsCompleted() => this.Status == GoalStatus.Completed;
         public bool HasFailed() => this.Status   == GoalStatus.Failed;
+
+        public virtual void Render(SpriteBatch spriteBatch) => Renderer.Render(spriteBatch);
 
         public override string ToString()
         {

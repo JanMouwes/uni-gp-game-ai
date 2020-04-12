@@ -40,6 +40,7 @@ namespace GameAI.Entity
         public override void Render(SpriteBatch spriteBatch)
         {
             this.Graphics.Draw(spriteBatch);
+            
         }
 
         public void Kill()

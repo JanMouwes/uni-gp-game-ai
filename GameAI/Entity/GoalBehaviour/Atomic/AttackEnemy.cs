@@ -1,4 +1,3 @@
-using GameAI.GoalBehaviour;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic

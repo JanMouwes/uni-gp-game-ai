@@ -5,7 +5,6 @@ using GameAI.Entity;
 using GameAI.Entity.GoalBehaviour;
 using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.Entity.Navigation;
-using GameAI.GoalBehaviour;
 using GameAI.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -191,18 +190,12 @@ namespace GameAI
 
             this.graphRenderer.Render(this.spriteBatch);
 
-            foreach (Vehicle selectedEntity in this.selectedEntities)
-            {
-                if (selectedEntity.Brain.CurrentGoal is MoveTo<Vehicle> followPath) { PathRenderer.RenderPath(this.spriteBatch, this.mainFont, followPath.Path, Color.Green); }
-            }
+            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Brain.Render(spriteBatch); }
 
             // Draw spawns (manually for now)
             foreach (Team team in this.world.Teams.Values)
             {
-                foreach (Vector2 spawn in team.SpawnPoints)
-                {
-                    this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour);
-                }
+                foreach (Vector2 spawn in team.SpawnPoints) { this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour); }
             }
 
             this.world.Render(this.spriteBatch);

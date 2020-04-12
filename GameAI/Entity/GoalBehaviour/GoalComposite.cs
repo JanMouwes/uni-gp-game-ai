@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GameAI.Entity.GoalBehaviour;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace GameAI.GoalBehaviour
+namespace GameAI.Entity.GoalBehaviour
 {
     public abstract class GoalComposite<TOwner> : Goal<TOwner>
     {
@@ -50,6 +50,13 @@ namespace GameAI.GoalBehaviour
         /// </summary>
         /// <param name="goal">Goal to add</param>
         public void AddSubgoal(Goal<TOwner> goal) => this.GoalQueue.Enqueue(goal);
+
+        public override void Render(SpriteBatch spriteBatch)
+        {
+            if (this.GoalQueue.Count > 0) { this.GoalQueue.Peek().Render(spriteBatch); }
+            
+            Renderer.Render(spriteBatch);
+        }
 
         /// <summary>
         /// Terminates all goals and clears the queue
