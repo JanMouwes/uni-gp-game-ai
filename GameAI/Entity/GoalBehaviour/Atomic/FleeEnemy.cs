@@ -1,4 +1,3 @@
-using GameAI.GoalBehaviour;
 using GameAI.Steering.Simple;
 using Microsoft.Xna.Framework;
 

@@ -1,5 +1,4 @@
 using GameAI.Entity.GoalBehaviour.Atomic;
-using GameAI.GoalBehaviour;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using GameAI.GoalBehaviour;
 using GameAI.world;
 using Microsoft.Xna.Framework;
 

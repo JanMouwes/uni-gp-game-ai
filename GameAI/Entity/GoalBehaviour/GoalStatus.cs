@@ -1,4 +1,4 @@
-namespace GameAI.GoalBehaviour
+namespace GameAI.Entity.GoalBehaviour
 {
     public enum GoalStatus
     {

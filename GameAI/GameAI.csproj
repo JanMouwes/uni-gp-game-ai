@@ -63,7 +63,10 @@
     <Compile Include="Entity\GoalBehaviour\Composite\Think.cs" />
     <Compile Include="Entity\GoalBehaviour\Goal.cs" />
     <Compile Include="Entity\GoalBehaviour\GoalComposite.cs" />
+    <Compile Include="Entity\GoalBehaviour\GoalRenderer.cs" />
     <Compile Include="Entity\GoalBehaviour\GoalStatus.cs" />
+    <Compile Include="Entity\GoalBehaviour\Rendering\DefaultRenderer.cs" />
+    <Compile Include="Entity\GoalBehaviour\Rendering\PathRenderer.cs" />
     <Compile Include="Entity\Navigation\DefaultPathSmoother.cs" />
     <Compile Include="Entity\Navigation\IPathSmoother.cs" />
     <Compile Include="Entity\Navigation\PathFinder.cs" />
