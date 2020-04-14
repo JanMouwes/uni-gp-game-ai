@@ -136,7 +136,7 @@ namespace GameAI.Steering
                 }
             }
 
-            if (size >= 0)
+            if (size > 0)
             {
                 averageHeading.X /= size;
                 averageHeading.Y /= size;
@@ -162,16 +162,15 @@ namespace GameAI.Steering
                 }
             }
 
-            Vector2 v = new Vector2();
             if (size > 0)
             {
                 centerOfMass.X /= size;
                 centerOfMass.Y /= size;
-                v = new Vector2(centerOfMass.X - owner.Position.X, centerOfMass.Y - owner.Position.Y);
-                if (v.X != 0 && v.Y != 0) v.Normalize();
+                centerOfMass = new Vector2(centerOfMass.X - owner.Position.X, centerOfMass.Y - owner.Position.Y);
+                if (centerOfMass.X != 0 && centerOfMass.Y != 0) centerOfMass.Normalize();
             }
 
-            return v;
+            return centerOfMass;
         }
 
         public static Vector2 Separation(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
@@ -183,17 +182,22 @@ namespace GameAI.Steering
             {
                 if (neighbor != owner)
                 {
-                    steeringForce.X += owner.Position.X - neighbor.Position.X;
-                    steeringForce.Y += owner.Position.Y - neighbor.Position.Y;
+                    steeringForce.X += neighbor.Position.X - owner.Position.X;
+                    steeringForce.Y += neighbor.Position.Y - owner.Position.Y;
                     size++;
                 }
             }
 
-            steeringForce.X *= -1;
-            steeringForce.Y *= -1;
-            steeringForce.X /= size;
-            steeringForce.Y /= size;
-            if (steeringForce.X != 0 && steeringForce.Y != 0) steeringForce.Normalize();
+            if (size > 0)
+            {
+                steeringForce.X /= size;
+                steeringForce.Y /= size;
+                // * negative so the owner will steer away from the target
+                steeringForce.X *= -1;
+                steeringForce.Y *= -1;
+                if (steeringForce.X != 0 && steeringForce.Y != 0) steeringForce.Normalize();
+            }
+
             return steeringForce;
         }
     }

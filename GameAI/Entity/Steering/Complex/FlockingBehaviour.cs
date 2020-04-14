@@ -15,9 +15,9 @@ namespace GameAI.Steering.Complex
         public FlockingBehaviour(MovingEntity entity, World world, double radius) : base(entity)
         {
             this.World = world;
-            this.separationRadius = radius;
             this.alignmentRadius = radius;
-            this.cohesionRadius = radius;
+            this.cohesionRadius = radius + radius / 2;
+            this.separationRadius = radius - radius / 2;
         }
 
         public override Vector2 Calculate()
@@ -25,14 +25,14 @@ namespace GameAI.Steering.Complex
             bool IsNear(BaseGameEntity entity, float range) => Vector2.DistanceSquared(this.Entity.Position, entity.Position) < range * range;
 
             bool IsNearAlignment(MovingEntity entity) => IsNear(entity, (float) this.alignmentRadius);
-            bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius + 20);
-            bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float)this.separationRadius - 20);
+            bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius);
+            bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float)this.separationRadius);
 
             Vector2 A = SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearAlignment));
             Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearCohesion));
             Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation));
 
-            Vector2 target = A + C + S;
+            Vector2 target = A * 1 + C * 1 + S * 1;
 
             if (target.Equals(Vector2.Zero))
             {
