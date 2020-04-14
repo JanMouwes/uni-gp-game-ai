@@ -131,12 +131,12 @@ namespace GameAI.Steering
                 {
                     steeringForce.X += owner.Position.X - neighbor.Position.X;
                     steeringForce.Y += owner.Position.Y - neighbor.Position.Y;
-                    steeringForce.X *= -1;
-                    steeringForce.Y *= -1;
                     size++;
                 }
             }
 
+            steeringForce.X *= -1;
+            steeringForce.Y *= -1;
             steeringForce.X /= size;
             steeringForce.Y /= size;
             //steeringForce.Normalize();
@@ -145,23 +145,24 @@ namespace GameAI.Steering
 
         public static Vector2 Alignment(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
-            Vector2 averageHeading = Vector2.Zero;
-            int neighborCount = 0;
+            Vector2 averageHeading = new Vector2();
+            int size = 0;
 
             foreach (MovingEntity neighbor in neighbors)
             {
                 if (neighbor != owner)
                 {
-                    averageHeading += neighbor.Orientation;
+                    averageHeading.X += neighbor.Velocity.X;
+                    averageHeading.Y += neighbor.Velocity.Y;
 
-                    ++neighborCount;
+                    size++;
                 }
             }
 
-            if (neighborCount > 0)
+            if (size <= 0)
             {
-                averageHeading.Normalize();
-                //averageHeading -= owner.Orientation;
+                averageHeading.X /= size;
+                averageHeading.Y /= size;
             }
 
             return averageHeading;
@@ -169,24 +170,26 @@ namespace GameAI.Steering
 
         public static Vector2 Cohesion(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
-            Vector2 centerOfMass = Vector2.Zero,
-                    steeringForce = Vector2.Zero;
-            int neighborCount = 0;
+            Vector2 centerOfMass = new Vector2();
+            Vector2 steeringForce = new Vector2();
+            int size = 0;
 
             foreach (MovingEntity neighbor in neighbors)
             {
                 if (neighbor != owner)
                 {
-                    centerOfMass += neighbor.Position;
+                    centerOfMass.X += neighbor.Position.X;
+                    centerOfMass.Y += neighbor.Position.Y;
 
-                    ++neighborCount;
+                    size++;
                 }
             }
 
-            if (neighborCount > 0)
+            if (size > 0)
             {
-                centerOfMass /= neighborCount;
-                steeringForce = Seek(centerOfMass, owner);
+                centerOfMass.X /= size;
+                centerOfMass.Y /= size;
+                Vector2 v = new Vector2(centerOfMass.X - owner.Position.X, centerOfMass.Y - owner.Position.Y);
             }
 
             return steeringForce;
