@@ -1,6 +1,5 @@
 using System.Linq;
 using GameAI.Entity.GoalBehaviour.Atomic;
-using GameAI.Entity.Navigation;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite

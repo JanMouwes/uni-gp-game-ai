@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using GameAI.Steering;
-using GameAI.Steering.Complex;
 using GameAI.Steering.Simple;
 using GameAI.Entity;
 using GameAI.Entity.Components;
-using GameAI.Entity.GoalBehaviour.Atomic;
-using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.Entity.Navigation;
-using GameAI.Navigation;
 using GameAI.world;
 using Graph;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace GameAI
 {

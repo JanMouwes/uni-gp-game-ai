@@ -3,7 +3,6 @@ using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace GameAI.Entity
 {

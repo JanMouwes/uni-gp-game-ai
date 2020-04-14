@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 namespace GameAI.Input

@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameAI.Entity;
-using GameAI.Entity.GoalBehaviour;
-using GameAI.Entity.GoalBehaviour.Composite;
 using GameAI.Entity.Navigation;
 using GameAI.Util;
 using Microsoft.Xna.Framework;
