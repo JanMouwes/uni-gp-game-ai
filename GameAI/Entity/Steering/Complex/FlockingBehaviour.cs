@@ -17,7 +17,7 @@ namespace GameAI.Steering.Complex
             this.World = world;
             this.alignmentRadius = radius;
             this.cohesionRadius = radius + radius / 2;
-            this.separationRadius = radius - radius / 2;
+            this.separationRadius = radius - (radius / 10) * 6;
         }
 
         public override Vector2 Calculate()
@@ -32,7 +32,7 @@ namespace GameAI.Steering.Complex
             Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearCohesion));
             Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation));
 
-            Vector2 target = A * 1 + C * 1 + S * 1;
+            Vector2 target = A * 150 + C * 150 + S * 200;
 
             if (target.Equals(Vector2.Zero))
             {

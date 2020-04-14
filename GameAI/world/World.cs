@@ -99,8 +99,8 @@ namespace GameAI
                 {
                     Vehicle vehicle = new Vehicle(this, team)
                     {
-                        MaxSpeed = 100f,
-                        Mass = 1
+                        MaxSpeed = 400f,
+                        Mass = 2
                     };
                     vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
                     {
