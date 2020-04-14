@@ -28,7 +28,7 @@ namespace GameAI
 
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
-        
+
         private const int WORLD_WIDTH = 700;
         private const int WORLD_HEIGHT = 600;
 
@@ -171,10 +171,26 @@ namespace GameAI
                     return stringBuilder.ToString();
                 }
 
+                string GetEntityInfo(MovingEntity entity)
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    stringBuilder.Append("Position: " + entity.Position                                + '\n');
+                    stringBuilder.Append("Velocity: " + entity.Velocity                                + '\n');
+                    stringBuilder.Append("Steering: " + entity.Steering.Calculate()                    + '\n');
+                    stringBuilder.Append("Wall-avoidance: " + entity.wallAvoidance.Calculate()         + '\n');
+                    stringBuilder.Append("Obstacle avoidance: " + entity.obstacleAvoidance.Calculate() + '\n');
+
+                    return stringBuilder.ToString();
+                }
+
                 StringBuilder text = new StringBuilder();
 
                 text.Append($"Goals:\n");
                 text.Append(GetGoalText(vehicle.Brain, 1));
+
+                text.Append($"Vehicle debug info:\n");
+                text.Append(GetEntityInfo(vehicle));
 
                 // text.Append($"Position: {vehicle.Position.ToPoint()}\n");
                 // text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
