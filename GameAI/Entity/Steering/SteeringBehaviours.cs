@@ -81,10 +81,12 @@ namespace GameAI.Steering
             bool isNearTop = panicDistance    > distToTop;
             bool isNearBottom = panicDistance > distToBottom;
 
-            if (!isNearLeft && !isNearRight && !isNearTop && !isNearBottom) { return Vector2.Zero; }
+            bool isNearWalls = isNearLeft || isNearRight || isNearTop || isNearBottom;
 
-            Vector2 baseSteering = entity.Steering.Calculate();
+            if (!isNearWalls) { return Vector2.Zero; }
 
+            Vector2 baseSteering = entity.Velocity;
+            
             if (isNearLeft)
             {
                 baseSteering.X = (panicDistance * 2) - distToLeft; 

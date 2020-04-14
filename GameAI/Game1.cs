@@ -71,7 +71,7 @@ namespace GameAI
                 boat, pirateBoat
             };
 
-            this.world.Populate(100, teamTextures, rock);
+            this.world.Populate(5, teamTextures, rock);
 
             IPathSmoother smoother = new CustomizablePathSmoother(this.world, 3);
 
