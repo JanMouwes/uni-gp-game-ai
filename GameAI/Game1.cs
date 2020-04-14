@@ -28,9 +28,9 @@ namespace GameAI
 
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
-
-        private const int WORLD_WIDTH = 400;
-        private const int WORLD_HEIGHT = 300;
+        
+        private const int WORLD_WIDTH = 700;
+        private const int WORLD_HEIGHT = 600;
 
         private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
         private SpriteFont mainFont;
@@ -71,7 +71,7 @@ namespace GameAI
                 boat, pirateBoat
             };
 
-            this.world.Populate(5, teamTextures, rock);
+            this.world.Populate(100, teamTextures, rock);
 
             IPathSmoother smoother = new CustomizablePathSmoother(this.world, 3);
 

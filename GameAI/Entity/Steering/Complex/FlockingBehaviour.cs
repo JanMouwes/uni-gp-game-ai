@@ -52,7 +52,7 @@ namespace GameAI.Steering.Complex
             {
                 //  When there is no target, start wandering
                 target = this.Entity.Velocity +
-                         SteeringBehaviours.Wander(this.Entity, 10, 10);
+                         SteeringBehaviours.Wander(this.Entity, 0, 80);
             }
 
             return target;

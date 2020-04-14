@@ -52,8 +52,13 @@ namespace GameAI.Steering
         }
 
 
-        public static Vector2 Wander(MovingEntity entity, float distance, float offset)
+        public static Vector2 Wander(MovingEntity entity, float offset, float range, float distance = 80)
         {
+            Random random = new Random();
+            offset += random.Next(-100, 100) / 100f; // .Next() is exclusive
+            offset = Math.Min(offset, range);
+            offset = Math.Max(offset, -range);
+
             Vector2 localTarget = new Vector2
             {
                 X = entity.Orientation.Y,
@@ -117,14 +122,24 @@ namespace GameAI.Steering
 
         public static Vector2 Separation(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
-            Vector2 steeringForce = Vector2.Zero;
+            Vector2 steeringForce = new Vector2();
+            int size = 0;
 
             foreach (MovingEntity neighbor in neighbors)
             {
-                Vector2 toAgent = owner.Position - neighbor.Position;
-                steeringForce += toAgent;
+                if (neighbor != owner)
+                {
+                    steeringForce.X += owner.Position.X - neighbor.Position.X;
+                    steeringForce.Y += owner.Position.Y - neighbor.Position.Y;
+                    steeringForce.X *= -1;
+                    steeringForce.Y *= -1;
+                    size++;
+                }
             }
 
+            steeringForce.X /= size;
+            steeringForce.Y /= size;
+            //steeringForce.Normalize();
             return steeringForce;
         }
 

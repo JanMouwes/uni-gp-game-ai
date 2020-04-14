@@ -45,7 +45,7 @@ namespace GameAI
         public void Populate(int vehicleCount, Texture2D[] teamTextures, Texture2D rockTexture)
         {
             // Add obstacles
-            Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
+            Rock r = new Rock(this, new Vector2(200, 200), 15, Color.Black);
             r.Graphics = new TextureGraphics(r, rockTexture);
             this.entities.Add(r);
 
@@ -57,8 +57,8 @@ namespace GameAI
             };
             Vector2[] teamSpawns =
             {
-                new Vector2(50, 50),
-                new Vector2(this.Width - 50, this.Height - 50)
+                new Vector2(100, 100),
+                new Vector2(this.Width - 100, this.Height - 100)
             };
 
             for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
@@ -66,7 +66,18 @@ namespace GameAI
                 Team team = new Team(teamColours[teamIndex]);
                 Texture2D vehicleTexture = teamTextures[teamIndex];
 
-                team.AddSpawnPoint(teamSpawns[teamIndex]);
+                Vector2 s;
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        if (teamIndex > 1) {s = teamSpawns[teamIndex] + new Vector2(i * 10, j * 10);}
+                        else {s = teamSpawns[teamIndex] - new Vector2(i * 10, j * 10);}
+                        
+                        team.AddSpawnPoint(s);
+                    }
+                }
+
                 Flag flag = new Flag(this, team, 5f)
                 {
                     Position = teamSpawns[teamIndex]
@@ -95,7 +106,8 @@ namespace GameAI
                     {
                         SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
-                    vehicle.Steering = new WanderBehaviour(vehicle, 20);
+                    //vehicle.Steering = new WanderBehaviour(vehicle, 20);
+                    vehicle.Steering = new FlockingBehaviour(vehicle, this, 100);
 
                     SpawnVehicle(vehicle);
                 }

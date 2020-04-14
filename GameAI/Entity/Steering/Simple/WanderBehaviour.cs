@@ -6,17 +6,13 @@ namespace GameAI.Steering.Simple
 {
     public class WanderBehaviour : SteeringBehaviour
     {
-        private readonly float min;
-        private readonly float max;
+        private readonly float range;
         private float currentOffset;
         private readonly Random random;
 
-        public WanderBehaviour(MovingEntity entity, float range) : this(entity, -range, range) { }
-
-        public WanderBehaviour(MovingEntity entity, float min, float max) : base(entity)
+        public WanderBehaviour(MovingEntity entity, float range) : base(entity)
         {
-            this.min = min;
-            this.max = max;
+            this.range = range;
             this.random = new Random();
             this.currentOffset = 0;
         }
@@ -24,10 +20,10 @@ namespace GameAI.Steering.Simple
         public override Vector2 Calculate()
         {
             this.currentOffset += this.random.Next(-100, 100) / 100f; // .Next() is exclusive
-            this.currentOffset = Math.Min(this.currentOffset, this.max);
-            this.currentOffset = Math.Max(this.currentOffset, this.min);
+            this.currentOffset = Math.Min(this.currentOffset, this.range);
+            this.currentOffset = Math.Max(this.currentOffset, -this.range);
 
-            Vector2 target = SteeringBehaviours.Wander(this.Entity, 80, this.currentOffset);
+            Vector2 target = SteeringBehaviours.Wander(this.Entity, this.currentOffset, this.range);
 
             return target;
         }
