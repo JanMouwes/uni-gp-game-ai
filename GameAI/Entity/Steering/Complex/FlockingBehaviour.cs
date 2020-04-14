@@ -24,14 +24,15 @@ namespace GameAI.Steering.Complex
         {
             bool IsNear(BaseGameEntity entity, float range) => Vector2.DistanceSquared(this.Entity.Position, entity.Position) < range * range;
 
-            bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float) this.separationRadius);
             bool IsNearAlignment(MovingEntity entity) => IsNear(entity, (float) this.alignmentRadius);
-            bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius);
+            bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius + 20);
+            bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float)this.separationRadius - 20);
 
-            Vector2 target = this.Entity.Velocity                                                                                      +
-                             SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation)) +
-                             SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearAlignment))   +
-                             SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearCohesion));
+            Vector2 A = SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearAlignment));
+            Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearCohesion));
+            Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation));
+
+            Vector2 target = A + C + S;
 
             if (target.Equals(Vector2.Zero))
             {

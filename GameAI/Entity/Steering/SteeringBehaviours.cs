@@ -120,6 +120,60 @@ namespace GameAI.Steering
             return desiredVelocity - owner.Velocity;
         }
 
+        public static Vector2 Alignment(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
+        {
+            Vector2 averageHeading = new Vector2();
+            int size = 0;
+
+            foreach (MovingEntity neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    averageHeading.X += neighbor.Velocity.X;
+                    averageHeading.Y += neighbor.Velocity.Y;
+
+                    size++;
+                }
+            }
+
+            if (size >= 0)
+            {
+                averageHeading.X /= size;
+                averageHeading.Y /= size;
+                if (averageHeading.X != 0 && averageHeading.Y != 0) averageHeading.Normalize();
+            }
+
+            return averageHeading;
+        }
+
+        public static Vector2 Cohesion(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
+        {
+            Vector2 centerOfMass = new Vector2();
+            int size = 0;
+
+            foreach (MovingEntity neighbor in neighbors)
+            {
+                if (neighbor != owner)
+                {
+                    centerOfMass.X += neighbor.Position.X;
+                    centerOfMass.Y += neighbor.Position.Y;
+
+                    size++;
+                }
+            }
+
+            Vector2 v = new Vector2();
+            if (size > 0)
+            {
+                centerOfMass.X /= size;
+                centerOfMass.Y /= size;
+                v = new Vector2(centerOfMass.X - owner.Position.X, centerOfMass.Y - owner.Position.Y);
+                if (v.X != 0 && v.Y != 0) v.Normalize();
+            }
+
+            return v;
+        }
+
         public static Vector2 Separation(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
         {
             Vector2 steeringForce = new Vector2();
@@ -139,59 +193,7 @@ namespace GameAI.Steering
             steeringForce.Y *= -1;
             steeringForce.X /= size;
             steeringForce.Y /= size;
-            //steeringForce.Normalize();
-            return steeringForce;
-        }
-
-        public static Vector2 Alignment(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
-        {
-            Vector2 averageHeading = new Vector2();
-            int size = 0;
-
-            foreach (MovingEntity neighbor in neighbors)
-            {
-                if (neighbor != owner)
-                {
-                    averageHeading.X += neighbor.Velocity.X;
-                    averageHeading.Y += neighbor.Velocity.Y;
-
-                    size++;
-                }
-            }
-
-            if (size <= 0)
-            {
-                averageHeading.X /= size;
-                averageHeading.Y /= size;
-            }
-
-            return averageHeading;
-        }
-
-        public static Vector2 Cohesion(MovingEntity owner, IEnumerable<MovingEntity> neighbors)
-        {
-            Vector2 centerOfMass = new Vector2();
-            Vector2 steeringForce = new Vector2();
-            int size = 0;
-
-            foreach (MovingEntity neighbor in neighbors)
-            {
-                if (neighbor != owner)
-                {
-                    centerOfMass.X += neighbor.Position.X;
-                    centerOfMass.Y += neighbor.Position.Y;
-
-                    size++;
-                }
-            }
-
-            if (size > 0)
-            {
-                centerOfMass.X /= size;
-                centerOfMass.Y /= size;
-                Vector2 v = new Vector2(centerOfMass.X - owner.Position.X, centerOfMass.Y - owner.Position.Y);
-            }
-
+            if (steeringForce.X != 0 && steeringForce.Y != 0) steeringForce.Normalize();
             return steeringForce;
         }
     }
