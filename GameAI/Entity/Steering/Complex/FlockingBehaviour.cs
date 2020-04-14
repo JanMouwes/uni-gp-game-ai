@@ -22,26 +22,11 @@ namespace GameAI.Steering.Complex
 
         public override Vector2 Calculate()
         {
-            bool IsNearSeparation(MovingEntity entity)
-            {
-                Vector2 to = entity.Position - this.Entity.Position;
+            bool IsNear(BaseGameEntity entity, float range) => Vector2.DistanceSquared(this.Entity.Position, entity.Position) < range * range;
 
-                return to.LengthSquared() < separationRadius * separationRadius;
-            }
-
-            bool IsNearAlignment(MovingEntity entity)
-            {
-                Vector2 to = entity.Position - this.Entity.Position;
-
-                return to.LengthSquared() < alignmentRadius * alignmentRadius;
-            }
-
-            bool IsNearCohesion(MovingEntity entity)
-            {
-                Vector2 to = entity.Position - this.Entity.Position;
-
-                return to.LengthSquared() < cohesionRadius * cohesionRadius;
-            }
+            bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float) this.separationRadius);
+            bool IsNearAlignment(MovingEntity entity) => IsNear(entity, (float) this.alignmentRadius);
+            bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius);
 
             Vector2 target = this.Entity.Velocity                                                                                      +
                              SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation)) +
