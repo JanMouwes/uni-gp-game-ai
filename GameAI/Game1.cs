@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,12 +29,13 @@ namespace GameAI
         private KeyboardInput keyboardInput;
         private MouseInput mouseInput;
 
-        private const int WORLD_WIDTH = 400;
-        private const int WORLD_HEIGHT = 300;
+        private const int WORLD_WIDTH = 800;
+        private const int WORLD_HEIGHT = 600;
 
         private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
         private SpriteFont mainFont;
 
+        private bool drawAgentGoals;
 
         public Game1()
         {
@@ -89,8 +91,6 @@ namespace GameAI
             this.keyboardInput = new KeyboardInput();
             this.mouseInput = new MouseInput();
 
-            this.keyboardInput.OnKeyPress(Keys.G, (key, state) => { this.graphRenderer.ToggleEnabled(); });
-
             this.mouseInput.OnKeyPress(MouseButtons.Left, (input, state) =>
             {
                 IEnumerable<Vehicle> entitiesNearMouse = this.world.FindEntitiesNear(this.mouseInput.MouseState.Position.ToVector2(), 3).OfType<Vehicle>();
@@ -118,7 +118,9 @@ namespace GameAI
             //     }
             // });
 
+            this.keyboardInput.OnKeyPress(Keys.G, (key, state) => { this.graphRenderer.ToggleEnabled(); });
             this.keyboardInput.OnKeyPress(Keys.Space, (input, state) => { this.paused = !this.paused; });
+            this.keyboardInput.OnKeyPress(Keys.O, (input, state) => { this.drawAgentGoals = !this.drawAgentGoals; });
 
             base.LoadContent();
         }
@@ -142,44 +144,36 @@ namespace GameAI
             base.Update(gameTime);
         }
 
-        private void DebugDraw(SpriteBatch spriteBatch)
+        private void DrawControls(SpriteBatch batch)
+        {
+            IEnumerable<(Keys key, string description)> keyControls = new[]
+            {
+                (Keys.G, "toggle graph"),
+                (Keys.Space, "toggle paused"),
+                (Keys.O, "toggle agent goals")
+            };
+            IEnumerable<(MouseButtons button, string description)> mouseControls = new[]
+            {
+                (MouseButtons.Left, "select agent")
+            };
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach ((Keys key, string description) in keyControls) { stringBuilder.Append($"{description}: {key}\n"); }
+
+            foreach ((MouseButtons button, string description) in mouseControls) { stringBuilder.Append($"{description}: {button} click\n"); }
+            
+            batch.DrawString(this.mainFont, stringBuilder.ToString(), new Vector2(WORLD_WIDTH - 180, 5), Color.Black);
+        }
+
+        private void DebugDraw(SpriteBatch batch)
         {
             // Rock theRock = this.world.Entities.OfType<Rock>().First();
             Vehicle vehicle = this.selectedEntities.FirstOrDefault();
 
             if (vehicle != null)
             {
-                string GetGoalText(Goal<Vehicle> goal, int inset)
-                {
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    for (int i = 0; i < inset; i++)
-                    {
-                        stringBuilder.Append(' ');
-                        stringBuilder.Append(' ');
-                    }
-
-                    stringBuilder.Append(goal);
-                    stringBuilder.Append('\n');
-
-                    if (goal is GoalComposite<Vehicle> composite)
-                    {
-                        foreach (Goal<Vehicle> compositeGoal in composite.Goals) { stringBuilder.Append(GetGoalText(compositeGoal, inset + 1)); }
-                    }
-
-                    return stringBuilder.ToString();
-                }
-
-                StringBuilder text = new StringBuilder();
-
-                text.Append($"Goals:\n");
-                text.Append(GetGoalText(vehicle.Brain, 1));
-
-                // text.Append($"Position: {vehicle.Position.ToPoint()}\n");
-                // text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
-                // text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
-
-                spriteBatch.DrawString(this.mainFont, text.ToString(), Vector2.Zero, Color.Black);
+                if (this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, vehicle); }
             }
         }
 
@@ -199,15 +193,13 @@ namespace GameAI
             // Draw spawns (manually for now)
             foreach (Team team in this.world.Teams.Values)
             {
-                foreach (Vector2 spawn in team.SpawnPoints)
-                {
-                    this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour);
-                }
+                foreach (Vector2 spawn in team.SpawnPoints) { this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour); }
             }
 
             this.world.Render(this.spriteBatch);
 
             DebugDraw(this.spriteBatch);
+            DrawControls(this.spriteBatch);
 
             base.Draw(gameTime);
 
