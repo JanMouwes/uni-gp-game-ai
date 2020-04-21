@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using System.Text;
 using GameAI.Entity;
+using GameAI.Entity.GoalBehaviour;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
 namespace GameAI.Util
 {
-    public class DebugRendering
+    public static class DebugRendering
     {
         public static void DrawObstacleAvoidance(SpriteBatch spriteBatch, Vehicle vehicle, Rock rock)
         {
@@ -47,6 +49,48 @@ namespace GameAI.Util
 
             spriteBatch.DrawLine(vehicle.Position, target, Color.DarkRed);
             spriteBatch.DrawLine(vehicleVelocityPos, target, Color.Chocolate);
+        }
+
+        public static void DrawAgentGoals(SpriteBatch spriteBatch, SpriteFont font, Vehicle vehicle)
+        {
+            string GetGoalText(Goal<Vehicle> goal, int inset)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (int i = 0; i < inset; i++)
+                {
+                    stringBuilder.Append(' ');
+                    stringBuilder.Append(' ');
+                }
+
+                stringBuilder.Append(goal);
+                stringBuilder.Append('\n');
+
+                if (goal is GoalComposite<Vehicle> composite)
+                {
+                    foreach (Goal<Vehicle> compositeGoal in composite.Goals) { stringBuilder.Append(GetGoalText(compositeGoal, inset + 1)); }
+                }
+
+                return stringBuilder.ToString();
+            }
+
+            StringBuilder text = new StringBuilder();
+
+            text.Append($"Goals:\n");
+            text.Append(GetGoalText(vehicle.Brain, 1));
+
+            spriteBatch.DrawString(font, text.ToString(), new Vector2(5, 5), Color.Black);
+        }
+
+        public static void DrawVehicleInfo(SpriteBatch spriteBatch, SpriteFont font, Vehicle vehicle)
+        {
+            StringBuilder text = new StringBuilder();
+            
+            text.Append($"Position: {vehicle.Position.ToPoint()}\n");
+            text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
+            text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
+            
+            spriteBatch.DrawString(font, text, Vector2.Zero, Color.Black);
         }
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using GameAI.Pathfinding.AStar;
-using GameAI.Util;
-using Microsoft.Xna.Framework;
 
 namespace GameAI
 {

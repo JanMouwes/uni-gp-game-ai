@@ -1,5 +1,5 @@
+using GameAI.Entity.GoalBehaviour.Atomic;
 using GameAI.Entity.Navigation;
-using GameAI.GoalBehaviour;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
@@ -34,6 +34,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             this.ClearGoals();
 
             AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.currentTarget, this.pathFinder));
+            AddSubgoal(new ChaseTarget(this.Owner, this.Enemy, this.nearRange));
         }
 
         public override void Process(GameTime gameTime)

@@ -39,12 +39,14 @@ namespace GameAI.Entity.Navigation
             return nearest;
         }
 
-        public IEnumerable<Vector2> FindPath(Vector2 source, Vector2 destination)
+        public IEnumerable<Vector2> FindPath(Vector2 source, Vector2 destination, out IEnumerable<(Vertex<Vector2> from, Vertex<Vector2> to)> consideredVertices)
         {
             Vertex<Vector2> sourceVertex = GetNearestVertex(source);
             Vertex<Vector2> destVertex = GetNearestVertex(destination);
 
-            IEnumerable<Vertex<Vector2>> result = new AStarRunner<Vector2>(this.graph).Run(sourceVertex, destVertex, Heuristics.Manhattan);
+            AStarRunner<Vector2> runner = new AStarRunner<Vector2>(this.graph);
+            IEnumerable<Vertex<Vector2>> result = runner.Run(sourceVertex, destVertex, Heuristics.Manhattan);
+            consideredVertices = runner.ConsideredEdges;
 
             LinkedList<Vector2> path = new LinkedList<Vector2>(result.Select(item => item.Value));
 
