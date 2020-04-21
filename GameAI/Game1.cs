@@ -156,34 +156,12 @@ namespace GameAI
 
             StringBuilder stringBuilder = new StringBuilder();
 
-                string GetEntityInfo(MovingEntity entity)
-                {
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    stringBuilder.Append("Position: " + entity.Position                                + '\n');
-                    stringBuilder.Append("Velocity: " + entity.Velocity                                + '\n');
-                    stringBuilder.Append("Steering: " + entity.Steering.Calculate()                    + '\n');
-                    stringBuilder.Append("Wall-avoidance: " + entity.wallAvoidance.Calculate()         + '\n');
-                    stringBuilder.Append("Obstacle avoidance: " + entity.obstacleAvoidance.Calculate() + '\n');
-
-                    return stringBuilder.ToString();
-                }
-
-                StringBuilder text = new StringBuilder();
-
             foreach ((Keys key, string description) in keyControls) { stringBuilder.Append($"{description}: {key}\n"); }
 
             foreach ((MouseButtons button, string description) in mouseControls) { stringBuilder.Append($"{description}: {button} click\n"); }
             
             batch.DrawString(this.mainFont, stringBuilder.ToString(), new Vector2(WORLD_WIDTH - 180, 5), Color.Black);
         }
-
-                text.Append($"Vehicle debug info:\n");
-                text.Append(GetEntityInfo(vehicle));
-
-                // text.Append($"Position: {vehicle.Position.ToPoint()}\n");
-                // text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
-                // text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
         private void DebugDraw(SpriteBatch batch)
         {
             // Rock theRock = this.world.Entities.OfType<Rock>().First();

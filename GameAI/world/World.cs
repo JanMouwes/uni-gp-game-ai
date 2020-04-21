@@ -5,6 +5,7 @@ using GameAI.Steering.Simple;
 using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
+using GameAI.Steering.Complex;
 using GameAI.world;
 using Graph;
 using Microsoft.Xna.Framework;
