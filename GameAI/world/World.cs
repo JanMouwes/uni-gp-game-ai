@@ -5,6 +5,7 @@ using GameAI.Steering.Simple;
 using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
+using GameAI.Steering.Complex;
 using GameAI.world;
 using Graph;
 using Microsoft.Xna.Framework;
@@ -95,17 +96,32 @@ namespace GameAI
                 {
                     Vehicle vehicle = new Vehicle(this, team)
                     {
-                        MaxSpeed = 100f,
-                        Mass = 1
+                        MaxSpeed = 400f,
+                        Mass = 2
                     };
                     vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
                     {
                         SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
-                    vehicle.Steering = new WanderBehaviour(vehicle, 20);
+                    //vehicle.Steering = new WanderBehaviour(vehicle, 20);
+                    vehicle.Steering = new FlockingBehaviour(vehicle, this, 100);
 
                     SpawnVehicle(vehicle);
                 }
+            }
+
+            for (int i = 0; i < 100; i++)
+            {
+                Bird bird = new Bird(this)
+                {
+                    MaxSpeed = 600f,
+                    MinSpeed = 3f,
+                    Mass = 1
+                };
+                bird.Steering = new FlockingBehaviour(bird, this, 100);
+                bird.Position = new Vector2(100, 100);
+
+                this.entities.Add(bird);
             }
         }
 
@@ -124,7 +140,7 @@ namespace GameAI
                 return (location - entity.Position).LengthSquared() < realRange * realRange;
             }
 
-            return this.entities.Concat(this.entities).Where(IsNear);
+            return this.entities.Concat(this.entities.OfType<Vehicle>()).Where(IsNear);
         }
 
         public void SpawnVehicle(Vehicle vehicle, Vector2 position)

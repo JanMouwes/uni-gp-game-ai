@@ -162,7 +162,6 @@ namespace GameAI
             
             batch.DrawString(this.mainFont, stringBuilder.ToString(), new Vector2(WORLD_WIDTH - 180, 5), Color.Black);
         }
-
         private void DebugDraw(SpriteBatch batch)
         {
             // Rock theRock = this.world.Entities.OfType<Rock>().First();
