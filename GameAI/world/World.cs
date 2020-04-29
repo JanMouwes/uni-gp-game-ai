@@ -109,6 +109,17 @@ namespace GameAI
                     SpawnVehicle(vehicle);
                 }
             }
+
+            Bird bird = new Bird(this)
+            {
+                MaxSpeed = 400f,
+                Mass = 2
+            };
+            bird.Steering = new FlockingBehaviour(bird, this, 100);
+            bird.Position = new Vector2(0, 0);
+
+            this.entities.Add(bird);
+
         }
 
         /// <summary>
@@ -126,7 +137,7 @@ namespace GameAI
                 return (location - entity.Position).LengthSquared() < realRange * realRange;
             }
 
-            return this.entities.Concat(this.entities).Where(IsNear);
+            return this.entities.Concat(this.entities.OfType<Vehicle>()).Where(IsNear);
         }
 
         public void SpawnVehicle(Vehicle vehicle, Vector2 position)

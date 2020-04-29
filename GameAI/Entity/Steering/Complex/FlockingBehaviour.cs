@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
@@ -6,7 +7,7 @@ namespace GameAI.Steering.Complex
 {
     public class FlockingBehaviour : SteeringBehaviour
     {
-        public World World;
+        public World World; 
         private readonly double separationRadius;
         private readonly double alignmentRadius;
         private readonly double cohesionRadius;
@@ -27,9 +28,9 @@ namespace GameAI.Steering.Complex
             bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius);
             bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float)this.separationRadius);
 
-            Vector2 A = SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearAlignment));
-            Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearCohesion));
-            Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Vehicle>().Where(IsNearSeparation));
+            Vector2 A = SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Bird> ().Where(IsNearAlignment));
+            Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearCohesion));
+            Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearSeparation));
 
             Vector2 target = A * 150 + C * 150 + S * 200;
 
