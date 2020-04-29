@@ -25,6 +25,8 @@ namespace GameAI.Entity
 
         public float MaxSpeed { get; set; }
 
+        public float MinSpeed { get; set; }
+
         //TODO add maxForce
         public SteeringBehaviour Steering { get; set; } = DefaultSteeringBehaviour.Instance;
 
@@ -32,6 +34,7 @@ namespace GameAI.Entity
         {
             Mass = 30;
             MaxSpeed = .01f;
+            MinSpeed = 1.0f;
             Velocity = new Vector2();
             this.wallAvoidance = new WallAvoidance(this, world, 5f, 1.5f);
             this.obstacleAvoidance = new ObstacleAvoidance(this, world);
@@ -64,7 +67,7 @@ namespace GameAI.Entity
 
             Velocity = Velocity.Truncate(MaxSpeed);
 
-            this.Position += Velocity * elapsedSeconds;
+            this.Position += (Velocity * MinSpeed) * elapsedSeconds;
 
             if (Velocity != Vector2.Zero) { this.Orientation = Velocity.NormalizedCopy(); }
         }

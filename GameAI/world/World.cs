@@ -115,10 +115,11 @@ namespace GameAI
                 Bird bird = new Bird(this)
                 {
                     MaxSpeed = 600f,
+                    MinSpeed = 3f,
                     Mass = 1
                 };
                 bird.Steering = new FlockingBehaviour(bird, this, 100);
-                bird.Position = new Vector2(i, i);
+                bird.Position = new Vector2(100, 100);
 
                 this.entities.Add(bird);
             }

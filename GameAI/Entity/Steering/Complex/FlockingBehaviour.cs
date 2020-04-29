@@ -32,7 +32,7 @@ namespace GameAI.Steering.Complex
             Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearCohesion));
             Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearSeparation));
 
-            Vector2 target = A * 150 + C * 150 + S * 200;
+            Vector2 target = A * 150 + C * 140 + S * 160;
 
             if (target.Equals(Vector2.Zero))
             {
