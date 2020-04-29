@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using GameAI.Entity;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
-namespace GameAI.Steering
+namespace GameAI.Entity.Steering
 {
     public static class SteeringBehaviours
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-using GameAI.Entity;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Steering.Complex
+namespace GameAI.Entity.Steering.Complex
 {
     public class FlockingBehaviour : SteeringBehaviour
     {
@@ -16,8 +14,8 @@ namespace GameAI.Steering.Complex
         {
             this.World = world;
             this.alignmentRadius = radius;
-            this.cohesionRadius = radius + radius / 2;
-            this.separationRadius = radius - (radius / 10) * 6;
+            this.cohesionRadius = radius ;
+            this.separationRadius = radius - (radius / 10) * 9;
         }
 
         public override Vector2 Calculate()
@@ -32,7 +30,7 @@ namespace GameAI.Steering.Complex
             Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearCohesion));
             Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearSeparation));
 
-            Vector2 target = A * 150 + C * 140 + S * 160;
+            Vector2 target = (A * 15 + C * 14 + S * 16)  * 5;
 
             if (target.Equals(Vector2.Zero))
             {

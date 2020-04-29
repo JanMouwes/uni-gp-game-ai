@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameAI.Steering.Simple;
 using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
-using GameAI.Steering.Complex;
+using GameAI.Entity.Steering.Complex;
 using GameAI.world;
 using Graph;
 using Microsoft.Xna.Framework;
@@ -34,96 +33,6 @@ namespace GameAI
             this.Teams = new Dictionary<Color, Team>();
         }
 
-        public void Populate(int vehicleCount, Texture2D[] teamTextures, Texture2D rockTexture)
-        {
-            // Add obstacles
-            // Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
-            // r.Graphics = new TextureGraphics(r, rockTexture);
-            // this.entities.Add(r);
-
-            const int numberOfTeams = 2;
-            Color[] teamColours =
-            {
-                Color.Blue,
-                Color.Red
-            };
-            Vector2[][] teamSpawns =
-            {
-                new[]
-                {
-                    new Vector2(50, 50),
-                    new Vector2(100, 50),
-                    new Vector2(50, 100),
-                },
-                new[]
-                {
-                    new Vector2(this.Width - 50, this.Height  - 50),
-                    new Vector2(this.Width - 100, this.Height - 50),
-                    new Vector2(this.Width - 50, this.Height  - 100),
-                }
-            };
-
-            Vector2[] teamFlagPosition =
-            {
-                new Vector2(75, 75),
-                new Vector2(this.Width - 75, this.Height - 75)
-            };
-
-            for (int teamIndex = 0; teamIndex < numberOfTeams; teamIndex++)
-            {
-                Team team = new Team(teamColours[teamIndex]);
-                Texture2D vehicleTexture = teamTextures[teamIndex];
-
-                team.AddSpawnPoints(teamSpawns[teamIndex]);
-                Flag flag = new Flag(this, team, 5f)
-                {
-                    Position = teamFlagPosition[teamIndex]
-                };
-                this.entities.Add(flag);
-
-                team.Flag = flag;
-
-                this.Teams.Add(team.Colour, team);
-
-                Rectangle[] rectangles =
-                {
-                    new Rectangle(3, 698, 32, 32),
-                    new Rectangle(3, 400, 32, 32)
-                };
-
-                // Add Entities
-                for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
-                {
-                    Vehicle vehicle = new Vehicle(this, team)
-                    {
-                        MaxSpeed = 400f,
-                        Mass = 2
-                    };
-                    vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
-                    {
-                        SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
-                    };
-                    //vehicle.Steering = new WanderBehaviour(vehicle, 20);
-                    vehicle.Steering = new FlockingBehaviour(vehicle, this, 100);
-
-                    SpawnVehicle(vehicle);
-                }
-            }
-
-            for (int i = 0; i < 100; i++)
-            {
-                Bird bird = new Bird(this)
-                {
-                    MaxSpeed = 600f,
-                    MinSpeed = 3f,
-                    Mass = 1
-                };
-                bird.Steering = new FlockingBehaviour(bird, this, 100);
-                bird.Position = new Vector2(100, 100);
-
-                this.entities.Add(bird);
-            }
-        }
 
         /// <summary>
         /// Exists to abstract away the finding of entities
@@ -143,11 +52,17 @@ namespace GameAI
             return this.entities.Concat(this.entities.OfType<Vehicle>()).Where(IsNear);
         }
 
+        public void SpawnGameEntity(BaseGameEntity entity, Vector2 position)
+        {
+            entity.Position = position;
+
+            this.entities.Add(entity);
+        }
+
         public void SpawnVehicle(Vehicle vehicle, Vector2 position)
         {
-            vehicle.Position = position;
-
-            this.entities.Add(vehicle);
+            SpawnGameEntity(vehicle, position);
+            
             vehicle.Team.Vehicles.AddLast(vehicle);
 
             vehicle.Death += OnVehicleDeath;
@@ -185,10 +100,9 @@ namespace GameAI
             foreach (BaseGameEntity me in this.entities) { me.Update(gameTime); }
         }
 
-        public void Render(SpriteBatch spriteBatch)
+        public void Render(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            entities.ForEach(e => e.Render(spriteBatch));
-            this.entities.ForEach(o => o.Render(spriteBatch));
+            this.entities.ForEach(o => o.Render(spriteBatch, gameTime));
         }
     }
 }

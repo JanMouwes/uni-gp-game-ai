@@ -11,19 +11,19 @@ namespace GameAI.Entity
 
         public readonly Team Team;
 
-        public Flag(World world, Team team, float scale = 1) : base(world, scale)
+        public Flag(Team team, float scale = 1) : base(scale)
         {
             this.Team = team;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (this.Carrier != null) { this.Position = Carrier.Position; }
+            if (this.Carrier != null) { this.Position = this.Carrier.Position; }
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Render(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.DrawRectangle(Position, new Size2(Scale, Scale), this.Team.Colour);
+            spriteBatch.DrawRectangle(this.Position, new Size2(this.Scale, this.Scale), this.Team.Colour);
         }
     }
 }

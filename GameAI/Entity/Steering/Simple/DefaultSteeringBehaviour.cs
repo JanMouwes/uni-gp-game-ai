@@ -1,7 +1,6 @@
-using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Steering.Simple
+namespace GameAI.Entity.Steering.Simple
 {
     /// <summary>
     /// Null-object

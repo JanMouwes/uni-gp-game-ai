@@ -1,4 +1,4 @@
-using GameAI.Steering.Simple;
+using GameAI.Entity.Steering.Simple;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic

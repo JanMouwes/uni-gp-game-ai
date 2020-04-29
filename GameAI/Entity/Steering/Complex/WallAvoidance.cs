@@ -1,7 +1,6 @@
-using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Steering.Complex
+namespace GameAI.Entity.Steering.Complex
 {
     public class WallAvoidance : SteeringBehaviour
     {
@@ -25,7 +24,7 @@ namespace GameAI.Steering.Complex
 
         public override Vector2 Calculate()
         {
-            return SteeringBehaviours.WallAvoidance(Entity, this.world, this.panicDistance) * this.strength;
+            return SteeringBehaviours.WallAvoidance(this.Entity, this.world, this.panicDistance) * this.strength;
         }
     }
 }

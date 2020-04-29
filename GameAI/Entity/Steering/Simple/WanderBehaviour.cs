@@ -1,8 +1,7 @@
 ﻿using System;
-using GameAI.Entity;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Steering.Simple
+namespace GameAI.Entity.Steering.Simple
 {
     public class WanderBehaviour : SteeringBehaviour
     {
