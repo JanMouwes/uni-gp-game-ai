@@ -37,7 +37,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
         public bool IsCapturerValid(Vehicle capturer)
         {
-            return capturer?.Brain.Goals.OfType<CaptureFlag>().FirstOrDefault() != null;
+            return capturer?.Brain.CurrentGoal is CaptureFlag;
         }
 
         public bool IsEnemyValid(Vehicle enemy)
