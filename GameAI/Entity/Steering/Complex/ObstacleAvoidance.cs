@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameAI.Entity;
 using GameAI.Util;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
-namespace GameAI.Steering.Complex
+namespace GameAI.Entity.Steering.Complex
 {
     public class ObstacleAvoidance : SteeringBehaviour
     {
@@ -22,33 +21,33 @@ namespace GameAI.Steering.Complex
         {
             // The detection box is the current velocity divided by the max velocity of the entity
             // range is the maximum size of the box
-            Vector2 viewBox = Entity.Velocity / Entity.MaxSpeed * range;
+            Vector2 viewBox = this.Entity.Velocity / this.Entity.MaxSpeed * this.range;
             // Add the box in front of the entity
             IEnumerable<Vector2> checkpoints = new[]
             {
-                Entity.Position,
+                this.Entity.Position,
                 this.Entity.Position + viewBox / 2f, // Halfway
                 this.Entity.Position + viewBox,      // At the end
                 this.Entity.Position + viewBox * 2   // Double
             };
 
-            foreach (Rock o in w.Entities.OfType<Rock>())
+            foreach (Rock o in this.w.Entities.OfType<Rock>())
             {
                 // Add a circle around the obstacle which can't be crossed
                 CircleF notAllowedZone = new CircleF(o.Position, o.Scale);
 
                 if (checkpoints.Any(checkpoint => notAllowedZone.Contains(checkpoint)))
                 {
-                    Vector2 dist = new Vector2(o.Position.X - Entity.Position.X, o.Position.X - Entity.Position.Y);
+                    Vector2 dist = new Vector2(o.Position.X - this.Entity.Position.X, o.Position.X - this.Entity.Position.Y);
                     Vector2 perpendicular = Vector2Helper.PerpendicularRightAngleOf(dist);
 
                     Vector2 perpendicularPositivePos = o.Position + perpendicular;
                     Vector2 perpendicularNegativePos = o.Position - perpendicular;
 
-                    float perpDistPositive = Vector2.DistanceSquared(Entity.Position + Entity.Velocity, perpendicularPositivePos);
-                    float perpDistNegative = Vector2.DistanceSquared(Entity.Position + Entity.Velocity, perpendicularNegativePos);
+                    float perpDistPositive = Vector2.DistanceSquared(this.Entity.Position + this.Entity.Velocity, perpendicularPositivePos);
+                    float perpDistNegative = Vector2.DistanceSquared(this.Entity.Position + this.Entity.Velocity, perpendicularNegativePos);
 
-                    Vector2 targetRelative = (perpDistPositive > perpDistNegative ? perpendicularNegativePos : perpendicularPositivePos) - Entity.Position;
+                    Vector2 targetRelative = (perpDistPositive > perpDistNegative ? perpendicularNegativePos : perpendicularPositivePos) - this.Entity.Position;
 
                     return Vector2Helper.PerpendicularRightAngleOf(targetRelative);
                 }

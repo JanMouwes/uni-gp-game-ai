@@ -20,7 +20,7 @@ namespace GameAI.Entity.Components
             this.SourceRectangle = texture.Bounds;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             this.RotationOrigin = new Vector2(this.SourceRectangle.Width / 2f, this.SourceRectangle.Height / 2f);
             float rotation = Owner.Rotation + this.RotationOffset;

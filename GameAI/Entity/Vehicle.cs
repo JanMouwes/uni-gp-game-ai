@@ -20,8 +20,8 @@ namespace GameAI.Entity
         {
             this.Team = team;
 
-            Velocity = new Vector2(0, 0);
-            Scale = 5;
+            this.Velocity = new Vector2(0, 0);
+            this.Scale = 5;
 
             this.Color = team.Colour;
 
@@ -36,14 +36,14 @@ namespace GameAI.Entity
             base.Update(gameTime);
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Render(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            this.Graphics.Draw(spriteBatch);
+            this.Graphics.Draw(spriteBatch, gameTime);
         }
 
         public void Kill()
         {
-            this.Death?.Invoke(this, this);
+            Death?.Invoke(this, this);
             this.Brain.Terminate();
         }
     }

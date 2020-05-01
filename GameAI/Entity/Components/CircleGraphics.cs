@@ -14,7 +14,7 @@ namespace GameAI.Entity.Components
             this.Owner = owner;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.DrawCircle(this.Owner.Position, this.Owner.Scale, 360, this.Colour);
         }

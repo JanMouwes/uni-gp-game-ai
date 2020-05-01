@@ -1,6 +1,6 @@
-﻿using GameAI.Steering;
-using GameAI.Steering.Complex;
-using GameAI.Steering.Simple;
+﻿using GameAI.Entity.Steering;
+using GameAI.Entity.Steering.Complex;
+using GameAI.Entity.Steering.Simple;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -19,7 +19,7 @@ namespace GameAI.Entity
 
         public Vector2 Orientation { get; set; } = new Vector2(1, 0);
 
-        public override float Rotation => Orientation.ToAngle();
+        public override float Rotation => this.Orientation.ToAngle();
 
         public float Mass { get; set; }
 
@@ -30,12 +30,12 @@ namespace GameAI.Entity
         //TODO add maxForce
         public SteeringBehaviour Steering { get; set; } = DefaultSteeringBehaviour.Instance;
 
-        public MovingEntity(World world) : base(world)
+        public MovingEntity(World world)
         {
-            Mass = 30;
-            MaxSpeed = .01f;
-            MinSpeed = 1.0f;
-            Velocity = new Vector2();
+            this.Mass = 30;
+            this.MaxSpeed = .01f;
+            this.MinSpeed = 1.0f;
+            this.Velocity = new Vector2();
             this.wallAvoidance = new WallAvoidance(this, world, 5f, 1.5f);
             this.obstacleAvoidance = new ObstacleAvoidance(this, world);
         }
@@ -56,31 +56,31 @@ namespace GameAI.Entity
 
                 if (shouldAvoidWalls) { steeringForce = wallCalc; }              // Avoid walls first
                 else if (shouldAvoidObstacles) { steeringForce = obstacleCalc; } // No walls to avoid, avoid obstacles
-                else { steeringForce = Steering.Calculate(); }                   // No walls or obstacles, do regular steering
+                else { steeringForce = this.Steering.Calculate(); }                   // No walls or obstacles, do regular steering
 
-                Vector2 acceleration = steeringForce / Mass;
+                Vector2 acceleration = steeringForce / this.Mass;
 
-                Velocity += acceleration * elapsedSeconds;
+                this.Velocity += acceleration * elapsedSeconds;
             }
 
-            Velocity *= .95f;
+            this.Velocity *= .95f;
 
-            Velocity = Velocity.Truncate(MaxSpeed);
+            this.Velocity = this.Velocity.Truncate(this.MaxSpeed);
 
-            this.Position += (Velocity * MinSpeed) * elapsedSeconds;
+            this.Position += (this.Velocity * this.MinSpeed) * elapsedSeconds;
 
-            if (Velocity != Vector2.Zero) { this.Orientation = Velocity.NormalizedCopy(); }
+            if (this.Velocity != Vector2.Zero) { this.Orientation = this.Velocity.NormalizedCopy(); }
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Render(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.DrawLine(this.Position, this.Position + Velocity, Color.Yellow);
-            spriteBatch.DrawLine(this.Position, this.Position + Steering.Calculate(), Color.Green);
+            spriteBatch.DrawLine(this.Position, this.Position + this.Velocity, Color.Yellow);
+            spriteBatch.DrawLine(this.Position, this.Position + this.Steering.Calculate(), Color.Green);
         }
 
         public override string ToString()
         {
-            return $"{this.Position} with velocity {Velocity}";
+            return $"{this.Position} with velocity {this.Velocity}";
         }
 
         // public string DebugInfo()

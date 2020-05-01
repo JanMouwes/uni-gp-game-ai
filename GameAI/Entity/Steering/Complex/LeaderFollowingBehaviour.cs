@@ -1,7 +1,6 @@
-﻿using GameAI.Entity;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace GameAI.Steering.Complex
+namespace GameAI.Entity.Steering.Complex
 {
     public class LeaderFollowingBehaviour : SteeringBehaviour
     {

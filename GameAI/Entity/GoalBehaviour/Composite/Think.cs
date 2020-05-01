@@ -31,12 +31,14 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
             Team otherTeam = this.world.Teams.Values.First(team => team.Colour != this.Owner.Team.Colour);
 
-            switch (this.random.Next(0, 3))
+            switch (this.random.Next(0, 10) % 4)
             {
                 case 0:
                     return new DefendFlag(this.Owner, this.world, this.Owner.Team.Flag);
                 case 1:
                     return new AttackDefenders(this.Owner, this.world, otherTeam.Flag);
+                case 2:
+                    return new DefendCapturers(this.Owner, this.world);
                 default:
                     return new CaptureFlag(this.Owner, otherTeam.Flag, this.world.PathFinder);
             }

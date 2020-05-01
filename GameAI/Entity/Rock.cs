@@ -7,7 +7,7 @@ namespace GameAI.Entity
     {
         public Color Color { get; set; }
 
-        public Rock(World world, Vector2 position, float scale, Color color) : base(world, scale)
+        public Rock(Vector2 position, float scale, Color color) : base(scale)
         {
             this.Position = position;
             this.Scale = scale;
@@ -19,9 +19,9 @@ namespace GameAI.Entity
             //throw new NotImplementedException();
         }
 
-        public override void Render(SpriteBatch spriteBatch)
+        public override void Render(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            this.Graphics.Draw(spriteBatch);
+            this.Graphics.Draw(spriteBatch, gameTime);
         }
     }
 }

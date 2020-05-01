@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entity\Bird.cs" />
+    <Compile Include="Entity\Components\AnimatedTextureGraphics.cs" />
     <Compile Include="Entity\Components\CircleGraphics.cs" />
     <Compile Include="Entity\Components\DefaultGraphics.cs" />
     <Compile Include="Entity\Components\IGraphicsComponent.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Entity\GoalBehaviour\Atomic\TraverseEdge.cs" />
     <Compile Include="Entity\GoalBehaviour\Composite\AttackDefenders.cs" />
     <Compile Include="Entity\GoalBehaviour\Composite\CaptureFlag.cs" />
+    <Compile Include="Entity\GoalBehaviour\Composite\DefendCapturers.cs" />
     <Compile Include="Entity\GoalBehaviour\Composite\DefendFlag.cs" />
     <Compile Include="Entity\GoalBehaviour\Composite\FollowPath.cs" />
     <Compile Include="Entity\GoalBehaviour\Composite\HuntEnemy.cs" />
@@ -179,6 +181,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Content\bird-white.png" />
     <Content Include="Content\opensans.spritefont" />
     <Content Include="Content\rock.png" />
     <Content Include="Content\ship-pirate.png" />
@@ -196,7 +199,6 @@
   <ItemGroup>
     <Content Include="Content\3DS - Fire Emblem Echoes Shadows of Valentia - Ship 1.png" />
     <Content Include="Content\opensans.spritefont" />
-    <Content Include="Content\PlayStation - Magical Drop F - Bird.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
