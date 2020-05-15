@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GameAI.Entity;
-using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
-using GameAI.Entity.Steering.Complex;
 using GameAI.world;
 using Graph;
 using Microsoft.Xna.Framework;

@@ -9,15 +9,13 @@ namespace GameAI.Entity
 {
     public abstract class MovingEntity : BaseGameEntity
     {
-        // for testing purposes
+        private readonly WallAvoidance wallAvoidance;
 
-        public readonly WallAvoidance wallAvoidance;
-
-        public readonly ObstacleAvoidance obstacleAvoidance;
+        private readonly ObstacleAvoidance obstacleAvoidance;
 
         public Vector2 Velocity { get; set; }
 
-        public Vector2 Orientation { get; set; } = new Vector2(1, 0);
+        public Vector2 Orientation { get; set; }
 
         public override float Rotation => this.Orientation.ToAngle();
 
@@ -36,7 +34,9 @@ namespace GameAI.Entity
             this.MaxSpeed = .01f;
             this.MinSpeed = 1.0f;
             this.Velocity = new Vector2();
-            this.wallAvoidance = new WallAvoidance(this, world, 5f, 1.5f);
+            this.Orientation = new Vector2(1, 0);
+
+            this.wallAvoidance = new WallAvoidance(this, world, 15f, 1.5f);
             this.obstacleAvoidance = new ObstacleAvoidance(this, world);
         }
 
@@ -47,17 +47,13 @@ namespace GameAI.Entity
             if (this.Steering != null)
             {
                 Vector2 obstacleCalc = this.obstacleAvoidance.Calculate();
-                bool shouldAvoidObstacles = obstacleCalc.LengthSquared() > 0;
-
                 Vector2 wallCalc = this.wallAvoidance.Calculate();
+
+                bool shouldAvoidObstacles = obstacleCalc.LengthSquared() > 0;
                 bool shouldAvoidWalls = wallCalc.LengthSquared() > 0;
 
-                Vector2 steeringForce;
-
-                if (shouldAvoidWalls) { steeringForce = wallCalc; }              // Avoid walls first
-                else if (shouldAvoidObstacles) { steeringForce = obstacleCalc; } // No walls to avoid, avoid obstacles
-                else { steeringForce = this.Steering.Calculate(); }                   // No walls or obstacles, do regular steering
-
+                // Prioritise avoiding walls and obstacles
+                Vector2 steeringForce = shouldAvoidWalls || shouldAvoidObstacles ? wallCalc + obstacleCalc : this.Steering.Calculate();
                 Vector2 acceleration = steeringForce / this.Mass;
 
                 this.Velocity += acceleration * elapsedSeconds;

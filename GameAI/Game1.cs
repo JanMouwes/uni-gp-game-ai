@@ -6,6 +6,7 @@ using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
 using GameAI.Entity.Steering.Complex;
+using GameAI.Entity.Steering.Simple;
 using GameAI.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -105,20 +106,6 @@ namespace GameAI
                     baseGameEntity.Color = Color.Red;
                 }
             });
-
-            // this.mouseInput.OnKeyPress(MouseButtons.Right, (input, state) =>
-            // {
-            //     Vector2 target = Mouse.GetState().Position.ToVector2();
-            //
-            //     bool shouldClear = !Keyboard.GetState().IsKeyDown(Keys.LeftShift);
-            //
-            //     foreach (Vehicle selectedEntity in this.selectedEntities)
-            //     {
-            //         if (shouldClear) { selectedEntity.Brain.ClearGoals(); }
-            //
-            //         selectedEntity.Brain.AddSubgoal(new MoveTo<Vehicle>(selectedEntity, target, this.world.PathFinder));
-            //     }
-            // });
 
             this.keyboardInput.OnKeyPress(Keys.G, (key, state) => { this.graphRenderer.ToggleEnabled(); });
             this.keyboardInput.OnKeyPress(Keys.Space, (input, state) => { this.paused = !this.paused; });
@@ -225,10 +212,16 @@ namespace GameAI
                     RotationOffset = -45f,
                     CurrentFrame = startingFrame
                 };
-                bird.Steering = new FlockingBehaviour(bird, this.world, 100);
+
+                if (i == 0)
+                {
+                    bird.Steering = new WanderBehaviour(bird, 15);
+                }
+                else { bird.Steering = new FlockingBehaviour(bird, this.world, 100); }
 
                 this.world.SpawnGameEntity(bird, new Vector2(100, 100));
             }
+            
         }
 
         private void ClearSelected()
@@ -276,6 +269,8 @@ namespace GameAI
         {
             Vehicle vehicle = this.selectedEntities.FirstOrDefault();
 
+            
+            // DebugRendering.DrawWallPanicDistance(this.spriteBatch, 15f, this.world);
             if (vehicle != null && this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, vehicle); }
         }
 

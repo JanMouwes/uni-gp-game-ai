@@ -18,7 +18,7 @@ namespace GameAI.Entity.Steering.Simple
 
         public override Vector2 Calculate()
         {
-            this.currentOffset += this.random.Next(-100, 100) / 100f; // .Next() is exclusive
+            this.currentOffset += this.random.Next(-100, 100) / 100f * 5f; // .Next() is exclusive
             this.currentOffset = Math.Min(this.currentOffset, this.range);
             this.currentOffset = Math.Max(this.currentOffset, -this.range);
 

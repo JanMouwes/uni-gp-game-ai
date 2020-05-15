@@ -1,42 +1,56 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.Steering.Complex
 {
     public class FlockingBehaviour : SteeringBehaviour
     {
-        public World World; 
-        private readonly double separationRadius;
-        private readonly double alignmentRadius;
-        private readonly double cohesionRadius;
+        private readonly World world;
+        
+        private readonly float separationRadius;
+        private readonly float alignmentRadius;
+        private readonly float cohesionRadius;
 
-        public FlockingBehaviour(MovingEntity entity, World world, double radius) : base(entity)
+        private readonly float alignmentWeight;
+        private readonly float cohesionWeight;
+        private readonly float separationWeight;
+
+        public FlockingBehaviour(MovingEntity entity, World world, float radius, float alignmentWeight = 15, float cohesionWeight = 14, float separationWeight = 16) : base(entity)
         {
-            this.World = world;
+            this.world = world;
             this.alignmentRadius = radius;
-            this.cohesionRadius = radius ;
+            this.cohesionRadius = radius;
             this.separationRadius = radius - (radius / 10) * 9;
+
+            this.alignmentWeight = alignmentWeight;
+            this.cohesionWeight = cohesionWeight;
+            this.separationWeight = separationWeight;
         }
 
         public override Vector2 Calculate()
         {
             bool IsNear(BaseGameEntity entity, float range) => Vector2.DistanceSquared(this.Entity.Position, entity.Position) < range * range;
 
-            bool IsNearAlignment(MovingEntity entity) => IsNear(entity, (float) this.alignmentRadius);
-            bool IsNearCohesion(MovingEntity entity) => IsNear(entity, (float) this.cohesionRadius);
-            bool IsNearSeparation(MovingEntity entity) => IsNear(entity, (float)this.separationRadius);
+            bool InAlignmentRange(MovingEntity entity) => IsNear(entity, this.alignmentRadius);
+            bool InCohesionRange(MovingEntity entity) => IsNear(entity, this.cohesionRadius);
+            bool InSeparationRange(MovingEntity entity) => IsNear(entity, this.separationRadius);
 
-            Vector2 A = SteeringBehaviours.Alignment(this.Entity, this.World.Entities.OfType<Bird> ().Where(IsNearAlignment));
-            Vector2 C = SteeringBehaviours.Cohesion(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearCohesion));
-            Vector2 S = SteeringBehaviours.Separation(this.Entity, this.World.Entities.OfType<Bird>().Where(IsNearSeparation));
+            IEnumerable<Bird> birds = this.world.Entities.OfType<Bird>().ToArray();
 
-            Vector2 target = (A * 15 + C * 14 + S * 16)  * 5;
+            Vector2 alignment = SteeringBehaviours.Alignment(this.Entity, birds.Where(InAlignmentRange));
+            Vector2 cohesion = SteeringBehaviours.Cohesion(this.Entity, birds.Where(InCohesionRange));
+            Vector2 separation = SteeringBehaviours.Separation(this.Entity, birds.Where(InSeparationRange));
+
+            Vector2 target = 5 *
+                             (alignment * this.alignmentWeight +
+                              cohesion * this.cohesionWeight +
+                              separation * this.separationWeight);
 
             if (target.Equals(Vector2.Zero))
             {
                 //  When there is no target, start wandering
-                target = this.Entity.Velocity +
-                         SteeringBehaviours.Wander(this.Entity, 0, 80);
+                target = this.Entity.Velocity + SteeringBehaviours.Wander(this.Entity, 20, 80);
             }
 
             return target;
