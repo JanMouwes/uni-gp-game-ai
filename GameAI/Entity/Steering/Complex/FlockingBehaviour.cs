@@ -7,7 +7,7 @@ namespace GameAI.Entity.Steering.Complex
     public class FlockingBehaviour : SteeringBehaviour
     {
         private readonly World world;
-        
+
         private readonly float separationRadius;
         private readonly float alignmentRadius;
         private readonly float cohesionRadius;
@@ -16,12 +16,12 @@ namespace GameAI.Entity.Steering.Complex
         private readonly float cohesionWeight;
         private readonly float separationWeight;
 
-        public FlockingBehaviour(MovingEntity entity, World world, float radius, float alignmentWeight = 15, float cohesionWeight = 14, float separationWeight = 16) : base(entity)
+        public FlockingBehaviour(MovingEntity entity, World world, float radius, float alignmentWeight = 15, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
         {
             this.world = world;
             this.alignmentRadius = radius;
-            this.cohesionRadius = radius;
-            this.separationRadius = radius - (radius / 10) * 9;
+            this.cohesionRadius = radius * .125f;
+            this.separationRadius = radius * .125f;
 
             this.alignmentWeight = alignmentWeight;
             this.cohesionWeight = cohesionWeight;
@@ -36,7 +36,11 @@ namespace GameAI.Entity.Steering.Complex
             bool InCohesionRange(MovingEntity entity) => IsNear(entity, this.cohesionRadius);
             bool InSeparationRange(MovingEntity entity) => IsNear(entity, this.separationRadius);
 
-            IEnumerable<Bird> birds = this.world.Entities.OfType<Bird>().ToArray();
+            const int amountOfNeighbours = 5;
+            IEnumerable<Bird> birds = this.world.Entities.OfType<Bird>()
+                                          .OrderBy(bird => Vector2.DistanceSquared(bird.Position, this.Entity.Position))
+                                          .Take(amountOfNeighbours)
+                                          .ToArray();
 
             Vector2 alignment = SteeringBehaviours.Alignment(this.Entity, birds.Where(InAlignmentRange));
             Vector2 cohesion = SteeringBehaviours.Cohesion(this.Entity, birds.Where(InCohesionRange));
