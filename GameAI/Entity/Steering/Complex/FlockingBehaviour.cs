@@ -15,11 +15,14 @@ namespace GameAI.Entity.Steering.Complex
         private readonly float alignmentWeight;
         private readonly float cohesionWeight;
         private readonly float separationWeight;
+        
+        private readonly float strength;
 
-        public FlockingBehaviour(MovingEntity entity, World world, float radius, float alignmentWeight = 15, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
+        public FlockingBehaviour(MovingEntity entity, World world, float radius, float strength, float alignmentWeight = 15, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
         {
             this.world = world;
             this.alignmentRadius = radius;
+            this.strength = strength;
             this.cohesionRadius = radius * .125f;
             this.separationRadius = radius * .125f;
 
@@ -46,10 +49,9 @@ namespace GameAI.Entity.Steering.Complex
             Vector2 cohesion = SteeringBehaviours.Cohesion(this.Entity, birds.Where(InCohesionRange));
             Vector2 separation = SteeringBehaviours.Separation(this.Entity, birds.Where(InSeparationRange));
 
-            Vector2 target = 5 *
-                             (alignment * this.alignmentWeight +
-                              cohesion * this.cohesionWeight +
-                              separation * this.separationWeight);
+            Vector2 target = alignment * this.alignmentWeight +
+                             cohesion * this.cohesionWeight +
+                             separation * this.separationWeight;
 
             if (target.Equals(Vector2.Zero))
             {
@@ -57,7 +59,7 @@ namespace GameAI.Entity.Steering.Complex
                 target = this.Entity.Velocity + SteeringBehaviours.Wander(this.Entity, 20, 80);
             }
 
-            return target;
+            return target * this.strength;
         }
     }
 }

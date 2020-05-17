@@ -183,7 +183,7 @@ namespace GameAI
                     {
                         SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
-                    vehicle.Steering = new FlockingBehaviour(vehicle, this.world, 10);
+                    vehicle.Steering = new FlockingBehaviour(vehicle, this.world, 10, 5);
 
                     this.world.SpawnVehicle(vehicle);
                 }
@@ -216,7 +216,7 @@ namespace GameAI
                     };
 
                     if (i == 0) { bird.Steering = new WanderBehaviour(bird, 15); }
-                    else { bird.Steering = new FlockingBehaviour(bird, this.world, 100); }
+                    else { bird.Steering = new FlockingBehaviour(bird, this.world, 10, 5); }
 
                     this.world.SpawnGameEntity(bird, position);
                 }
