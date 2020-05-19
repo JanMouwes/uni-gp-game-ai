@@ -15,7 +15,7 @@ namespace GameAI.Entity.Steering.Complex
         /// <param name="world">World</param>
         /// <param name="panicDistance">Distance at which to start avoiding walls</param>
         /// <param name="strength">Strength multiplier</param>
-        public WallAvoidance(MovingEntity entity, World world, float panicDistance = 5f, float strength = 1f) : base(entity)
+        public WallAvoidance(MovingEntity entity, World world, float panicDistance = 5f, float strength = 3f) : base(entity)
         {
             this.world = world;
             this.panicDistance = panicDistance;

@@ -6,6 +6,7 @@ using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
 using GameAI.Entity.Steering.Complex;
+using GameAI.Entity.Steering.Simple;
 using GameAI.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -106,20 +107,6 @@ namespace GameAI
                 }
             });
 
-            // this.mouseInput.OnKeyPress(MouseButtons.Right, (input, state) =>
-            // {
-            //     Vector2 target = Mouse.GetState().Position.ToVector2();
-            //
-            //     bool shouldClear = !Keyboard.GetState().IsKeyDown(Keys.LeftShift);
-            //
-            //     foreach (Vehicle selectedEntity in this.selectedEntities)
-            //     {
-            //         if (shouldClear) { selectedEntity.Brain.ClearGoals(); }
-            //
-            //         selectedEntity.Brain.AddSubgoal(new MoveTo<Vehicle>(selectedEntity, target, this.world.PathFinder));
-            //     }
-            // });
-
             this.keyboardInput.OnKeyPress(Keys.G, (key, state) => { this.graphRenderer.ToggleEnabled(); });
             this.keyboardInput.OnKeyPress(Keys.Space, (input, state) => { this.paused = !this.paused; });
             this.keyboardInput.OnKeyPress(Keys.O, (input, state) => { this.drawAgentGoals = !this.drawAgentGoals; });
@@ -196,38 +183,54 @@ namespace GameAI
                     {
                         SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
-                    vehicle.Steering = new FlockingBehaviour(vehicle, this.world, 100);
+                    vehicle.Steering = new FlockingBehaviour(vehicle, this.world, 10, 5);
 
                     this.world.SpawnVehicle(vehicle);
                 }
             }
 
-            Rectangle[] birdFrames =
+            void SpawnFlock(float size, Vector2 position)
             {
-                new Rectangle(0, 0, 16, 16),
-                new Rectangle(16, 0, 16, 16),
-                new Rectangle(32, 0, 16, 16),
-            };
-
-            for (int i = 0; i < birdCount; i++)
-            {
-                Bird bird = new Bird(this.world)
+                Rectangle[] birdFrames =
                 {
-                    MaxSpeed = 600f,
-                    MinSpeed = 3f,
-                    Mass = 1
+                    new Rectangle(0, 0, 16, 16),
+                    new Rectangle(16, 0, 16, 16),
+                    new Rectangle(32, 0, 16, 16),
                 };
 
-                int startingFrame = i % 3;
-
-                bird.Graphics = new AnimatedTextureGraphics(bird, birdTexture, birdFrames, 100)
+                for (int i = 0; i < size; i++)
                 {
-                    RotationOffset = -45f,
-                    CurrentFrame = startingFrame
-                };
-                bird.Steering = new FlockingBehaviour(bird, this.world, 100);
+                    Bird bird = new Bird(this.world)
+                    {
+                        MaxSpeed = 600f,
+                        MinSpeed = 3f,
+                        Mass = 1
+                    };
 
-                this.world.SpawnGameEntity(bird, new Vector2(100, 100));
+                    int startingFrame = i % 3;
+
+                    bird.Graphics = new AnimatedTextureGraphics(bird, birdTexture, birdFrames, 100)
+                    {
+                        RotationOffset = -45f,
+                        CurrentFrame = startingFrame
+                    };
+
+                    if (i == 0) { bird.Steering = new WanderBehaviour(bird, 15); }
+                    else { bird.Steering = new FlockingBehaviour(bird, this.world, 10, 5); }
+
+                    this.world.SpawnGameEntity(bird, position);
+                }
+            }
+
+            const int flockCount = 1;
+
+            Random random = new Random();
+
+            for (int i = 0; i < flockCount; i++)
+            {
+                Vector2 spawnPoint = new Vector2(random.Next(50, this.world.Height - 50));
+
+                SpawnFlock(100, spawnPoint);
             }
         }
 
@@ -276,6 +279,8 @@ namespace GameAI
         {
             Vehicle vehicle = this.selectedEntities.FirstOrDefault();
 
+
+            // DebugRendering.DrawWallPanicDistance(this.spriteBatch, 15f, this.world);
             if (vehicle != null && this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, vehicle); }
         }
 

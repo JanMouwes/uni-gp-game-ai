@@ -32,8 +32,8 @@ namespace GameAI.Util
             Vector2 dist = new Vector2(rock.Position.X - vehicle.Position.X, rock.Position.X - vehicle.Position.Y);
             Vector2 perpendicular = new Vector2(-dist.Y, dist.X);
 
-            Vector2 realDist = vehicle.Position  + dist;
-            Vector2 realHaaks = rock.Position    + perpendicular;
+            Vector2 realDist = vehicle.Position + dist;
+            Vector2 realHaaks = rock.Position + perpendicular;
             Vector2 realMinHaaks = rock.Position - perpendicular;
 
             spriteBatch.DrawLine(vehicle.Position, realDist, Color.Purple);
@@ -85,12 +85,24 @@ namespace GameAI.Util
         public static void DrawVehicleInfo(SpriteBatch spriteBatch, SpriteFont font, Vehicle vehicle)
         {
             StringBuilder text = new StringBuilder();
-            
+
             text.Append($"Position: {vehicle.Position.ToPoint()}\n");
             text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
             text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
-            
+
             spriteBatch.DrawString(font, text, Vector2.Zero, Color.Black);
+        }
+
+        public static void DrawWallPanicDistance(SpriteBatch spriteBatch, float panicDistance, World world)
+        {
+            Rectangle rect = new Rectangle(
+                (int) panicDistance,
+                (int) panicDistance,
+                (int) (world.Width - panicDistance * 2),
+                (int) (world.Height - panicDistance * 2)
+            );
+            
+            spriteBatch.DrawRectangle(rect, Color.Green, 2f);
         }
     }
 }

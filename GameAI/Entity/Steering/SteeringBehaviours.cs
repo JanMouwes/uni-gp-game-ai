@@ -51,7 +51,7 @@ namespace GameAI.Entity.Steering
         }
 
 
-        public static Vector2 Wander(MovingEntity entity, float offset, float range, float distance = 80)
+        public static Vector2 Wander(MovingEntity entity, float offset, float range, float distance = 120)
         {
             Random random = new Random();
             offset += random.Next(-100, 100) / 100f; // .Next() is exclusive
@@ -68,16 +68,23 @@ namespace GameAI.Entity.Steering
             return entity.Orientation * distance + localTarget;
         }
 
+        /// <summary>
+        /// Calculates wall avoidance from parameter
+        /// </summary>
+        /// <param name="entity">Contains necessary positional data</param>
+        /// <param name="world">World's walls to avoid</param>
+        /// <param name="panicDistance">Distance from which to avoid walls</param>
+        /// <returns>Zero if outside of panic distance, otherwise the force to avoid walls</returns>
         public static Vector2 WallAvoidance(MovingEntity entity, World world, float panicDistance)
         {
             (float distToLeft, float distToTop) = entity.Position + entity.Velocity;
 
             float distToBottom = world.Height - distToTop;
-            float distToRight = world.Width   - distToLeft;
+            float distToRight = world.Width - distToLeft;
 
-            bool isNearLeft = panicDistance   > distToLeft;
-            bool isNearRight = panicDistance  > distToRight;
-            bool isNearTop = panicDistance    > distToTop;
+            bool isNearLeft = panicDistance > distToLeft;
+            bool isNearRight = panicDistance > distToRight;
+            bool isNearTop = panicDistance > distToTop;
             bool isNearBottom = panicDistance > distToBottom;
 
             bool isNearWalls = isNearLeft || isNearRight || isNearTop || isNearBottom;
@@ -85,24 +92,31 @@ namespace GameAI.Entity.Steering
             if (!isNearWalls) { return Vector2.Zero; }
 
             Vector2 baseSteering = entity.Velocity;
-            
-            if (isNearLeft)
+
+            float CalculateForce(float distance)
             {
-                baseSteering.X = (panicDistance * 2) - distToLeft; 
-            }
-            else if (isNearRight)
-            {
-                baseSteering.X = -(panicDistance * 2) + distToRight; 
+                float panicDistancePercentage = distance / panicDistance;
+                float modifier = panicDistancePercentage;
+
+                return modifier * modifier * panicDistance * panicDistance;
             }
 
-            if (isNearTop)
-            {
-                baseSteering.Y = (panicDistance * 2) - distToTop;
-            }
-            else if (isNearBottom)
-            {
-                baseSteering.Y = -(panicDistance * 2) + distToBottom; 
-            }
+            if (isNearLeft) { baseSteering.X += CalculateForce(distToLeft); }
+            else if (isNearRight) { baseSteering.X += -CalculateForce(distToRight); }
+
+            if (isNearTop) { baseSteering.Y += CalculateForce(distToTop); }
+            else if (isNearBottom) { baseSteering.Y += -CalculateForce(distToBottom); }
+
+            Console.WriteLine();
+            Console.WriteLine($"Force left: {CalculateForce(distToLeft)}");
+            Console.WriteLine($"Force right: {CalculateForce(distToRight)}");
+            Console.WriteLine($"Force top: {CalculateForce(distToTop)}");
+            Console.WriteLine($"Force bottom: {CalculateForce(distToBottom)}");
+
+            Console.WriteLine();
+            Console.WriteLine(entity.Position.ToPoint());
+            Console.WriteLine(baseSteering.ToPoint());
+            Console.WriteLine((entity.Position + baseSteering).ToPoint());
 
             return baseSteering;
         }
