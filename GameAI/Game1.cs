@@ -159,8 +159,15 @@ namespace GameAI
                 Flag flag = new Flag(team, 5f);
 
                 this.world.SpawnGameEntity(flag, teamFlagPosition[teamIndex]);
-
                 team.Flag = flag;
+
+                flag.Captured += (capturedFlag) =>
+                {
+                    capturedFlag.Team.RespawnFlag();
+                    capturedFlag.Team.Points++;
+                };
+
+                team.Base = teamFlagPosition[teamIndex];
 
                 this.world.Teams.Add(team.Colour, team);
 
@@ -297,6 +304,8 @@ namespace GameAI
             foreach (Team team in this.world.Teams.Values)
             {
                 foreach (Vector2 spawn in team.SpawnPoints) { this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour); }
+
+                this.spriteBatch.DrawString(this.mainFont, team.Points.ToString(), team.Base, team.Colour);
             }
 
             this.world.Render(this.spriteBatch, gameTime);

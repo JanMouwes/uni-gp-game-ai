@@ -16,6 +16,9 @@ namespace GameAI.world
 
         public Flag Flag { get; set; }
 
+        public Vector2 Base { get; set; }
+        public int Points { get; set; }
+
         public Team(Color colour) : this(colour, new Vehicle[0]) { }
 
         public Team(Color colour, IEnumerable<Vehicle> vehicles)
@@ -28,6 +31,12 @@ namespace GameAI.world
         public void AddSpawnPoint(Vector2 spawnPoint)
         {
             this.spawnPoints.Add(spawnPoint);
+        }
+
+        public void RespawnFlag()
+        {
+            this.Flag.Position = this.Base;
+            this.Flag.Carrier = null;
         }
 
         public void AddSpawnPoints(IEnumerable<Vector2> points)

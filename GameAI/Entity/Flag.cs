@@ -1,3 +1,4 @@
+using System;
 using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +8,8 @@ namespace GameAI.Entity
 {
     public class Flag : BaseGameEntity
     {
+        public event Action<Flag> Captured;
+
         public Vehicle Carrier { get; set; }
 
         public readonly Team Team;
@@ -18,7 +21,18 @@ namespace GameAI.Entity
 
         public override void Update(GameTime gameTime)
         {
-            if (this.Carrier != null) { this.Position = this.Carrier.Position; }
+            if (this.Carrier != null)
+            {
+                this.Position = this.Carrier.Position;
+
+                Vector2 otherTeamsBase = this.Carrier.Team.Base;
+
+                if (Vector2.DistanceSquared(this.Position, otherTeamsBase) < 5f)
+                {
+                    Captured?.Invoke(this);
+                    this.Carrier = null;
+                }
+            }
         }
 
         public override void Render(SpriteBatch spriteBatch, GameTime gameTime)
