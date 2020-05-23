@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fuzzy.Sets;
+using Fuzzy.Terms;
 
 namespace Fuzzy
 {
@@ -16,22 +17,28 @@ namespace Fuzzy
             this.categories = new Dictionary<string, FuzzySet>();
         }
 
-        public void AddTriangleSet(string name, double minBound, double peakPoint, double maxBound)
+        public SetProxy AddTriangleSet(string name, double minBound, double peakPoint, double maxBound)
         {
             this.categories.Add(name, new TriangleSet(peakPoint, peakPoint - minBound, maxBound - peakPoint));
             AdjustRange(minBound, maxBound);
+
+            return new SetProxy(this.categories[name]);
         }
 
-        public void AddRightShoulder(string name, double minBound, double peakPoint, double maxBound)
+        public SetProxy AddRightShoulder(string name, double minBound, double peakPoint, double maxBound)
         {
             this.categories.Add(name, new RightShoulder(peakPoint, peakPoint - minBound));
             AdjustRange(minBound, maxBound);
+
+            return new SetProxy(this.categories[name]);
         }
 
-        public void AddLeftShoulder(string name, double minBound, double peakPoint, double maxBound)
+        public SetProxy AddLeftShoulder(string name, double minBound, double peakPoint, double maxBound)
         {
             this.categories.Add(name, new LeftShoulder(peakPoint, maxBound - peakPoint));
             AdjustRange(minBound, maxBound);
+
+            return new SetProxy(this.categories[name]);
         }
 
         public void Fuzzify(double value)
