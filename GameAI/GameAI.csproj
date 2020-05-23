@@ -187,6 +187,10 @@
     <Content Include="Content\ship-pirate.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fuzzy\Fuzzy.csproj">
+      <Project>{9a073f01-ae32-4ee1-8142-83dadc75e037}</Project>
+      <Name>Fuzzy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameAI.Pathfinding\GameAI.Pathfinding.csproj">
       <Project>{79167b99-76c3-4cc2-afae-09e16212a3cf}</Project>
       <Name>GameAI.Pathfinding</Name>

@@ -106,18 +106,7 @@ namespace GameAI.Entity.Steering
 
             if (isNearTop) { baseSteering.Y += CalculateForce(distToTop); }
             else if (isNearBottom) { baseSteering.Y += -CalculateForce(distToBottom); }
-
-            Console.WriteLine();
-            Console.WriteLine($"Force left: {CalculateForce(distToLeft)}");
-            Console.WriteLine($"Force right: {CalculateForce(distToRight)}");
-            Console.WriteLine($"Force top: {CalculateForce(distToTop)}");
-            Console.WriteLine($"Force bottom: {CalculateForce(distToBottom)}");
-
-            Console.WriteLine();
-            Console.WriteLine(entity.Position.ToPoint());
-            Console.WriteLine(baseSteering.ToPoint());
-            Console.WriteLine((entity.Position + baseSteering).ToPoint());
-
+            
             return baseSteering;
         }
 
