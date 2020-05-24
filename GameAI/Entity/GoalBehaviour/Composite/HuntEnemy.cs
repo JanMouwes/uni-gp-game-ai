@@ -2,13 +2,13 @@ using GameAI.Entity.GoalBehaviour.Atomic;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
-    public class HuntEnemy : GoalComposite<Vehicle>
+    public class HuntEnemy : GoalComposite<Ship>
 
     {
-        private readonly Vehicle enemy;
+        private readonly Ship enemy;
         private readonly World world;
 
-        public HuntEnemy(Vehicle owner, Vehicle enemy, World world) : base(owner)
+        public HuntEnemy(Ship owner, Ship enemy, World world) : base(owner)
         {
             this.enemy = enemy;
             this.world = world;

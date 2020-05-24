@@ -46,7 +46,7 @@ namespace GameAI
                 return (location - entity.Position).LengthSquared() < realRange * realRange;
             }
 
-            return this.entities.Concat(this.entities.OfType<Vehicle>()).Where(IsNear);
+            return this.entities.Concat(this.entities.OfType<Ship>()).Where(IsNear);
         }
 
         public void SpawnGameEntity(BaseGameEntity entity, Vector2 position)
@@ -56,40 +56,40 @@ namespace GameAI
             this.entities.Add(entity);
         }
 
-        public void SpawnVehicle(Vehicle vehicle, Vector2 position)
+        public void SpawnVehicle(Ship ship, Vector2 position)
         {
-            SpawnGameEntity(vehicle, position);
+            SpawnGameEntity(ship, position);
             
-            vehicle.Team.Vehicles.AddLast(vehicle);
+            ship.Team.Vehicles.AddLast(ship);
 
-            vehicle.Death += OnVehicleDeath;
+            ship.Death += OnVehicleDeath;
         }
 
-        public void SpawnVehicle(Vehicle vehicle)
+        public void SpawnVehicle(Ship ship)
         {
-            SpawnVehicle(vehicle, vehicle.Team.RandomSpawnPoint());
+            SpawnVehicle(ship, ship.Team.RandomSpawnPoint());
         }
 
         /// <summary>
         /// Removes vehicle from the world
         /// </summary>
-        /// <param name="vehicle"></param>
-        public void DespawnVehicle(Vehicle vehicle)
+        /// <param name="ship"></param>
+        public void DespawnVehicle(Ship ship)
         {
-            this.entities.Remove(vehicle);
-            this.Teams[vehicle.Team.Colour].Vehicles.Remove(vehicle);
+            this.entities.Remove(ship);
+            this.Teams[ship.Team.Colour].Vehicles.Remove(ship);
 
-            vehicle.Death -= OnVehicleDeath;
+            ship.Death -= OnVehicleDeath;
         }
 
-        public void OnVehicleDeath(object sender, Vehicle vehicle)
+        public void OnVehicleDeath(object sender, Ship ship)
         {
-            RespawnVehicle(vehicle);
+            RespawnVehicle(ship);
         }
 
-        public void RespawnVehicle(Vehicle vehicle)
+        public void RespawnVehicle(Ship ship)
         {
-            vehicle.Position = vehicle.Team.RandomSpawnPoint();
+            ship.Position = ship.Team.RandomSpawnPoint();
         }
 
         public void Update(GameTime gameTime)

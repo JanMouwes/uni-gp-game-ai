@@ -4,30 +4,30 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
-    public class DefendCapturers : GoalComposite<Vehicle>
+    public class DefendCapturers : GoalComposite<Ship>
     {
         private readonly World world;
 
-        private Vehicle currentCapturer;
-        private Vehicle currentEnemy;
+        private Ship currentCapturer;
+        private Ship currentEnemy;
 
-        public Vehicle CurrentCapturer => this.currentCapturer;
-        public Vehicle CurrentEnemy => this.currentEnemy;
+        public Ship CurrentCapturer => this.currentCapturer;
+        public Ship CurrentEnemy => this.currentEnemy;
 
-        public DefendCapturers(Vehicle owner, World world) : base(owner)
+        public DefendCapturers(Ship owner, World world) : base(owner)
         {
             this.world = world;
         }
 
-        public Vehicle FindValidEnemy()
+        public Ship FindValidEnemy()
         {
-            return this.world.Entities.OfType<Vehicle>()
+            return this.world.Entities.OfType<Ship>()
                        .Where(vehicle => vehicle.Team != this.Owner.Team && IsEnemyValid(vehicle))
                        .OrderBy(enemy => Vector2.DistanceSquared(enemy.Position, this.currentCapturer.Position))
                        .FirstOrDefault();
         }
 
-        public Vehicle FindValidCapturer()
+        public Ship FindValidCapturer()
         {
             return this.Owner.Team.Vehicles
                        .Where(vehicle => vehicle != this.Owner && IsCapturerValid(vehicle))
@@ -35,12 +35,12 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                        .FirstOrDefault();
         }
 
-        public bool IsCapturerValid(Vehicle capturer)
+        public bool IsCapturerValid(Ship capturer)
         {
             return capturer?.Brain.CurrentGoal is CaptureFlag;
         }
 
-        public bool IsEnemyValid(Vehicle enemy)
+        public bool IsEnemyValid(Ship enemy)
         {
             const float panicDistance = 50f;
 

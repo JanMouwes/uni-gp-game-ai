@@ -46,6 +46,8 @@ namespace Fuzzy
             foreach (FuzzySet set in this.categories.Values) { set.DegreeOfMembership = set.CalculateMembership(value); }
         }
 
+        public IEnumerable<(string name, double membership)> Memberships => this.categories.Select(pair => (pair.Key, pair.Value.DegreeOfMembership));
+
         public double DefuzzifyMaxAverage()
         {
             double numerator = 0.0;
@@ -71,10 +73,18 @@ namespace Fuzzy
 
             double sampleValue = this.minRange;
 
+            double TruncateMembership(FuzzySet category, double value)
+            {
+                double currentMembership = category.DegreeOfMembership;
+                double newMembership = category.CalculateMembership(value);
+
+                return currentMembership < newMembership ? currentMembership : newMembership;
+            }
+
             for (int i = 0; i < sampleCount; i++)
             {
                 sampleValue += stepSize;
-                double membershipSum = this.categories.Values.Select(category => category.CalculateMembership(sampleValue)).Sum();
+                double membershipSum = this.categories.Values.Select(category => TruncateMembership(category, sampleValue)).Sum();
 
                 numerator += membershipSum * sampleValue;
                 denominator += membershipSum;

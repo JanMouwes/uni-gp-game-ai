@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
-    public class Think : GoalComposite<Vehicle>
+    public class Think : GoalComposite<Ship>
     {
         private readonly World world;
         private readonly Random random;
@@ -18,14 +18,14 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         private const string AVG_TEAMMATE_DISTANCE_VARIABLE_KEY = "average teammate distance";
         private const string OWN_STRATEGY_VARIABLE_KEY = "own strategy";
 
-        public Think(Vehicle owner, World world) : base(owner)
+        public Think(Ship owner, World world) : base(owner)
         {
             this.world = world;
             this.random = new Random();
 
             this.fuzzyModule = new FuzzyModule();
 
-            const float range = 600;
+            const float range = 1000; // max distance from one corner to another
             const float nearPeak = .25f * range;
             const float mediumPeak = .5f * range;
             const float farPeak = .75f * range;
@@ -41,8 +41,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             SetProxy teamFar = avgTeammatesDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
 
             Variable strategyVariable = this.fuzzyModule.CreateVariable(OWN_STRATEGY_VARIABLE_KEY);
-            SetProxy defensive = strategyVariable.AddLeftShoulder("defensive", 0, .2, .5);
-            SetProxy offensive = strategyVariable.AddRightShoulder("offensive", .2, .6, 1);
+            SetProxy defensive = strategyVariable.AddLeftShoulder("defensive", 0, .4, .6);
+            SetProxy offensive = strategyVariable.AddRightShoulder("offensive", .4, .6, 1);
 
             /*
              * IF I am near AND teammates are near
@@ -74,7 +74,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         {
             if (!this.HasCurrentGoal)
             {
-                Goal<Vehicle> goal = FindNewGoal();
+                Goal<Ship> goal = FindNewGoal();
                 AddSubgoal(goal);
             }
 
@@ -94,13 +94,16 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             return this.fuzzyModule.Defuzzify(OWN_STRATEGY_VARIABLE_KEY, DefuzzifyMethods.Centroid);
         }
 
-        private Goal<Vehicle> FindNewGoal()
+        private Goal<Ship> FindNewGoal()
         {
             if (this.Owner.Team.Flag.Carrier != null) { return new HuntEnemy(this.Owner, this.Owner.Team.Flag.Carrier, this.world); }
 
             Team otherTeam = this.world.Teams.Values.First(team => team.Colour != this.Owner.Team.Colour);
 
-            bool shouldDefend = GetStrategy() < .4;
+            double strategy = GetStrategy();
+            bool shouldDefend = strategy < .4;
+
+            Console.WriteLine(strategy);
 
             if (shouldDefend) { return new DefendFlag(this.Owner, this.world, this.Owner.Team.Flag); }
 

@@ -4,28 +4,28 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
-    public class DefendFlag : GoalComposite<Vehicle>
+    public class DefendFlag : GoalComposite<Ship>
     {
         private readonly World world;
         private readonly Flag flag;
 
-        private Vehicle currentEnemy;
+        private Ship currentEnemy;
 
-        public DefendFlag(Vehicle owner, World world, Flag flag) : base(owner)
+        public DefendFlag(Ship owner, World world, Flag flag) : base(owner)
         {
             this.world = world;
             this.flag = flag;
         }
 
-        public Vehicle FindValidEnemy()
+        public Ship FindValidEnemy()
         {
-            return this.world.Entities.OfType<Vehicle>()
+            return this.world.Entities.OfType<Ship>()
                        .Where(vehicle => vehicle.Team != this.Owner.Team && IsEnemyValid(vehicle))
                        .OrderBy(vehicle => Vector2.DistanceSquared(vehicle.Position, this.flag.Position))
                        .FirstOrDefault();
         }
 
-        public bool IsEnemyValid(Vehicle enemy)
+        public bool IsEnemyValid(Ship enemy)
         {
             const float panicDistance = 150f;
 
@@ -44,7 +44,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                     AddSubgoal(new PursueEnemy(this.Owner, this.currentEnemy, this.Owner.Scale * this.Owner.Scale, this.world.PathFinder));
                     AddSubgoal(new AttackEnemy(this.Owner, this.currentEnemy));
                 }
-                else if (this.GoalQueue.Count == 0) { AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.flag.Position, this.world.PathFinder)); }
+                else if (this.GoalQueue.Count == 0) { AddSubgoal(new MoveTo<Ship>(this.Owner, this.flag.Position, this.world.PathFinder)); }
             }
 
             base.Process(gameTime);

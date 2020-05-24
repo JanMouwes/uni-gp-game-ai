@@ -33,7 +33,7 @@ namespace GameAI
         private const int WORLD_WIDTH = 800;
         private const int WORLD_HEIGHT = 600;
 
-        private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
+        private LinkedList<Ship> selectedEntities = new LinkedList<Ship>();
         private SpriteFont mainFont;
 
         private bool drawAgentGoals;
@@ -96,11 +96,11 @@ namespace GameAI
 
             this.mouseInput.OnKeyPress(MouseButtons.Left, (input, state) =>
             {
-                IEnumerable<Vehicle> entitiesNearMouse = this.world.FindEntitiesNear(this.mouseInput.MouseState.Position.ToVector2(), 3).OfType<Vehicle>();
+                IEnumerable<Ship> entitiesNearMouse = this.world.FindEntitiesNear(this.mouseInput.MouseState.Position.ToVector2(), 3).OfType<Ship>();
 
                 if (!this.keyboardInput.KeyboardState.IsKeyDown(Keys.LeftShift)) { ClearSelected(); }
 
-                foreach (Vehicle baseGameEntity in entitiesNearMouse)
+                foreach (Ship baseGameEntity in entitiesNearMouse)
                 {
                     this.selectedEntities.AddLast(baseGameEntity);
                     baseGameEntity.Color = Color.Red;
@@ -161,11 +161,6 @@ namespace GameAI
                 this.world.SpawnGameEntity(flag, teamFlagPosition[teamIndex]);
                 team.Flag = flag;
 
-                flag.Captured += (capturedFlag) =>
-                {
-                    capturedFlag.Team.RespawnFlag();
-                    capturedFlag.Team.Points++;
-                };
 
                 team.Base = teamFlagPosition[teamIndex];
 
@@ -181,19 +176,30 @@ namespace GameAI
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
                 {
-                    Vehicle vehicle = new Vehicle(this.world, team)
+                    Ship ship = new Ship(this.world, team)
                     {
                         MaxSpeed = 400f,
                         Mass = 2
                     };
-                    vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
+                    ship.Graphics = new TextureGraphics(ship, vehicleTexture)
                     {
                         SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
-                    vehicle.Steering = new FlockingBehaviour(vehicle, this.world, 10, 5);
+                    ship.Steering = new FlockingBehaviour(ship, this.world, 10, 5);
 
-                    this.world.SpawnVehicle(vehicle);
+                    this.world.SpawnVehicle(ship);
                 }
+            }
+
+            foreach (Team team in this.world.Teams.Values)
+            {
+                Team otherTeam = this.world.Teams.Values.First(other => other != team);
+
+                team.Flag.Captured += (capturedFlag) =>
+                {
+                    capturedFlag.Team.RespawnFlag();
+                    otherTeam.Points++;
+                };
             }
 
             void SpawnFlock(float size, Vector2 position)
@@ -243,7 +249,7 @@ namespace GameAI
 
         private void ClearSelected()
         {
-            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Color = selectedEntity.Team.Colour; }
+            foreach (Ship selectedEntity in this.selectedEntities) { selectedEntity.Color = selectedEntity.Team.Colour; }
 
             this.selectedEntities.Clear();
         }
@@ -284,11 +290,11 @@ namespace GameAI
 
         private void DebugDraw(SpriteBatch batch)
         {
-            Vehicle vehicle = this.selectedEntities.FirstOrDefault();
+            Ship ship = this.selectedEntities.FirstOrDefault();
 
 
             // DebugRendering.DrawWallPanicDistance(this.spriteBatch, 15f, this.world);
-            if (vehicle != null && this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, vehicle); }
+            if (ship != null && this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, ship); }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -311,7 +317,7 @@ namespace GameAI
             this.world.Render(this.spriteBatch, gameTime);
 
             // Special rendering for selected entities
-            foreach (Vehicle selectedEntity in this.selectedEntities)
+            foreach (Ship selectedEntity in this.selectedEntities)
             {
                 this.spriteBatch.DrawCircle(selectedEntity.Position, selectedEntity.Scale, 360, selectedEntity.Team.Colour);
                 selectedEntity.Brain.Render(spriteBatch);

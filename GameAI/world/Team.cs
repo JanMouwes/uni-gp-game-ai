@@ -9,7 +9,7 @@ namespace GameAI.world
     {
         private readonly IList<Vector2> spawnPoints;
 
-        public readonly LinkedList<Vehicle> Vehicles;
+        public readonly LinkedList<Ship> Vehicles;
         public readonly Color Colour;
 
         public IEnumerable<Vector2> SpawnPoints => this.spawnPoints;
@@ -19,12 +19,12 @@ namespace GameAI.world
         public Vector2 Base { get; set; }
         public int Points { get; set; }
 
-        public Team(Color colour) : this(colour, new Vehicle[0]) { }
+        public Team(Color colour) : this(colour, new Ship[0]) { }
 
-        public Team(Color colour, IEnumerable<Vehicle> vehicles)
+        public Team(Color colour, IEnumerable<Ship> vehicles)
         {
             this.spawnPoints = new List<Vector2>();
-            this.Vehicles = new LinkedList<Vehicle>(vehicles);
+            this.Vehicles = new LinkedList<Ship>(vehicles);
             this.Colour = colour;
         }
 

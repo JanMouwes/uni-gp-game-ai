@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic
 {
-    public class ChaseTarget : Goal<Vehicle>
+    public class ChaseTarget : Goal<Ship>
     {
-        private readonly Vehicle target;
+        private readonly Ship target;
         private readonly float nearRange;
 
-        public ChaseTarget(Vehicle owner, Vehicle target, float nearRange) : base(owner)
+        public ChaseTarget(Ship owner, Ship target, float nearRange) : base(owner)
         {
             this.target = target;
             this.nearRange = nearRange;

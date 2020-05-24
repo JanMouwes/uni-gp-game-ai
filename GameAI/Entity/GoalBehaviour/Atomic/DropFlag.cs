@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic
 {
-    public class DropFlag : Goal<Vehicle>
+    public class DropFlag : Goal<Ship>
     {
         private Flag flag;
-        public DropFlag(Vehicle owner, Flag flag) : base(owner)
+        public DropFlag(Ship owner, Flag flag) : base(owner)
         {
             this.flag = flag;
         }

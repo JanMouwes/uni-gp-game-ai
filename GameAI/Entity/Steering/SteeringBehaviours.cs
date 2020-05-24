@@ -40,7 +40,6 @@ namespace GameAI.Entity.Steering
 
             float distance = difference.Length();
 
-
             if (distance <= 0) { return Vector2.Zero; }
 
             float desiredSpeed = distance;

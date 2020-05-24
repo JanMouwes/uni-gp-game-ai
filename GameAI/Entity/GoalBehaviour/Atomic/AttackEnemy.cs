@@ -2,11 +2,11 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic
 {
-    public class AttackEnemy : Goal<Vehicle>
+    public class AttackEnemy : Goal<Ship>
     {
-        private readonly Vehicle enemy;
+        private readonly Ship enemy;
 
-        public AttackEnemy(Vehicle owner, Vehicle enemy) : base(owner)
+        public AttackEnemy(Ship owner, Ship enemy) : base(owner)
         {
             this.enemy = enemy;
         }

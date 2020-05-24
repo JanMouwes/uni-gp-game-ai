@@ -2,11 +2,11 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic
 {
-    public class TakeFlag : Goal<Vehicle>
+    public class TakeFlag : Goal<Ship>
     {
         private readonly Flag flag;
 
-        public TakeFlag(Vehicle owner, Flag flag) : base(owner)
+        public TakeFlag(Ship owner, Flag flag) : base(owner)
         {
             this.flag = flag;
         }
@@ -21,11 +21,11 @@ namespace GameAI.Entity.GoalBehaviour.Atomic
             this.Status = GoalStatus.Completed;
         }
 
-        private void DropFlag(object sender, Vehicle vehicle)
+        private void DropFlag(object sender, Ship ship)
         {
-            if (this.flag.Carrier != vehicle) return;
+            if (this.flag.Carrier != ship) return;
 
-            vehicle.Death -= DropFlag;
+            ship.Death -= DropFlag;
             this.flag.Carrier = null;
         }
     }

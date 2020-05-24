@@ -90,7 +90,7 @@
     <Compile Include="Entity\Steering\Simple\WanderBehaviour.cs" />
     <Compile Include="Entity\Steering\SteeringBehaviour.cs" />
     <Compile Include="Entity\Steering\SteeringBehaviours.cs" />
-    <Compile Include="Entity\Vehicle.cs" />
+    <Compile Include="Entity\Ship.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputState.cs" />

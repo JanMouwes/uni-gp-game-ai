@@ -4,16 +4,16 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
 {
-    public class PursueEnemy : GoalComposite<Vehicle>
+    public class PursueEnemy : GoalComposite<Ship>
     {
         private readonly float nearRange;
         private readonly PathFinder pathFinder;
 
-        public readonly Vehicle Enemy;
+        public readonly Ship Enemy;
 
         private Vector2 currentTarget;
 
-        public PursueEnemy(Vehicle owner, Vehicle enemy, float nearRange, PathFinder pathFinder) : base(owner)
+        public PursueEnemy(Ship owner, Ship enemy, float nearRange, PathFinder pathFinder) : base(owner)
         {
             this.Enemy = enemy;
             this.nearRange = nearRange;
@@ -31,9 +31,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         {
             this.currentTarget = this.Enemy.Position;
 
-            this.ClearGoals();
+            ClearGoals();
 
-            AddSubgoal(new MoveTo<Vehicle>(this.Owner, this.currentTarget, this.pathFinder));
             AddSubgoal(new ChaseTarget(this.Owner, this.Enemy, this.nearRange));
         }
 

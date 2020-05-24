@@ -10,7 +10,9 @@ namespace GameAI.Entity
     {
         public event Action<Flag> Captured;
 
-        public Vehicle Carrier { get; set; }
+        public float CapturedRange { get; set; } = 5f;
+
+        public Ship Carrier { get; set; }
 
         public readonly Team Team;
 
@@ -27,7 +29,7 @@ namespace GameAI.Entity
 
                 Vector2 otherTeamsBase = this.Carrier.Team.Base;
 
-                if (Vector2.DistanceSquared(this.Position, otherTeamsBase) < 5f)
+                if (Vector2.DistanceSquared(this.Position, otherTeamsBase) < this.CapturedRange * this.CapturedRange)
                 {
                     Captured?.Invoke(this);
                     this.Carrier = null;

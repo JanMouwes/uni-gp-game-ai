@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,7 +17,7 @@ namespace Fuzzy.Terms
             this.terms = new List<Term>(terms);
         }
 
-        public override double Membership => terms.Select(term => term.Membership).Min();
+        public override double Membership => this.terms.Select(term => term.Membership).Min();
 
         public override void ClearMembership()
         {
