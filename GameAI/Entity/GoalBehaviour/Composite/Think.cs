@@ -12,6 +12,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         private readonly World world;
         private readonly Random random;
 
+        public static SetProxy SelfNear;
+
         private readonly FuzzyModule fuzzyModule;
 
         private const string OWN_DISTANCE_VARIABLE_KEY = "own distance";
@@ -35,6 +37,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             SetProxy selfMedium = ownDistanceVariable.AddTriangleSet("medium", nearPeak, mediumPeak, farPeak);
             SetProxy selfFar = ownDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
 
+            SelfNear = selfNear;
+            
             Variable avgTeammatesDistanceVariable = this.fuzzyModule.CreateVariable(AVG_TEAMMATE_DISTANCE_VARIABLE_KEY);
             SetProxy teamNear = avgTeammatesDistanceVariable.AddLeftShoulder("near", 0, nearPeak, mediumPeak);
             SetProxy teamMedium = avgTeammatesDistanceVariable.AddTriangleSet("medium", nearPeak, mediumPeak, farPeak);
@@ -91,7 +95,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             float avgTeammateDistanceToFlag = this.Owner.Team.Vehicles.Where(veh => veh != this.Owner).Average(teammate => Vector2.Distance(teammate.Position, flagPosition));
             this.fuzzyModule.Fuzzify(AVG_TEAMMATE_DISTANCE_VARIABLE_KEY, avgTeammateDistanceToFlag);
 
-            return this.fuzzyModule.Defuzzify(OWN_STRATEGY_VARIABLE_KEY, DefuzzifyMethods.Centroid);
+            return this.fuzzyModule.Defuzzify(OWN_STRATEGY_VARIABLE_KEY, DefuzzifyMethods.MaxAverage);
         }
 
         private Goal<Ship> FindNewGoal()
@@ -101,7 +105,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             Team otherTeam = this.world.Teams.Values.First(team => team.Colour != this.Owner.Team.Colour);
 
             double strategy = GetStrategy();
-            bool shouldDefend = strategy < .4;
+            bool shouldDefend = strategy < 0;
 
             Console.WriteLine(strategy);
 
