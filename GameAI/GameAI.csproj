@@ -83,6 +83,7 @@
     <Compile Include="Entity\Steering\Complex\FlockingBehaviour.cs" />
     <Compile Include="Entity\Steering\Complex\LeaderFollowingBehaviour.cs" />
     <Compile Include="Entity\Steering\Complex\ObstacleAvoidance.cs" />
+    <Compile Include="Entity\Steering\Complex\SteeringUnion.cs" />
     <Compile Include="Entity\Steering\Complex\WallAvoidance.cs" />
     <Compile Include="Entity\Steering\Simple\ArriveBehaviour.cs" />
     <Compile Include="Entity\Steering\Simple\DefaultSteeringBehaviour.cs" />

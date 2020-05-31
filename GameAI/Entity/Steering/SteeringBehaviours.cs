@@ -94,8 +94,9 @@ namespace GameAI.Entity.Steering
 
             float CalculateForce(float distance)
             {
-                float panicDistancePercentage = distance / panicDistance;
-                float modifier = panicDistancePercentage;
+                distance = distance > 0 ? distance : 0;
+                float panicDistancePercentage = 1 + distance / panicDistance;
+                float modifier = 1 / panicDistancePercentage;
 
                 return modifier * modifier * panicDistance * panicDistance;
             }
@@ -105,7 +106,7 @@ namespace GameAI.Entity.Steering
 
             if (isNearTop) { baseSteering.Y += CalculateForce(distToTop); }
             else if (isNearBottom) { baseSteering.Y += -CalculateForce(distToBottom); }
-            
+
             return baseSteering;
         }
 

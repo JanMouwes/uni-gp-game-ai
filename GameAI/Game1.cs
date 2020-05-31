@@ -5,6 +5,7 @@ using System.Text;
 using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
+using GameAI.Entity.Steering;
 using GameAI.Entity.Steering.Complex;
 using GameAI.Entity.Steering.Simple;
 using GameAI.Util;
@@ -75,7 +76,7 @@ namespace GameAI
                 boat, pirateBoat
             };
 
-            Populate(5, 3, teamTextures, rock, birdTexture);
+            Populate(5, 10, teamTextures, rock, birdTexture);
 
             IPathSmoother smoother = new CustomizablePathSmoother(this.world, 5);
 
@@ -114,7 +115,7 @@ namespace GameAI
             base.LoadContent();
         }
 
-        public void Populate(int vehicleCount, int birdCount, Texture2D[] teamTextures, Texture2D rockTexture, Texture2D birdTexture)
+        public void Populate(int vehicleCount, int flockCount, Texture2D[] teamTextures, Texture2D rockTexture, Texture2D birdTexture)
         {
             // Add obstacles
             // Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
@@ -213,11 +214,16 @@ namespace GameAI
 
                 for (int i = 0; i < size; i++)
                 {
+                    Vector2 orientation = Vector2.One;
+
+                    if (i % 2 == 0) { orientation *= -1; }
+
                     Bird bird = new Bird(this.world)
                     {
-                        MaxSpeed = 600f,
+                        MaxSpeed = 30f,
                         MinSpeed = 3f,
-                        Mass = 1
+                        Mass = 1,
+                        Orientation = orientation
                     };
 
                     int startingFrame = i % 3;
@@ -228,14 +234,16 @@ namespace GameAI
                         CurrentFrame = startingFrame
                     };
 
-                    if (i == 0) { bird.Steering = new WanderBehaviour(bird, 15); }
-                    else { bird.Steering = new FlockingBehaviour(bird, this.world, 10, 5); }
+
+                    SteeringBehaviour behaviour = new SteeringUnion(bird, new WanderBehaviour(bird, 15), new FlockingBehaviour(bird, this.world, 10, 5));
+
+                    bird.Steering = behaviour;
 
                     this.world.SpawnGameEntity(bird, position);
                 }
             }
 
-            const int flockCount = 1;
+            const int flockSize = 10;
 
             Random random = new Random();
 
@@ -243,7 +251,7 @@ namespace GameAI
             {
                 Vector2 spawnPoint = new Vector2(random.Next(50, this.world.Height - 50));
 
-                SpawnFlock(100, spawnPoint);
+                SpawnFlock(flockSize, spawnPoint);
             }
         }
 
