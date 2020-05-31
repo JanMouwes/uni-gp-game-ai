@@ -94,8 +94,8 @@ namespace GameAI.Entity.Steering
 
             float CalculateForce(float distance)
             {
-                distance = distance > 0 ? distance : 0;
-                float panicDistancePercentage = 1 + distance / panicDistance;
+                distance = distance > 0 ? distance : 1;
+                float panicDistancePercentage = distance / panicDistance;
                 float modifier = 1 / panicDistancePercentage;
 
                 return modifier * modifier * panicDistance * panicDistance;
