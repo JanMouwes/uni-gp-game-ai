@@ -15,6 +15,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         public static SetProxy SelfNear;
 
         private readonly FuzzyModule fuzzyModule;
+        private SetProxy defensive;
+        private SetProxy offensive;
 
         private const string OWN_DISTANCE_VARIABLE_KEY = "own distance";
         private const string AVG_TEAMMATE_DISTANCE_VARIABLE_KEY = "average teammate distance";
@@ -38,15 +40,15 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             SetProxy selfFar = ownDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
 
             SelfNear = selfNear;
-            
+
             Variable avgTeammatesDistanceVariable = this.fuzzyModule.CreateVariable(AVG_TEAMMATE_DISTANCE_VARIABLE_KEY);
             SetProxy teamNear = avgTeammatesDistanceVariable.AddLeftShoulder("near", 0, nearPeak, mediumPeak);
             SetProxy teamMedium = avgTeammatesDistanceVariable.AddTriangleSet("medium", nearPeak, mediumPeak, farPeak);
             SetProxy teamFar = avgTeammatesDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
 
             Variable strategyVariable = this.fuzzyModule.CreateVariable(OWN_STRATEGY_VARIABLE_KEY);
-            SetProxy defensive = strategyVariable.AddLeftShoulder("defensive", 0, .4, .6);
-            SetProxy offensive = strategyVariable.AddRightShoulder("offensive", .4, .6, 1);
+            defensive = strategyVariable.AddLeftShoulder("defensive", 0, .4, .6);
+            offensive = strategyVariable.AddRightShoulder("offensive", .4, .6, 1);
 
             /*
              * IF I am near AND teammates are near
@@ -65,11 +67,11 @@ namespace GameAI.Entity.GoalBehaviour.Composite
              * THEN offensive
              */
 
-            this.fuzzyModule.AddRule(new And(selfNear, teamNear), offensive);
-            this.fuzzyModule.AddRule(new And(selfNear, teamMedium), defensive);
-            this.fuzzyModule.AddRule(new And(selfMedium, new Or(teamMedium, teamFar)), defensive);
-            this.fuzzyModule.AddRule(teamNear, offensive);
-            this.fuzzyModule.AddRule(selfFar, offensive);
+            this.fuzzyModule.AddRule(new And(
+                                         new Or(selfNear, selfMedium),
+                                         new Or(teamMedium, teamFar)
+                                     ), defensive);
+            this.fuzzyModule.AddRule(new Or(teamNear, selfFar), offensive);
         }
 
         private bool HasCurrentGoal => this.GoalQueue.Count > 0;
@@ -105,9 +107,13 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             Team otherTeam = this.world.Teams.Values.First(team => team.Colour != this.Owner.Team.Colour);
 
             double strategy = GetStrategy();
-            bool shouldDefend = strategy < 0;
+            bool shouldDefend = strategy < 0.5;
 
-            Console.WriteLine(strategy);
+            Console.WriteLine($"defensive: {this.defensive.Membership}");
+            Console.WriteLine($"offensive: {this.offensive.Membership}");
+
+            Console.WriteLine($"strategy: {strategy}");
+            Console.WriteLine();
 
             if (shouldDefend) { return new DefendFlag(this.Owner, this.world, this.Owner.Team.Flag); }
 
