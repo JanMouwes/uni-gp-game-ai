@@ -38,8 +38,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                 if (this.currentEnemy != null)
                 {
                     ClearGoals();
-                    AddSubgoal(new PursueEnemy(this.Owner, this.currentEnemy, this.Owner.Scale * this.Owner.Scale, this.world.PathFinder));
-                    AddSubgoal(new AttackEnemy(this.Owner, this.currentEnemy));
+                    AddSubgoal(new HuntEnemy(this.Owner, this.currentEnemy, this.world));
                 }
                 else if (this.GoalQueue.Count == 0) { AddSubgoal(new MoveTo<Ship>(this.Owner, this.enemyFlag.Position, this.world.PathFinder)); }
             }

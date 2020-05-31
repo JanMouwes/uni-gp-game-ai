@@ -16,7 +16,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
         public override void Activate()
         {
-            AddSubgoal(new PursueEnemy(this.Owner, this.enemy, this.Owner.Scale, this.world.PathFinder));
+            // AddSubgoal(new PursueEnemy(this.Owner, this.enemy, this.Owner.Scale + this.Owner.Scale, this.world.PathFinder));
+            AddSubgoal(new SeekTarget(this.Owner, this.enemy, this.Owner.Scale));
             AddSubgoal(new AttackEnemy(this.Owner, this.enemy));
             
             base.Activate();

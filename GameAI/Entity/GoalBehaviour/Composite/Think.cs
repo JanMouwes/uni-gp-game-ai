@@ -118,11 +118,12 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             if (shouldDefend) { return new DefendFlag(this.Owner, this.world, this.Owner.Team.Flag); }
 
             // Least likely to do CaptureFlag
-            switch (this.random.Next(0, 11) % 3)
+            switch (this.random.Next(0, 11) % 5)
             {
                 case 0:
                     return new CaptureFlag(this.Owner, otherTeam.Flag, this.world.PathFinder);
                 case 1:
+                case 2:
                     return new DefendCapturers(this.Owner, this.world);
                 default:
                     return new AttackDefenders(this.Owner, this.world, otherTeam.Flag);

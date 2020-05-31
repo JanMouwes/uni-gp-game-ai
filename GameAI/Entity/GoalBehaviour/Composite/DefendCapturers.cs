@@ -74,7 +74,6 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             }
 
             base.Process(gameTime);
-            this.Status = GoalStatus.Active;
         }
     }
 }
