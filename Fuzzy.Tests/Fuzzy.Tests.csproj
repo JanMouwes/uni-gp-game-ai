@@ -44,7 +44,6 @@
     <ItemGroup>
         <Compile Include="RuleTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="VariableTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Fuzzy\Fuzzy.csproj">
