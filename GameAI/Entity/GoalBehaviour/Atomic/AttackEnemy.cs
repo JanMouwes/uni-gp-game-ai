@@ -2,24 +2,34 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic
 {
-    public class AttackEnemy : Goal<Vehicle>
+    public class AttackEnemy : Goal<Ship>
     {
-        private readonly Vehicle enemy;
+        private readonly Ship enemy;
 
-        public AttackEnemy(Vehicle owner, Vehicle enemy) : base(owner)
+        public AttackEnemy(Ship owner, Ship enemy) : base(owner)
         {
             this.enemy = enemy;
         }
 
+        private bool IsInRange(Vector2 target, float range)
+        {
+            return Vector2.DistanceSquared(target, this.Owner.Position) < range * range;
+        }
+
         public override void Process(GameTime gameTime)
         {
-            float range = this.Owner.Scale * this.Owner.Scale;
+            float range = this.Owner.Scale + this.Owner.Scale;
 
-            if (Vector2.DistanceSquared(this.enemy.Position, this.Owner.Position) > range * range) { this.Status = GoalStatus.Failed; }
+            if (IsInRange(this.enemy.Position, range))
+            {
+                this.enemy.Kill();
 
-            this.enemy.Kill();
+                this.Status = GoalStatus.Completed;
+                
+                return;
+            }
 
-            this.Status = GoalStatus.Completed;
+            this.Status = GoalStatus.Failed;
         }
     }
 }

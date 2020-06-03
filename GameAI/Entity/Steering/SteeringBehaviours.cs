@@ -40,7 +40,6 @@ namespace GameAI.Entity.Steering
 
             float distance = difference.Length();
 
-
             if (distance <= 0) { return Vector2.Zero; }
 
             float desiredSpeed = distance;
@@ -95,8 +94,9 @@ namespace GameAI.Entity.Steering
 
             float CalculateForce(float distance)
             {
+                distance = distance > 0 ? distance : 1;
                 float panicDistancePercentage = distance / panicDistance;
-                float modifier = panicDistancePercentage;
+                float modifier = 1 / panicDistancePercentage;
 
                 return modifier * modifier * panicDistance * panicDistance;
             }
@@ -106,17 +106,6 @@ namespace GameAI.Entity.Steering
 
             if (isNearTop) { baseSteering.Y += CalculateForce(distToTop); }
             else if (isNearBottom) { baseSteering.Y += -CalculateForce(distToBottom); }
-
-            Console.WriteLine();
-            Console.WriteLine($"Force left: {CalculateForce(distToLeft)}");
-            Console.WriteLine($"Force right: {CalculateForce(distToRight)}");
-            Console.WriteLine($"Force top: {CalculateForce(distToTop)}");
-            Console.WriteLine($"Force bottom: {CalculateForce(distToBottom)}");
-
-            Console.WriteLine();
-            Console.WriteLine(entity.Position.ToPoint());
-            Console.WriteLine(baseSteering.ToPoint());
-            Console.WriteLine((entity.Position + baseSteering).ToPoint());
 
             return baseSteering;
         }

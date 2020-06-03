@@ -5,6 +5,7 @@ using System.Text;
 using GameAI.Entity;
 using GameAI.Entity.Components;
 using GameAI.Entity.Navigation;
+using GameAI.Entity.Steering;
 using GameAI.Entity.Steering.Complex;
 using GameAI.Entity.Steering.Simple;
 using GameAI.Util;
@@ -33,7 +34,7 @@ namespace GameAI
         private const int WORLD_WIDTH = 800;
         private const int WORLD_HEIGHT = 600;
 
-        private LinkedList<Vehicle> selectedEntities = new LinkedList<Vehicle>();
+        private LinkedList<Ship> selectedEntities = new LinkedList<Ship>();
         private SpriteFont mainFont;
 
         private bool drawAgentGoals;
@@ -75,7 +76,7 @@ namespace GameAI
                 boat, pirateBoat
             };
 
-            Populate(5, 3, teamTextures, rock, birdTexture);
+            Populate(5, 10, teamTextures, rock, birdTexture);
 
             IPathSmoother smoother = new CustomizablePathSmoother(this.world, 5);
 
@@ -96,11 +97,11 @@ namespace GameAI
 
             this.mouseInput.OnKeyPress(MouseButtons.Left, (input, state) =>
             {
-                IEnumerable<Vehicle> entitiesNearMouse = this.world.FindEntitiesNear(this.mouseInput.MouseState.Position.ToVector2(), 3).OfType<Vehicle>();
+                IEnumerable<Ship> entitiesNearMouse = this.world.FindEntitiesNear(this.mouseInput.MouseState.Position.ToVector2(), 3).OfType<Ship>();
 
                 if (!this.keyboardInput.KeyboardState.IsKeyDown(Keys.LeftShift)) { ClearSelected(); }
 
-                foreach (Vehicle baseGameEntity in entitiesNearMouse)
+                foreach (Ship baseGameEntity in entitiesNearMouse)
                 {
                     this.selectedEntities.AddLast(baseGameEntity);
                     baseGameEntity.Color = Color.Red;
@@ -114,7 +115,7 @@ namespace GameAI
             base.LoadContent();
         }
 
-        public void Populate(int vehicleCount, int birdCount, Texture2D[] teamTextures, Texture2D rockTexture, Texture2D birdTexture)
+        public void Populate(int vehicleCount, int flockCount, Texture2D[] teamTextures, Texture2D rockTexture, Texture2D birdTexture)
         {
             // Add obstacles
             // Rock r = new Rock(this, new Vector2(100, 100), 15, Color.Black);
@@ -159,8 +160,10 @@ namespace GameAI
                 Flag flag = new Flag(team, 5f);
 
                 this.world.SpawnGameEntity(flag, teamFlagPosition[teamIndex]);
-
                 team.Flag = flag;
+
+
+                team.Base = teamFlagPosition[teamIndex];
 
                 this.world.Teams.Add(team.Colour, team);
 
@@ -174,19 +177,30 @@ namespace GameAI
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
                 {
-                    Vehicle vehicle = new Vehicle(this.world, team)
+                    Ship ship = new Ship(this.world, team)
                     {
                         MaxSpeed = 400f,
                         Mass = 2
                     };
-                    vehicle.Graphics = new TextureGraphics(vehicle, vehicleTexture)
+                    ship.Graphics = new TextureGraphics(ship, vehicleTexture)
                     {
                         SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
                     };
-                    vehicle.Steering = new FlockingBehaviour(vehicle, this.world, 10, 5);
+                    ship.Steering = new FlockingBehaviour(ship, this.world, 10, 5);
 
-                    this.world.SpawnVehicle(vehicle);
+                    this.world.SpawnVehicle(ship);
                 }
+            }
+
+            foreach (Team team in this.world.Teams.Values)
+            {
+                Team otherTeam = this.world.Teams.Values.First(other => other != team);
+
+                team.Flag.Captured += (capturedFlag) =>
+                {
+                    capturedFlag.Team.RespawnFlag();
+                    otherTeam.Points++;
+                };
             }
 
             void SpawnFlock(float size, Vector2 position)
@@ -200,11 +214,16 @@ namespace GameAI
 
                 for (int i = 0; i < size; i++)
                 {
+                    Vector2 orientation = Vector2.One;
+
+                    if (i % 2 == 0) { orientation *= -1; }
+
                     Bird bird = new Bird(this.world)
                     {
-                        MaxSpeed = 600f,
+                        MaxSpeed = 30f,
                         MinSpeed = 3f,
-                        Mass = 1
+                        Mass = 1,
+                        Orientation = orientation
                     };
 
                     int startingFrame = i % 3;
@@ -215,14 +234,20 @@ namespace GameAI
                         CurrentFrame = startingFrame
                     };
 
-                    if (i == 0) { bird.Steering = new WanderBehaviour(bird, 15); }
-                    else { bird.Steering = new FlockingBehaviour(bird, this.world, 10, 5); }
+
+                    SteeringBehaviour behaviour = new SteeringUnion(bird, new WanderBehaviour(bird, 15), new FlockingBehaviour(bird, this.world, 10, 5))
+                    {
+                        WeightA = .5f,
+                        WeightB = 2f
+                    };
+
+                    bird.Steering = behaviour;
 
                     this.world.SpawnGameEntity(bird, position);
                 }
             }
 
-            const int flockCount = 1;
+            const int flockSize = 10;
 
             Random random = new Random();
 
@@ -230,13 +255,13 @@ namespace GameAI
             {
                 Vector2 spawnPoint = new Vector2(random.Next(50, this.world.Height - 50));
 
-                SpawnFlock(100, spawnPoint);
+                SpawnFlock(flockSize, spawnPoint);
             }
         }
 
         private void ClearSelected()
         {
-            foreach (Vehicle selectedEntity in this.selectedEntities) { selectedEntity.Color = selectedEntity.Team.Colour; }
+            foreach (Ship selectedEntity in this.selectedEntities) { selectedEntity.Color = selectedEntity.Team.Colour; }
 
             this.selectedEntities.Clear();
         }
@@ -277,11 +302,11 @@ namespace GameAI
 
         private void DebugDraw(SpriteBatch batch)
         {
-            Vehicle vehicle = this.selectedEntities.FirstOrDefault();
+            Ship ship = this.selectedEntities.FirstOrDefault();
 
 
             // DebugRendering.DrawWallPanicDistance(this.spriteBatch, 15f, this.world);
-            if (vehicle != null && this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, vehicle); }
+            if (ship != null && this.drawAgentGoals) { DebugRendering.DrawAgentGoals(batch, this.mainFont, ship); }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -297,12 +322,14 @@ namespace GameAI
             foreach (Team team in this.world.Teams.Values)
             {
                 foreach (Vector2 spawn in team.SpawnPoints) { this.spriteBatch.DrawString(this.mainFont, "S", spawn, team.Colour); }
+
+                this.spriteBatch.DrawString(this.mainFont, team.Points.ToString(), team.Base, team.Colour);
             }
 
             this.world.Render(this.spriteBatch, gameTime);
 
             // Special rendering for selected entities
-            foreach (Vehicle selectedEntity in this.selectedEntities)
+            foreach (Ship selectedEntity in this.selectedEntities)
             {
                 this.spriteBatch.DrawCircle(selectedEntity.Position, selectedEntity.Scale, 360, selectedEntity.Team.Colour);
                 selectedEntity.Brain.Render(spriteBatch);

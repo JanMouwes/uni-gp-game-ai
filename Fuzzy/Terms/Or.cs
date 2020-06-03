@@ -7,6 +7,11 @@ namespace Fuzzy.Terms
     {
         private readonly ICollection<Term> terms;
 
+        public Or(Term termA, Term termB)
+        {
+            this.terms = new[] {termA, termB};
+        }
+        
         public Or(IEnumerable<Term> terms)
         {
             this.terms = new List<Term>(terms);

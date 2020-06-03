@@ -34,3 +34,5 @@ packages
 MonogameSteeringCS/obj/
 MonogameSteeringCS/bin/
 
+/Fuzzy.Tests/bin/Debug/
+/Fuzzy.Tests/obj/Debug/

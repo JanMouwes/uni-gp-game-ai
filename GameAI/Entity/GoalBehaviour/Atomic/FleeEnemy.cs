@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Atomic
 {
-    public class FleeEnemy : Goal<Vehicle>
+    public class FleeEnemy : Goal<Ship>
     {
-        private readonly Vehicle enemy;
+        private readonly Ship enemy;
         private readonly float safeDistance;
 
-        public FleeEnemy(Vehicle owner, Vehicle enemy, float safeDistance) : base(owner)
+        public FleeEnemy(Ship owner, Ship enemy, float safeDistance) : base(owner)
         {
             this.enemy = enemy;
             this.safeDistance = safeDistance;

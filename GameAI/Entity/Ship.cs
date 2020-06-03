@@ -6,17 +6,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameAI.Entity
 {
-    public class Vehicle : MovingEntity
+    public class Ship : MovingEntity
     {
+        public event EventHandler<Ship> Death;
+
         public Color Color { get; set; }
 
         public readonly Think Brain;
 
-        public Team Team;
+        public readonly Team Team;
 
-        public event EventHandler<Vehicle> Death;
-
-        public Vehicle(World world, Team team) : base(world)
+        public Ship(World world, Team team) : base(world)
         {
             this.Team = team;
 

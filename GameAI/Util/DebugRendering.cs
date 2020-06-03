@@ -10,50 +10,50 @@ namespace GameAI.Util
 {
     public static class DebugRendering
     {
-        public static void DrawObstacleAvoidance(SpriteBatch spriteBatch, Vehicle vehicle, Rock rock)
+        public static void DrawObstacleAvoidance(SpriteBatch spriteBatch, Ship ship, Rock rock)
         {
             // The detection box is the current velocity divided by the max velocity of the entity
             // range is the maximum size of the box
-            Vector2 viewBox = vehicle.Velocity / vehicle.MaxSpeed * 100;
+            Vector2 viewBox = ship.Velocity / ship.MaxSpeed * 100;
             // Add the box in front of the entity
             IEnumerable<Vector2> checkpoints = new[]
             {
-                vehicle.Position,
-                vehicle.Position + viewBox / 2f, // Halfway
-                vehicle.Position + viewBox,      // At the end
-                vehicle.Position + viewBox * 2   // Square
+                ship.Position,
+                ship.Position + viewBox / 2f, // Halfway
+                ship.Position + viewBox,      // At the end
+                ship.Position + viewBox * 2   // Square
             };
 
             foreach (Vector2 checkpoint in checkpoints) { spriteBatch.DrawPoint(checkpoint, Color.Black, 5f); }
 
-            CircleF notAllowedZone = new CircleF(rock.Position, rock.Scale + vehicle.Scale * 2);
+            CircleF notAllowedZone = new CircleF(rock.Position, rock.Scale + ship.Scale * 2);
             spriteBatch.DrawCircle(notAllowedZone, 360, Color.Orange);
 
-            Vector2 dist = new Vector2(rock.Position.X - vehicle.Position.X, rock.Position.X - vehicle.Position.Y);
+            Vector2 dist = new Vector2(rock.Position.X - ship.Position.X, rock.Position.X - ship.Position.Y);
             Vector2 perpendicular = new Vector2(-dist.Y, dist.X);
 
-            Vector2 realDist = vehicle.Position + dist;
+            Vector2 realDist = ship.Position + dist;
             Vector2 realHaaks = rock.Position + perpendicular;
             Vector2 realMinHaaks = rock.Position - perpendicular;
 
-            spriteBatch.DrawLine(vehicle.Position, realDist, Color.Purple);
+            spriteBatch.DrawLine(ship.Position, realDist, Color.Purple);
             spriteBatch.DrawLine(rock.Position, realHaaks, Color.Aqua);
             spriteBatch.DrawLine(rock.Position, realMinHaaks, Color.Green);
 
-            Vector2 vehicleVelocityPos = vehicle.Position + vehicle.Velocity;
+            Vector2 vehicleVelocityPos = ship.Position + ship.Velocity;
 
             float haaksDistPlus = Vector2.DistanceSquared(realHaaks, vehicleVelocityPos);
             float haaksDistMin = Vector2.DistanceSquared(realMinHaaks, vehicleVelocityPos);
 
             Vector2 target = haaksDistPlus > haaksDistMin ? realMinHaaks : realHaaks;
 
-            spriteBatch.DrawLine(vehicle.Position, target, Color.DarkRed);
+            spriteBatch.DrawLine(ship.Position, target, Color.DarkRed);
             spriteBatch.DrawLine(vehicleVelocityPos, target, Color.Chocolate);
         }
 
-        public static void DrawAgentGoals(SpriteBatch spriteBatch, SpriteFont font, Vehicle vehicle)
+        public static void DrawAgentGoals(SpriteBatch spriteBatch, SpriteFont font, Ship ship)
         {
-            string GetGoalText(Goal<Vehicle> goal, int inset)
+            string GetGoalText(Goal<Ship> goal, int inset)
             {
                 StringBuilder stringBuilder = new StringBuilder();
 
@@ -66,9 +66,9 @@ namespace GameAI.Util
                 stringBuilder.Append(goal);
                 stringBuilder.Append('\n');
 
-                if (goal is GoalComposite<Vehicle> composite)
+                if (goal is GoalComposite<Ship> composite)
                 {
-                    foreach (Goal<Vehicle> compositeGoal in composite.Goals) { stringBuilder.Append(GetGoalText(compositeGoal, inset + 1)); }
+                    foreach (Goal<Ship> compositeGoal in composite.Goals) { stringBuilder.Append(GetGoalText(compositeGoal, inset + 1)); }
                 }
 
                 return stringBuilder.ToString();
@@ -77,18 +77,18 @@ namespace GameAI.Util
             StringBuilder text = new StringBuilder();
 
             text.Append($"Goals:\n");
-            text.Append(GetGoalText(vehicle.Brain, 1));
+            text.Append(GetGoalText(ship.Brain, 1));
 
             spriteBatch.DrawString(font, text.ToString(), new Vector2(5, 5), Color.Black);
         }
 
-        public static void DrawVehicleInfo(SpriteBatch spriteBatch, SpriteFont font, Vehicle vehicle)
+        public static void DrawVehicleInfo(SpriteBatch spriteBatch, SpriteFont font, Ship ship)
         {
             StringBuilder text = new StringBuilder();
 
-            text.Append($"Position: {vehicle.Position.ToPoint()}\n");
-            text.Append($"Steering: {vehicle.Steering.Calculate().ToPoint()}\n");
-            text.Append($"Velocity: {vehicle.Velocity.ToPoint()}\n");
+            text.Append($"Position: {ship.Position.ToPoint()}\n");
+            text.Append($"Steering: {ship.Steering.Calculate().ToPoint()}\n");
+            text.Append($"Velocity: {ship.Velocity.ToPoint()}\n");
 
             spriteBatch.DrawString(font, text, Vector2.Zero, Color.Black);
         }

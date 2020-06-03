@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fuzzy.Rules;
 using Fuzzy.Terms;
 
@@ -47,11 +48,13 @@ namespace Fuzzy
 
         public void Fuzzify(string variableName, double value)
         {
-            if (!this.variables.ContainsKey(variableName)) { throw new Exception($"Fuzzy variable with name '{variableName}' does not exist"); }
-
-            Variable variable = this.variables[variableName];
+            if (!this.variables.TryGetValue(variableName, out Variable variable)) { throw new Exception($"Fuzzy variable with name '{variableName}' does not exist"); }
 
             variable.Fuzzify(value);
+
+            string memberships = string.Join("", variable.Memberships
+                                                         .Select(tuple => "  " + tuple.name + ": " + tuple.membership + "\n"));
+            Console.WriteLine(variableName + ": " + value + "\n" + memberships);
         }
 
         public double Defuzzify(string variableName, DefuzzifyMethods method)
@@ -63,7 +66,7 @@ namespace Fuzzy
                 rule.ClearConsequentConfidence();
                 rule.Calculate();
             }
-
+            
             switch (method)
             {
                 case DefuzzifyMethods.Centroid:
