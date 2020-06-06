@@ -47,8 +47,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             SetProxy teamFar = avgTeammatesDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
 
             Variable strategyVariable = this.fuzzyModule.CreateVariable(OWN_STRATEGY_VARIABLE_KEY);
-            defensive = strategyVariable.AddLeftShoulder("defensive", 0, .4, .6);
-            offensive = strategyVariable.AddRightShoulder("offensive", .4, .6, 1);
+            this.defensive = strategyVariable.AddLeftShoulder("defensive", 0, .4, .6);
+            this.offensive = strategyVariable.AddRightShoulder("offensive", .4, .6, 1);
 
             /*
              * IF I am near AND teammates are near
@@ -70,8 +70,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             this.fuzzyModule.AddRule(new And(
                                          new Or(selfNear, selfMedium),
                                          new Or(teamMedium, teamFar)
-                                     ), defensive);
-            this.fuzzyModule.AddRule(new Or(teamNear, selfFar), offensive);
+                                     ), this.defensive);
+            this.fuzzyModule.AddRule(new Or(teamNear, selfFar), this.offensive);
         }
 
         private bool HasCurrentGoal => this.GoalQueue.Count > 0;
@@ -102,7 +102,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
         private Goal<Ship> FindNewGoal()
         {
-            if (this.Owner.Team.Flag.Carrier != null) { return new HuntEnemy(this.Owner, this.Owner.Team.Flag.Carrier, this.world); }
+            if (this.Owner.Team.Flag.Carrier != null) { return new HuntEnemy(this.Owner, this.Owner.Team.Flag.Carrier); }
 
             Team otherTeam = this.world.Teams.Values.First(team => team.Colour != this.Owner.Team.Colour);
 

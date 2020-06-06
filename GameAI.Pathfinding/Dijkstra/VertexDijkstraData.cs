@@ -1,5 +1,4 @@
 using System;
-using Graph;
 
 namespace GameAI.Pathfinding.Dijkstra
 {

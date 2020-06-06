@@ -17,6 +17,7 @@ namespace GameAI.Entity.GoalBehaviour.Atomic
 
         public void ReseekTarget()
         {
+            this.currentTarget = this.target.Position;
             this.Owner.Steering = new SeekBehaviour(this.Owner, this.target.Position);
         }
 

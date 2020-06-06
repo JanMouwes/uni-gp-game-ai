@@ -6,12 +6,10 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
     {
         private readonly Ship enemy;
-        private readonly World world;
 
-        public HuntEnemy(Ship owner, Ship enemy, World world) : base(owner)
+        public HuntEnemy(Ship owner, Ship enemy) : base(owner)
         {
             this.enemy = enemy;
-            this.world = world;
         }
 
         public override void Activate()

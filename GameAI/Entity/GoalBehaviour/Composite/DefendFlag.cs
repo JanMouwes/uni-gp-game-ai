@@ -1,5 +1,5 @@
 using System.Linq;
-using GameAI.Entity.GoalBehaviour.Atomic;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
@@ -49,7 +49,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                 if (this.currentEnemy != null)
                 {
                     ClearGoals();
-                    AddSubgoal(new HuntEnemy(this.Owner, this.currentEnemy, this.world));
+                    AddSubgoal(new HuntEnemy(this.Owner, this.currentEnemy));
                 }
                 else if (this.GoalQueue.Count == 0) { AddSubgoal(new PatrolAroundFlag(this.Owner, this.flag, this.Owner.Scale * 8, this.world)); }
             }

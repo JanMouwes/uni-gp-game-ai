@@ -8,6 +8,7 @@ namespace GameAI.Entity.Components
     public class AnimatedTextureGraphics : IGraphicsComponent
     {
         private int currentFrame = 0;
+        private float nextUpdate = 0;
 
         public BaseGameEntity Owner { get; }
         public readonly Texture2D SpriteSheet;
@@ -20,8 +21,6 @@ namespace GameAI.Entity.Components
             get => this.currentFrame;
             set => this.currentFrame = value >= this.Frames.Count ? 0 : value;
         }
-
-        private float nextUpdate = 0;
 
         /// <summary>
         /// Delay between frames in milliseconds

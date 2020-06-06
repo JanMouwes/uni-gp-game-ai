@@ -1,6 +1,7 @@
 ﻿using GameAI.Entity.Steering;
 using GameAI.Entity.Steering.Complex;
 using GameAI.Entity.Steering.Simple;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;

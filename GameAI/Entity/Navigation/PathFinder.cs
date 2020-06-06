@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using GameAI.Navigation;
 using GameAI.Pathfinding.AStar;
 using Graph;
 using Microsoft.Xna.Framework;

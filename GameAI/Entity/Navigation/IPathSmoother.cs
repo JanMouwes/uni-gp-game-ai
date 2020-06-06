@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace GameAI.Navigation
+namespace GameAI.Entity.Navigation
 {
     public interface IPathSmoother
     {

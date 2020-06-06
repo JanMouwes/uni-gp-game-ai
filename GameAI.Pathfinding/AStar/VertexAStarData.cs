@@ -1,6 +1,4 @@
 using System;
-using GameAI.Pathfinding.Dijkstra;
-using Graph;
 
 namespace GameAI.Pathfinding.AStar
 {

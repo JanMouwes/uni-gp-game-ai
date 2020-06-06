@@ -17,7 +17,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
             this.Renderer = new PathRenderer(this.Path, consideredVertices.Select(item => (item.from.Value, item.to.Value)));
 
-            this.AddSubgoal(new FollowPath<TOwner>(owner, this.Path));
+            AddSubgoal(new FollowPath<TOwner>(owner, this.Path));
         }
     }
 }

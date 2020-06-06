@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameAI.Util;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 

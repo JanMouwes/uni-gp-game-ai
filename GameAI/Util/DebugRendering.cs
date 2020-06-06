@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using GameAI.Entity;
 using GameAI.Entity.GoalBehaviour;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;

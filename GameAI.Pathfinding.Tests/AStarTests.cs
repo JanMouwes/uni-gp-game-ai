@@ -12,12 +12,13 @@ namespace GameAI.Pathfinding.Tests
         public void Test_Algorithm_Simple3VertexGraph()
         {
             Graph<Vector2> graph = GraphHelper.CreateGraph_3Vertex_Simple();
+            AStarRunner<Vector2> runner = new AStarRunner<Vector2>(graph);
 
-            Vertex<Vector2>[] result = new AStarRunner<Vector2>(graph).Run(graph.GetVertex(1), graph.GetVertex(3), Heuristics.Manhattan).ToArray();
+            Vertex<Vector2>[] result = runner.Run(graph.GetVertex(1), graph.GetVertex(3), Heuristics.Manhattan)
+                                             .ToArray();
 
             Vertex<Vector2> vertex1 = graph.GetVertex(1);
             Vertex<Vector2> vertex2 = graph.GetVertex(2);
-            Vertex<Vector2> vertex3 = graph.GetVertex(3);
 
             Assert.AreEqual(vertex1, result[0]);
             Assert.AreEqual(vertex2, result[1]);
@@ -57,7 +58,7 @@ namespace GameAI.Pathfinding.Tests
 
             Assert.AreEqual(expectedLength, pathLength);
         }
-        
+
         [TestCase(1, 2, 2)]
         [TestCase(1, 7, 2)]
         [TestCase(1, 5, 5)]

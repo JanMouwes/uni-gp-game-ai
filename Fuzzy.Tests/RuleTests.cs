@@ -1,6 +1,4 @@
-﻿using System.Data;
-using Fuzzy.Rules;
-using Fuzzy.Sets;
+﻿using Fuzzy.Sets;
 using Fuzzy.Terms;
 using NUnit.Framework;
 using Rule = Fuzzy.Rules.Rule;

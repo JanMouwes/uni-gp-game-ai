@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Graph;
-using Microsoft.Xna.Framework;
 using PriorityQueue;
 
 namespace GameAI.Pathfinding.AStar

@@ -18,7 +18,7 @@ namespace Graph
 
         public Vertex<TValue> GetVertex(int id)
         {
-            if (!this.vertexMap.ContainsKey(id)) { this.vertexMap[id] = new Vertex<TValue>(id, default); }
+            if (!this.vertexMap.ContainsKey(id)) { this.vertexMap[id] = new Vertex<TValue>(id); }
 
             return this.vertexMap[id];
         }

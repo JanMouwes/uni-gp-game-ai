@@ -2,12 +2,11 @@
 using System.Linq;
 using GameAI.Entity;
 using GameAI.Entity.Navigation;
-using GameAI.world;
 using Graph;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GameAI
+namespace GameAI.world
 {
     public class World
     {
@@ -25,8 +24,8 @@ namespace GameAI
 
         public World(int w, int h)
         {
-            Width = w;
-            Height = h;
+            this.Width = w;
+            this.Height = h;
             this.Teams = new Dictionary<Color, Team>();
         }
 

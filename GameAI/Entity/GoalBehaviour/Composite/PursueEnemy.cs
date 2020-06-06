@@ -1,5 +1,4 @@
 using GameAI.Entity.GoalBehaviour.Atomic;
-using GameAI.Entity.Navigation;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
@@ -12,7 +11,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
 
         private Vector2 currentTarget;
 
-        public PursueEnemy(Ship owner, Ship enemy, float nearRange, PathFinder pathFinder) : base(owner)
+        public PursueEnemy(Ship owner, Ship enemy, float nearRange) : base(owner)
         {
             this.Enemy = enemy;
             this.nearRange = nearRange;

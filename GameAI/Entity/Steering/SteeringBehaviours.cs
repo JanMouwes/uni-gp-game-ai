@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
@@ -129,15 +131,12 @@ namespace GameAI.Entity.Steering
             Vector2 averageHeading = new Vector2();
             int size = 0;
 
-            foreach (MovingEntity neighbor in neighbors)
+            foreach (MovingEntity neighbor in neighbors.Where(neighbour => neighbour != owner))
             {
-                if (neighbor != owner)
-                {
-                    averageHeading.X += neighbor.Velocity.X;
-                    averageHeading.Y += neighbor.Velocity.Y;
+                averageHeading.X += neighbor.Velocity.X;
+                averageHeading.Y += neighbor.Velocity.Y;
 
-                    size++;
-                }
+                size++;
             }
 
             if (size > 0)

@@ -1,5 +1,6 @@
 using System.Linq;
 using GameAI.Entity.GoalBehaviour.Atomic;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 
 namespace GameAI.Entity.GoalBehaviour.Composite
@@ -68,7 +69,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                 if (this.currentEnemy != null)
                 {
                     ClearGoals();
-                    AddSubgoal(new HuntEnemy(this.Owner, this.currentEnemy, this.world));
+                    AddSubgoal(new HuntEnemy(this.Owner, this.currentEnemy));
                 }
                 else if (this.GoalQueue.Count == 0) { AddSubgoal(new ChaseTarget(this.Owner, this.currentCapturer, 10f)); }
             }
