@@ -9,12 +9,12 @@ namespace GameAI.Entity.Steering.Complex
 {
     public class ObstacleAvoidance : SteeringBehaviour
     {
-        private World w;
-        private int range;
+        private readonly World world;
+        private readonly float range;
 
-        public ObstacleAvoidance(MovingEntity entity, World w, int range = 100) : base(entity)
+        public ObstacleAvoidance(MovingEntity entity, World world, float range = 100) : base(entity)
         {
-            this.w = w;
+            this.world = world;
             this.range = range;
         }
 
@@ -23,7 +23,8 @@ namespace GameAI.Entity.Steering.Complex
             // The detection box is the current velocity divided by the max velocity of the entity
             // range is the maximum size of the box
             Vector2 viewBox = this.Entity.Velocity / this.Entity.MaxSpeed * this.range;
-            // Add the box in front of the entity
+            
+            // Add the check points in front of the entity
             IEnumerable<Vector2> checkpoints = new[]
             {
                 this.Entity.Position,
@@ -32,7 +33,7 @@ namespace GameAI.Entity.Steering.Complex
                 this.Entity.Position + viewBox * 2   // Double
             };
 
-            foreach (Rock o in this.w.Entities.OfType<Rock>())
+            foreach (Rock o in this.world.Entities.OfType<Rock>())
             {
                 // Add a circle around the obstacle which can't be crossed
                 CircleF notAllowedZone = new CircleF(o.Position, o.Scale);

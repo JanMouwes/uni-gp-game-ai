@@ -1,4 +1,5 @@
 ﻿using GameAI.Entity.Components;
+using GameAI.world;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

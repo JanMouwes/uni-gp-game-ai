@@ -6,6 +6,7 @@ namespace GameAI.Entity.Steering
     {
         public MovingEntity Entity { get; set; }
         public abstract Vector2 Calculate();
+        public float Strength { get; set; } = 1f;
 
         public SteeringBehaviour(MovingEntity entity)
         {

@@ -4,7 +4,7 @@ namespace GameAI.Entity.Steering.Complex
 {
     public class LeaderFollowingBehaviour : SteeringBehaviour
     {
-        public MovingEntity Target { get; set; }
+        private MovingEntity Target { get; }
         public Vector2 Offset { get; set; }
 
         public LeaderFollowingBehaviour(MovingEntity entity, MovingEntity target, Vector2 offset) : base(entity)

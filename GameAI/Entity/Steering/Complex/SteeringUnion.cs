@@ -19,7 +19,7 @@ namespace GameAI.Entity.Steering.Complex
 
         public override Vector2 Calculate()
         {
-            return this.behaviourA.Calculate() * this.WeightA + this.behaviourB.Calculate() * this.WeightB;
+            return (this.behaviourA.Calculate() * this.WeightA + this.behaviourB.Calculate() * this.WeightB) / (this.WeightA + this.WeightB) * this.Strength;
         }
     }
 }

@@ -12,9 +12,6 @@ namespace GameAI.Entity.GoalBehaviour.Composite
         private Ship currentCapturer;
         private Ship currentEnemy;
 
-        public Ship CurrentCapturer => this.currentCapturer;
-        public Ship CurrentEnemy => this.currentEnemy;
-
         public DefendCapturers(Ship owner, World world) : base(owner)
         {
             this.world = world;
@@ -36,7 +33,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                        .FirstOrDefault();
         }
 
-        public bool IsCapturerValid(Ship capturer)
+        public static bool IsCapturerValid(Ship capturer)
         {
             return capturer?.Brain.CurrentGoal is CaptureFlag;
         }

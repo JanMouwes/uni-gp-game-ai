@@ -17,23 +17,20 @@ namespace GameAI.Entity.Steering.Complex
         private readonly float alignmentWeight;
         private readonly float cohesionWeight;
         private readonly float separationWeight;
-        
-        private readonly float strength;
 
         private readonly WanderBehaviour innerWander;
 
-        public FlockingBehaviour(MovingEntity entity, World world, float radius, float strength, float alignmentWeight = 10, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
+        public FlockingBehaviour(MovingEntity entity, World world, float radius, float alignmentWeight = 6, float cohesionWeight = 16, float separationWeight = 16) : base(entity)
         {
             this.world = world;
             this.alignmentRadius = radius;
-            this.strength = strength;
-            this.cohesionRadius = radius * .125f;
-            this.separationRadius = radius * .125f;
+            this.cohesionRadius = radius;
+            this.separationRadius = radius;
 
             this.alignmentWeight = alignmentWeight;
             this.cohesionWeight = cohesionWeight;
             this.separationWeight = separationWeight;
-            
+
             this.innerWander = new WanderBehaviour(entity, radius);
         }
 
@@ -45,13 +42,17 @@ namespace GameAI.Entity.Steering.Complex
             bool InCohesionRange(MovingEntity entity) => IsNear(entity, this.cohesionRadius);
             bool InSeparationRange(MovingEntity entity) => IsNear(entity, this.separationRadius);
 
-            const int amountOfNeighbours = 5;
+            const int amountOfNeighbours = 10;
             IEnumerable<Bird> birds = this.world.Entities.OfType<Bird>()
                                           .OrderBy(bird => Vector2.DistanceSquared(bird.Position, this.Entity.Position))
+                                          .Where(entity => entity != this.Entity)
                                           .Take(amountOfNeighbours)
                                           .ToArray();
 
-            Vector2 alignment = SteeringBehaviours.Alignment(this.Entity, birds.Where(InAlignmentRange));
+            //  When no neighbours nearby, wander
+            if (!birds.Any()) { return this.innerWander.Calculate(); }
+
+            Vector2 alignment = SteeringBehaviours.Alignment(birds.Where(InAlignmentRange));
             Vector2 cohesion = SteeringBehaviours.Cohesion(this.Entity, birds.Where(InCohesionRange));
             Vector2 separation = SteeringBehaviours.Separation(this.Entity, birds.Where(InSeparationRange));
 
@@ -59,13 +60,7 @@ namespace GameAI.Entity.Steering.Complex
                              cohesion * this.cohesionWeight +
                              separation * this.separationWeight;
 
-            if (target.Equals(Vector2.Zero))
-            {
-                //  When there is no target, start wandering
-                target = this.innerWander.Calculate();
-            }
-
-            return target * this.strength;
+            return target * this.Strength;
         }
     }
 }

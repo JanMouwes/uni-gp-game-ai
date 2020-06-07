@@ -234,10 +234,14 @@ namespace GameAI
                     };
 
 
-                    SteeringBehaviour behaviour = new SteeringUnion(bird, new WanderBehaviour(bird, 15), new FlockingBehaviour(bird, this.world, 10, 5))
+                    SteeringBehaviour behaviour = new SteeringUnion(bird,
+                new WanderBehaviour(bird, 30),
+                new FlockingBehaviour(bird, this.world, 30)
+                    )
                     {
-                        WeightA = .5f,
-                        WeightB = 2f
+                        WeightA = 1f,
+                        WeightB = 10f,
+                        Strength = 5f
                     };
 
                     bird.Steering = behaviour;
