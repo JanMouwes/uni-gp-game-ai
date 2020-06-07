@@ -22,7 +22,7 @@ namespace GameAI.Entity.Steering.Complex
 
         private readonly WanderBehaviour innerWander;
 
-        public FlockingBehaviour(MovingEntity entity, World world, float radius, float strength, float alignmentWeight = 15, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
+        public FlockingBehaviour(MovingEntity entity, World world, float radius, float strength, float alignmentWeight = 10, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
         {
             this.world = world;
             this.alignmentRadius = radius;

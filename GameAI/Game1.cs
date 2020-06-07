@@ -173,7 +173,6 @@ namespace GameAI
                     new Rectangle(3, 400, 32, 32)
                 };
 
-
                 // Add Entities
                 for (int vehicleIndex = 0; vehicleIndex < vehicleCount; vehicleIndex++)
                 {
@@ -184,9 +183,9 @@ namespace GameAI
                     };
                     ship.Graphics = new TextureGraphics(ship, vehicleTexture)
                     {
-                        SourceRectangle = rectangles[teamIndex], RotationOffset = (float) Math.PI
+                        SourceRectangle = rectangles[teamIndex],
+                        RotationOffset = (float) Math.PI
                     };
-                    ship.Steering = new FlockingBehaviour(ship, this.world, 10, 5);
 
                     this.world.SpawnVehicle(ship);
                 }
