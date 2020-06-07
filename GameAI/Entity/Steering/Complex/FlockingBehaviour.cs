@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameAI.Entity.Steering.Simple;
 using GameAI.world;
 using Microsoft.Xna.Framework;
 
@@ -19,6 +20,8 @@ namespace GameAI.Entity.Steering.Complex
         
         private readonly float strength;
 
+        private readonly WanderBehaviour innerWander;
+
         public FlockingBehaviour(MovingEntity entity, World world, float radius, float strength, float alignmentWeight = 15, float cohesionWeight = 8, float separationWeight = 20) : base(entity)
         {
             this.world = world;
@@ -30,6 +33,8 @@ namespace GameAI.Entity.Steering.Complex
             this.alignmentWeight = alignmentWeight;
             this.cohesionWeight = cohesionWeight;
             this.separationWeight = separationWeight;
+            
+            this.innerWander = new WanderBehaviour(entity, radius);
         }
 
         public override Vector2 Calculate()
@@ -57,7 +62,7 @@ namespace GameAI.Entity.Steering.Complex
             if (target.Equals(Vector2.Zero))
             {
                 //  When there is no target, start wandering
-                target = this.Entity.Velocity + SteeringBehaviours.Wander(this.Entity, 20, 80);
+                target = this.innerWander.Calculate();
             }
 
             return target * this.strength;
