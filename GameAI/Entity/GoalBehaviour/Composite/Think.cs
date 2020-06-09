@@ -47,8 +47,8 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             SetProxy teamFar = avgTeammatesDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
 
             Variable strategyVariable = this.fuzzyModule.CreateVariable(OWN_STRATEGY_VARIABLE_KEY);
-            this.defensive = strategyVariable.AddLeftShoulder("defensive", 0, .4, .6);
-            this.offensive = strategyVariable.AddRightShoulder("offensive", .4, .6, 1);
+            this.defensive = strategyVariable.AddLeftShoulder("defensive", 0, .3, .5);
+            this.offensive = strategyVariable.AddRightShoulder("offensive", .3, .5, 1);
 
             /*
              * IF I am near AND teammates are near
