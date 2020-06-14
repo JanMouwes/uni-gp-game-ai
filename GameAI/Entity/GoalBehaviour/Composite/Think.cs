@@ -11,10 +11,9 @@ namespace GameAI.Entity.GoalBehaviour.Composite
     {
         private readonly World world;
         private readonly Random random;
-
-        public static SetProxy SelfNear;
-
+        
         private readonly FuzzyModule fuzzyModule;
+        
         private SetProxy defensive;
         private SetProxy offensive;
 
@@ -38,8 +37,6 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             SetProxy selfNear = ownDistanceVariable.AddLeftShoulder("near", 0, nearPeak, mediumPeak);
             SetProxy selfMedium = ownDistanceVariable.AddTriangleSet("medium", nearPeak, mediumPeak, farPeak);
             SetProxy selfFar = ownDistanceVariable.AddRightShoulder("far", mediumPeak, farPeak, range);
-
-            SelfNear = selfNear;
 
             Variable avgTeammatesDistanceVariable = this.fuzzyModule.CreateVariable(AVG_TEAMMATE_DISTANCE_VARIABLE_KEY);
             SetProxy teamNear = avgTeammatesDistanceVariable.AddLeftShoulder("near", 0, nearPeak, mediumPeak);
