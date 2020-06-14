@@ -22,6 +22,11 @@ namespace GameAI.Entity.GoalBehaviour
             ProcessSubgoals(gameTime);
         }
 
+        /// <summary>
+        /// Removes all completed/failed goals at the head of the queue.
+        /// Completes if there are no more goals, otherwise will process next goal.
+        /// </summary>
+        /// <param name="gameTime">Information about game's time</param>
         protected void ProcessSubgoals(GameTime gameTime)
         {
             while (this.GoalQueue.Count > 0 && (this.GoalQueue.Peek().IsCompleted() || this.GoalQueue.Peek().HasFailed()))
