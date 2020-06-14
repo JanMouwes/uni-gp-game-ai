@@ -10,7 +10,9 @@ namespace GameAI.Entity.GoalBehaviour
 
         public IEnumerable<Goal<TOwner>> Goals => this.GoalQueue;
 
-        public Goal<TOwner> CurrentGoal => this.GoalQueue.Count > 0 ? this.GoalQueue.Peek() : null;
+        public Goal<TOwner> CurrentGoal => HasCurrentGoal ? this.GoalQueue.Peek() : null;
+        
+        public bool HasCurrentGoal => this.GoalQueue.Count > 0;
 
         protected GoalComposite(TOwner owner) : base(owner)
         {

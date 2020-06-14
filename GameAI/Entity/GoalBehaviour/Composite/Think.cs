@@ -74,8 +74,6 @@ namespace GameAI.Entity.GoalBehaviour.Composite
             this.fuzzyModule.AddRule(new Or(teamNear, selfFar), this.offensive);
         }
 
-        private bool HasCurrentGoal => this.GoalQueue.Count > 0;
-
         public override void Process(GameTime gameTime)
         {
             if (!this.HasCurrentGoal)
