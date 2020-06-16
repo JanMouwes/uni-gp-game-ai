@@ -11,7 +11,7 @@ namespace GameAI.Entity.GoalBehaviour
         public IEnumerable<Goal<TOwner>> Goals => this.GoalQueue;
 
         public Goal<TOwner> CurrentGoal => HasCurrentGoal ? this.GoalQueue.Peek() : null;
-        
+
         public bool HasCurrentGoal => this.GoalQueue.Count > 0;
 
         protected GoalComposite(TOwner owner) : base(owner)
@@ -61,7 +61,7 @@ namespace GameAI.Entity.GoalBehaviour
         public override void Render(SpriteBatch spriteBatch)
         {
             if (this.GoalQueue.Count > 0) { this.GoalQueue.Peek().Render(spriteBatch); }
-            
+
             Renderer.Render(spriteBatch);
         }
 
@@ -73,6 +73,11 @@ namespace GameAI.Entity.GoalBehaviour
             foreach (Goal<TOwner> goal in this.GoalQueue) { goal.Terminate(); }
 
             this.GoalQueue.Clear();
+        }
+
+        public override void Terminate()
+        {
+            foreach (Goal<TOwner> goal in this.GoalQueue) { goal.Terminate(); }
         }
     }
 }
