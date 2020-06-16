@@ -45,7 +45,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                 // Pursuing done, owner is close enough
                 ClearGoals();
             }
-            else if (!IsInRange(this.currentTarget))
+            else if (!IsInRange(this.currentTarget) && this.GoalQueue.Count == 0)
             {
                 // Current path's end is too far from enemy's position, recalculate
                 PathToEnemy();
