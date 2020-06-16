@@ -42,11 +42,7 @@ namespace GameAI.Entity.GoalBehaviour.Composite
                 }
                 else if (this.GoalQueue.Count == 0) { AddSubgoal(new MoveTo<Ship>(this.Owner, this.enemyFlag.Position, this.world.PathFinder)); }
             }
-
-            base.Process(gameTime);
-            this.Status = GoalStatus.Active;
-
-
+            
             base.Process(gameTime);
         }
     }
